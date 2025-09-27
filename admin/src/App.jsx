@@ -1,34 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useContext } from 'react'
+import Login from './pages/Login'
+import { ToastContainer, toast } from 'react-toastify';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import { Route, Routes } from 'react-router-dom';
+import { AdminContext } from './context/AdminContext';
+import Dashboard from './pages/Dashboard';
+import AllPosts from './pages/AllPosts';
+import AddClub from './pages/AddClub';
+import Clubs from './pages/Clubs';
+import Students from './pages/Students';
 
-function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+const App = () => {
+
+  const {aToken} = useContext(AdminContext);
+
+  return aToken ? (
+    <div className='bg-[#F8F9FA]'>
+      <ToastContainer />
+      <Navbar />
+      <div className='flex items-start'>
+        <Sidebar />
+        <Routes>
+          {/* admin */}
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/allPosts' element={<AllPosts />} />
+          <Route path='/addclub' element={<AddClub />} />
+          <Route path='/clubs' element={<Clubs />} />
+          <Route path='/students' element={<Students />} />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
+  ) : (
+    <div>
+      <ToastContainer />
+      <Login />
+    </div>
+    
   )
 }
 

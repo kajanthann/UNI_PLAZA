@@ -4,3 +4,10 @@
   --color-skyblue: #3A86FF;
 }
 
+button{
+  cursor: pointer;
+}
+
+a:hover {
+  color: blue;
+}

@@ -1,10 +1,10 @@
 import React from "react";
 import {Route, Routes} from "react-router-dom";
 import Home from '../Front-Pages/Home';
-import LoginClub from '../Front-Pages/Login-Club';
-import LoginStudent from '../Front-Pages/Login-Student';
-import RegisterClub from '../Front-Pages/Register-Club';
-import RegisterStudent from '../Front-Pages/Register-Student';
+import LoginClub from '../Front-Pages/LoginClub';
+import LoginStudent from '../Front-Pages/LoginStudent';
+import RegisterClub from '../Front-Pages/RegisterClub';
+import RegisterStudent from '../Front-Pages/RegisterStudent';
 import EventDashboard from '../Front-Pages/EventDashboard';
 
 

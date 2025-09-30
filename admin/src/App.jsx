@@ -1,3 +1,14 @@
+
+import './App.css'
+import MainContent from './Main-Content/mainContent'
+
+function App() {
+
+  return (
+    <>
+      <MainContent/>
+    </>
+
 import React, { useContext } from 'react'
 import Login from './pages/Login'
 import { ToastContainer, toast } from 'react-toastify';
@@ -38,6 +49,7 @@ const App = () => {
       <Login />
     </div>
     
+
   )
 }
 

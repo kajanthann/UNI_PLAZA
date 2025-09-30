@@ -1,19 +1,22 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { assets } from '../assets/assets';
-import { AdminContext } from '../context/AdminContext';
+import { assets } from '../../../../admin/src/assets/assets';
+// import { AdminContext } from '../context/AdminContext';
+import { useState } from 'react';
 
 const Navbar = () => {
-  const { aToken, setAtoken } = useContext(AdminContext);
-  const navigate = useNavigate();
+  // const { cToken, setCtoken } = useContext(AdminContext);
+  // const navigate = useNavigate();
 
-  const logout = () => {
-    navigate('/admin-dashboard');
-    if (aToken) {
-      setAtoken('');
-      localStorage.removeItem('aToken');
-    }
-  };
+  // const logout = () => {
+  //   navigate('/admin-dashboard');
+  //   if (cToken) {
+  //     setAtoken('');
+  //     localStorage.removeItem('aToken');
+  //   }
+  // };
+
+  const [state, setState] = useState('Club');
 
   return (
     <div className='flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white'>
@@ -23,8 +26,9 @@ const Navbar = () => {
           <p className='text-gray-600 text-sm mt-2 md:mt-4'>PLAZA</p>
         </div>
         {
-          aToken &&<p className='border px-4 py-0.5 mt-2 rounded-full bg-gray-50/60 border-gray-500 text-gray-600'>
-          Admin Panel
+          // aToken &&
+        <p className='border px-4 py-0.5 mt-2 rounded-full bg-gray-50/60 border-gray-500 text-gray-600'>
+          {state} Panel
         </p>
         }
         

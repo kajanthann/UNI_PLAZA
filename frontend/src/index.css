@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+@theme {
+  --color-skyblue: #3A86FF;
+}
+

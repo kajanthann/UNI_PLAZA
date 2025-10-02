@@ -1,9 +1,12 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&display=swap');
 
 @theme {
   --color-skyblue: #3A86FF;
   --color-navyblue: #032E5E;
   --color-linecolor: #566B83;
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-alan: 'Alan Sans', sans-serif;
 }
 
 button{

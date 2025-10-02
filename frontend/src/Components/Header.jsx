@@ -7,7 +7,7 @@ export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
 
     return (
-        <nav className="bg-white shadow-md w-full fixed z-50 relative">
+        <nav className="bg-white shadow-md w-full z-50 relative">
             <div className="w-9/10 mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
 

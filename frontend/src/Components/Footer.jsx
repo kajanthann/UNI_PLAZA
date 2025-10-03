@@ -1,7 +1,21 @@
+import {useState,useEffect} from "react";
 
-export default function Footer(){
+
+export default function Footer(type){
+    const [contentShown, setContentShown] = useState(false);
+    useEffect(() => {
+        if (type === "LoginClub" || type === "LoginStudent" || type === "RegisterClub" ||
+            type === "RegisterStudent") {
+            setContentShown(true);
+        } else {
+            setContentShown(false);
+        }
+    }, [type]);
+
     return (
         <footer className="bg-navyblue text-white">
+            {contentShown && (
+            <>
             <div className="container mx-auto py-10">
                 <div className="md:flex grid grid-cols-2 gap-10 ml-10 mx-auto">
                 <section className="md:flex-1">
@@ -48,6 +62,8 @@ export default function Footer(){
             </div>
             </div>
             <hr className="text-linecolor"/>
+            </>
+            )}
             <div className="flex justify-center py-7 text-gray-400">
                 &copy;2023 Eventify. All rights reserved.
             </div>

@@ -1,21 +1,24 @@
 import jwt from "jsonwebtoken";
 
-// admin auth middleware
-const authAdmin = async (req, res, next) => {
-    try {
-        const {aToken} = req.headers;
-        if (!aToken) {
-            return res.status(401).json({ success: false, message: "Not Authorized Login Again" });
-        }
-        const decoded = jwt.verify(atoken, process.env.JWT_SECRET);
-        if (decoded !== process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD) {
-            res.status(401).json({ success: false, message: "Not Authorized Login Again" });
-        }
-        next();
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: error.message });
+const authAdmin = (req, res, next) => {
+  try {
+    // Read token from cookie
+    const aToken = req.cookies?.aToken;
+    if (!aToken) {
+      return res.status(401).json({ success: false, message: "Not authorized. Login again." });
     }
+
+    const decoded = jwt.verify(aToken, process.env.JWT_SECRET);
+    if (!decoded || decoded.role !== "admin") {
+      return res.status(401).json({ success: false, message: "Not authorized. Login again." });
+    }
+
+    req.admin = decoded; // Attach admin info
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ success: false, message: "Invalid or expired token" });
+  }
 };
 
-export default authAdmin
+export default authAdmin;

@@ -1,26 +1,56 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faBars, faTimes, faGear } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import LogoImage from '../assets/logo.jpg';
 
-export default function Header() {
+export default function Header({ name, role , image, type }) {
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const guestLinks = [
+        { label: "Home", href: "#" },
+        { label: "Events", href: "#" },
+        { label: "About Us", href: "#" },
+        { label: "Feedback", href: "#" },
+    ];
+
+    const studentClubLinks = [
+        { label: "Home", href: "#" },
+        { label: "Student", href: "#" },
+        { label: "Contact", href: "#" },
+        { label: "Give Feedback", href: "#" },
+    ];
+
+    const LoginRegisterLinks = [
+        { label: "Home", href: "#" },
+        { label: "Contact", href: "#" },
+        { label: "Event Dashboard", href: "#" }
+    ];
+
+    const linksToShow = (role === "Student" || role === "Club")
+        ? studentClubLinks
+        : (type === "Home" ? guestLinks : LoginRegisterLinks);
+
 
     return (
         <nav className="bg-white shadow-md w-full z-50 relative">
             <div className="w-9/10 mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
 
-                    <div className="flex-shrink-0 text-xl font-bold w-1/4">
+                    <div className="flex-shrink-0 w-1/4">
                         <img src={LogoImage} alt="Logo" className="w-14" />
                     </div>
 
                     <div className="hidden md:flex md:items-center w-full">
-                        <div className="flex space-x-10 w-1/2 md:space-x-15">
-                            <a href="#" className="font-medium hover:text-blue-600">Home</a>
-                            <a href="#" className="font-medium hover:text-blue-600">Events</a>
-                            <a href="#" className="font-medium hover:text-blue-600">About Us</a>
-                            <a href="#" className="font-medium hover:text-blue-600">Feedback</a>
+                        <div className="flex space-x-14 w-1/2">
+                            {linksToShow.map((link, idx) => (
+                                <a
+                                    key={idx}
+                                    href={link.href}
+                                    className="font-medium hover:text-blue-600"
+                                >
+                                    {link.label}
+                                </a>
+                            ))}
                         </div>
 
                         <div className="relative mx-4 flex-1 max-w-md w-1/5">
@@ -29,15 +59,46 @@ export default function Header() {
                                 placeholder="Search Content"
                                 className="w-3/4 h-3/4 border border-gray-400 rounded-2xl pl-10 pr-4 py-2 text-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
                             />
-                            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
+                            <div className="absolute inset-y-0 left-3 flex items-center text-gray-400">
                                 <FontAwesomeIcon icon={faSearch} />
                             </div>
                         </div>
 
-                        <div className="flex space-x-8">
-                            <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Clubs</button>
-                            <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Students</button>
-                        </div>
+                        {role === ""  ? (
+                            <>
+                                {type === "Home" && (
+                                    <div className="flex space-x-8">
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Clubs</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Students</button>
+                                    </div>
+                                )}
+                                {(type === "LoginClub" || type === "RegisterClub") && (
+                                    <div className="flex space-x-8">
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Login as Student</button>
+                                    </div>
+                                )}
+                                {(type === "LoginStudent" || type === "RegisterStudent") && (
+                                    <div className="flex space-x-8">
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Login as Club</button>
+                                    </div>
+                                )}
+                            </>
+
+
+                        ) : (
+                            <div className="flex space-x-4 items-center">
+                                <button className="text-black text-2xl ps-2 pe-4 rounded-2xl">
+                                    <FontAwesomeIcon icon={faGear} />
+                                </button>
+                                <div className="flex space-x-4">
+                                    <div className="text-left items-center">
+                                        <p className="text-sm">Hello!</p>
+                                        <p className="font-semibold">{name}</p>
+                                    </div>
+                                    <img src={image} alt="Profile" className="w-13 h-13 rounded-full border" />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="md:hidden flex items-center">
@@ -54,29 +115,18 @@ export default function Header() {
             {menuOpen && (
                 <div className="md:hidden bg-white shadow-md">
                     <div className="px-4 pt-4 pb-6 space-y-4">
+                        {linksToShow.map((link, idx) => (
+                            <a key={idx} href={link.href} className="block font-medium">
+                                {link.label}
+                            </a>
+                        ))}
 
-                        {/*<div className="relative mt-2">*/}
-                        {/*    <input*/}
-                        {/*        type="text"*/}
-                        {/*        placeholder="Search Content"*/}
-                        {/*        className="w-full border border-gray-400 rounded-2xl pl-10 pr-4 py-2 text-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"*/}
-                        {/*    />*/}
-                        {/*    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">*/}
-                        {/*        <FontAwesomeIcon icon={faSearch} />*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-
-                        <a href="#" className="block font-medium">Home</a>
-                        <a href="#" className="block font-medium">Events</a>
-                        <a href="#" className="block font-medium">About Us</a>
-                        <a href="#" className="block font-medium">Feedback</a>
-                        <a href="#" className="block font-medium">Login as Club</a>
-                        <a href="#" className="block font-medium">Login as Student</a>
-
-                        {/*<div className="flex space-x-4 mt-2">*/}
-                        {/*    <button className="bg-sky-500 text-white px-5 py-2 rounded-2xl w-full">Clubs</button>*/}
-                        {/*    <button className="bg-sky-500 text-white px-5 py-2 rounded-2xl w-full">Students</button>*/}
-                        {/*</div>*/}
+                        {role === "" && (
+                            <>
+                                <a href="#" className="block font-medium">Login as Club</a>
+                                <a href="#" className="block font-medium">Login as Student</a>
+                            </>
+                        )}
                     </div>
                 </div>
             )}

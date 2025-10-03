@@ -1,11 +1,9 @@
-import Header from '../Components/Header'
-import Footer from '../Components/Footer'
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import HeroImage from '../assets/heroImage1.png'
 import PostImage from '../assets/postImage.png'
 import FeedbackImage from '../assets/feedbackImage.png'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+
 
 export default function Home(){
     const formik = useFormik({
@@ -33,7 +31,6 @@ export default function Home(){
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Header/>
             <main>
                 <section className="flex justify-center w-full">
                     <div className="relative my-5 w-full md:w-10/12 md:rounded-3xl bg-blue-100 p-6 md:p-16 h-9/10">
@@ -109,6 +106,9 @@ export default function Home(){
                                 </div>
                             </div>
                         </div>
+                        </div>
+                        <div className="flex justify-end mr-15 text-xl">
+                            <a href="" className="underline" style={{color:'#42A5F5'}}>See more +</a>
                         </div>
                     </div>
                 </section>
@@ -222,7 +222,6 @@ export default function Home(){
                     </div>
                 </section>
             </main>
-            <Footer/>
         </div>
     )
 }

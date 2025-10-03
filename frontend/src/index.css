@@ -9,6 +9,10 @@
   --font-alan: 'Alan Sans', sans-serif;
 }
 
+body{
+  background-color: white;
+}
+
 button{
   cursor: pointer;
 }

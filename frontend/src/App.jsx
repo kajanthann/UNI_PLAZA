@@ -1,16 +1,17 @@
-import './App.css'
-import MainContent from './Main-Content/mainContent'
-import Home from './Front-Pages/Home'
-
+import FrontPagesRoutes from "./routes/FrontPages-Routes.jsx";
+import ClubRoutes from "./routes/Club-Routes.jsx";
+import StudentRoutes from "./routes/Student-Routes.jsx";
+import { BrowserRouter} from "react-router-dom";
 
 function App() {
 
-  return (
-    <>
-      <MainContent/>
-      <Home/>
-    </>
-  )
+    return (
+        <BrowserRouter>
+            <FrontPagesRoutes/>
+            <ClubRoutes/>
+            <StudentRoutes/>
+        </BrowserRouter>
+    );
 }
 
-export default App
+export default App;

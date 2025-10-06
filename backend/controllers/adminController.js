@@ -6,7 +6,7 @@ const adminOtpStore = {}; // Structure: { email: { otp: '123456', expiresAt: Dat
 
 
 // --- Request OTP ---
-export const requestAdminOtp = async (req, res) => {
+export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 

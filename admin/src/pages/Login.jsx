@@ -2,11 +2,13 @@ import React, { useContext, useState } from 'react';
 import { AdminContext } from '../context/AdminContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { setAtoken, backendUrl } = useContext(AdminContext);
+  const navigate = useNavigate();
 
   const onsubmitHandler = async (event) => {
     event.preventDefault();
@@ -40,7 +42,6 @@ const Login = () => {
 
   return (
     <form
-      onSubmit={onsubmitHandler}
       className="min-h-[80vh] flex items-center justify-center"
     >
       <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
@@ -70,7 +71,9 @@ const Login = () => {
           />
         </div>
 
-        <button className="bg-blue-600 text-white w-full py-2 my-4 rounded-md text-base">
+        <button
+         onClick={() => navigate("/email-verification")}
+         className="bg-blue-600 text-white w-full py-2 my-4 rounded-md text-base">
           Login
         </button>
 

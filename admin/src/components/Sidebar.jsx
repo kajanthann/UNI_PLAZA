@@ -32,6 +32,14 @@ const Sidebar = () => {
                     <img src={assets.people_icon} alt="" />
                     <p className='hidden md:block'>Students</p>
                 </NavLink>
+                <NavLink className={({isActive}) => `flex items-center gap-4 py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer ${isActive ? 'border-r-5 border-fuchsia-500 bg-[#f4f1f6]' : ''}`} to={'/login'}>
+                    <img src={assets.people_icon} alt="" />
+                    <p className='hidden md:block'>login</p>
+                </NavLink>
+                <NavLink className={({isActive}) => `flex items-center gap-4 py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer ${isActive ? 'border-r-5 border-fuchsia-500 bg-[#f4f1f6]' : ''}`} to={'/email-verification'}>
+                    <img src={assets.people_icon} alt="" />
+                    <p className='hidden md:block'>Verification</p>
+                </NavLink>
             </ul>
         }
     </div>

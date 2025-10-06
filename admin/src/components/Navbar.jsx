@@ -16,11 +16,10 @@ const Navbar = () => {
   };
 
   return (
-    <div className='flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white'>
+    <div className='flex justify-between items-center px-4 sm:px-10 py-2 border-b bg-white'>
       <div className='flex items-center gap-4 text-xs'>
         <div className='flex items-center gap-1 text-3xl font-semibold'>
-          <h1 className='text-2xl md:text-4xl text-fuchsia-700'>UNI</h1>
-          <p className='text-gray-600 text-sm mt-2 md:mt-4'>PLAZA</p>
+          <img className='w-10 ' src={assets.logo} alt="" />
         </div>
         {
           aToken &&<p className='border px-4 py-0.5 mt-2 rounded-full bg-gray-50/60 border-gray-500 text-gray-600'>

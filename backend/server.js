@@ -7,6 +7,7 @@ import userRouter from './routes/userRoutes.js';
 import adminRouter from './routes/adminRoute.js';
 import cookieParser from 'cookie-parser';
 import cleanupUnverifiedUsers from './cron/cleanup.js';
+import clubRouter from './routes/clubRoute.js';
 
 // app config
 const app = express();
@@ -23,6 +24,7 @@ app.use(cookieParser());
 // api endpoints
 app.use('/api/admin', adminRouter);
 app.use('/api/user', userRouter);
+app.use('/api/club',clubRouter)
 
 // listener
 app.listen(port, () => console.log(`Server Listening on localhost:${port}`));

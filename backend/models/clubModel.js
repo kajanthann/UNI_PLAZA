@@ -14,7 +14,7 @@ const clubSchema = new mongoose.Schema(
     image: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
     otp: { type: String },
-    otpExpire: { type: Date }, // TTL index: remove document when otpExpire < now
+    otpExpire: { type: Date, expires: 0 }, // TTL index: remove document when otpExpire < now
     status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
     createdAt: { type: Date, default: Date.now },
   },

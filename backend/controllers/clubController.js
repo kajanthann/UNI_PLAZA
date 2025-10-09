@@ -152,92 +152,130 @@ export const clubLogin = async (req, res) => {
     }
 };
 
+// --- LOGOUT ---
+export const logout = (req, res) => {
+  try {
+    res.clearCookie("cToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict"
+    });
+
+    res.status(200).json({ success: true, message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 
 // add event
 export const addEvent = async (req, res) => {
-    try {
-        const {
-            mode,
-            title,
-            description,
-            university,
-            date,
-            startTime,
-            location,
-            mapLink,
-            contactNumber,
-            relatedLinks,
-            tags,
-            email,
-            createdBy, // club/community ID
-        } = req.body;
-
-        // handle single image upload
-        const image = req.file ? req.file.filename : null;
-
-        // Required field validation
-        if (!mode || !title || !description || !university || !date || !startTime || !location || !contactNumber || !createdBy || !image) {
-            return res.status(400).json({
-                success: false,
-                message: "All required fields must be filled, including image and club/community ID.",
-            });
-        }
-
-        // check club/community exists
-        const club = await clubModel.findById(createdBy);
-        if (!club) {
-            return res.status(404).json({
-                success: false,
-                message: "Invalid club/community ID.",
-            });
-        }
-
-        // parse related links and tags if sent as strings
-        let parsedLinks = [];
-        let parsedTags = [];
-
-        if (relatedLinks) {
-            try {
-                parsedLinks = JSON.parse(relatedLinks);
-            } catch {
-                parsedLinks = [{ label: "Link", url: relatedLinks }];
-            }
-        }
-
-        if (tags) {
-            parsedTags = Array.isArray(tags)
-                ? tags
-                : tags.split(",").map((t) => t.trim());
-        }
-
-        // ✅ create new event
-        const newEvent = new eventModel({
-            mode,
-            title,
-            description,
-            university,
-            date,
-            startTime,
-            location,
-            mapLink,
-            contactNumber,
-            relatedLinks: parsedLinks,
-            tags: parsedTags,
-            email,
-            image,
-            createdBy,
-        });
-
-        await newEvent.save();
-
-        res.status(201).json({
-            success: true,
-            message: "Event added successfully. Awaiting admin approval.",
-            event: newEvent,
-        });
-    } catch (error) {
-        console.error("Error in addEvent:", error);
-        res.status(500).json({ success: false, message: error.message });
+  try {
+    // AuthClub middleware already sets req.club
+    const club = req.club;
+    if (!club) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized. Please login as a club first.",
+      });
     }
+
+    const {
+      mode,
+      title,
+      description,
+      university,
+      date,
+      startTime,
+      location,
+      mapLink,
+      contactNumber,
+      relatedLinks,
+      tags,
+      email,
+    } = req.body;
+
+    const image = req.file ? req.file.filename : null;
+
+    // Required field validation
+    if (!mode || !title || !description || !university || !date || !startTime || !location || !image) {
+      return res.status(400).json({
+        success: false,
+        message: "All required fields must be filled, including image.",
+      });
+    }
+
+    // Parse relatedLinks & tags if sent as strings
+    let parsedLinks = [];
+    let parsedTags = [];
+
+    if (relatedLinks) {
+      try {
+        parsedLinks = JSON.parse(relatedLinks);
+      } catch {
+        parsedLinks = [{ label: "Link", url: relatedLinks }];
+      }
+    }
+
+    if (tags) {
+      parsedTags = Array.isArray(tags)
+        ? tags
+        : tags.split(",").map((t) => t.trim());
+    }
+
+    const newEvent = new eventModel({
+      mode,
+      title,
+      description,
+      university,
+      date,
+      startTime,
+      location,
+      mapLink,
+      contactNumber,
+      relatedLinks: parsedLinks,
+      tags: parsedTags,
+      email,
+      image,
+      createdBy: club._id, // automatically link to logged-in club
+    });
+
+    await newEvent.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Event added successfully. Awaiting admin approval.",
+      event: newEvent,
+    });
+  } catch (error) {
+    console.error("Error in addEvent:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while adding event.",
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+// edit event
+export const editEvent = async (req, res) => {
+    // TODO
+};
+
+// delete event by ID
+export const deleteEvent = async (req, res) => {
+    // TODO
+};
+
+// get all events
+export const getAllEvents = async (req, res) => {
+    // TODO
+};
+
+// profile
+export const updateClubProfile = async (req, res) => {
+    // TODO
 };

@@ -1,6 +1,7 @@
 import express from "express";
-import { register, login, verifyOtp, forgotPassword, verifyResetOtp, resetPassword, logout, isAuth } from "../controllers/userController.js";
+import { register, login, verifyOtp, forgotPassword, verifyResetOtp, resetPassword, logout, updateProfile, getProfile } from "../controllers/userController.js";
 import { userAuth } from "../middleware/authUser.js";
+import upload from "../middleware/multer.js";
 
 const userRouter = express.Router();
 
@@ -17,7 +18,8 @@ userRouter.post("/forgot-password", forgotPassword);
 userRouter.post("/reset-otp", verifyResetOtp);           
 userRouter.post("/reset-password", resetPassword);         
 
-// Auth check
-userRouter.post("/is-auth", userAuth, isAuth);
+// User profile
+userRouter.get("/get-profile", userAuth, getProfile);
+userRouter.post("/update-profile", userAuth, upload.single("image"), updateProfile);
 
 export default userRouter;

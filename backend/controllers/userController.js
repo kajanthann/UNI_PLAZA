@@ -5,10 +5,10 @@ import userModel from "../models/userModel.js";
 
 // --- REGISTER ---
 export const register = async (req, res) => {
-  const { name, regNo, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   try {
-    if (!name || !regNo || !email || !password) {
+    if (!name || !email || !password) {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
@@ -18,7 +18,7 @@ export const register = async (req, res) => {
     }
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = new userModel({ name, regNo, email, password: hashed });
+    const user = new userModel({ name, email, password: hashed });
 
     // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -195,10 +195,41 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-// --- CHECK AUTH ---
-export const isAuth = async (req, res) => {
+// get profile
+// --- GET USER PROFILE ---
+export const getProfile = async (req, res) => {
   try {
-    res.status(200).json({ success: true, message: "User is authenticated" });
+    const userId = req.userId; // must be set in auth middleware
+    const user = await userModel.findById(userId).select("-password -otp -otpExpire -resetToken -resetTokenExpire -isResetVerified");
+
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+// update Profile
+export const updateProfile = async (req, res) => {
+  try {
+    const { name, regNo, university, year, faculty, department, phone } = req.body;
+    const userId = req.userId; // must be set by auth middleware
+    const image = req.file;
+
+    if (!name || !regNo || !university || !year || !faculty || !department || !phone) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
+    const updateFields = { name, regNo, university, year, faculty, department, phone };
+    if (image) updateFields.image = image.filename;
+
+    const updatedUser = await userModel.findByIdAndUpdate(userId, { $set: updateFields }, { new: true, runValidators: true });
+
+    if (!updatedUser) return res.status(404).json({ success: false, message: "User not found" });
+
+    res.status(200).json({ success: true, message: "Profile updated successfully", user: updatedUser });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

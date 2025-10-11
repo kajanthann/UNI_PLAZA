@@ -5,7 +5,6 @@ import LogoImage from '../assets/logo.jpg';
 
 export default function Header({ name, role , image, type }) {
     const [menuOpen, setMenuOpen] = useState(false);
-
     const guestLinks = [
         { label: "Home", href: "#" },
         { label: "Events", href: "#" },

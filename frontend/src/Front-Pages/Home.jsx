@@ -38,10 +38,10 @@ export default function Home(){
                         <img src={HeroImage} alt="Hero" className="mx-auto md:w-full" />
 
                         <div className="absolute top-1/2 left-1/2 md:left-4/10 transform -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-6/10 text-left">
-                            <h1 className="font-extrabold text-2xl md:text-4xl mb-4">
+                            <h1 className="font-extrabold text-2xl md:text-4xl mb-4 font-alan">
                                 Connect, Explore, Thrive with Uni Plaza
                             </h1>
-                            <p className="text-lg md:text-2xl font-mono mb-6">
+                            <p className="text-lg md:text-2xl font-montserrat mb-6">
                                 Your central hub for student life and club activities. Discover events, manage your club, and build your community.
                             </p>
                             <button className="bg-sky-500 text-white px-6 py-3 rounded-2xl text-lg md:text-xl hover:bg-sky-600 transition">

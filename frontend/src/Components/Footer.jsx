@@ -1,16 +1,23 @@
 import {useState,useEffect} from "react";
 
 
-export default function Footer(type){
+export default function Footer({type}){
     const [contentShown, setContentShown] = useState(false);
+
     useEffect(() => {
-        if (type === "LoginClub" || type === "LoginStudent" || type === "RegisterClub" ||
-            type === "RegisterStudent") {
-            setContentShown(true);
-        } else {
+        if (
+            type === "LoginClub" ||
+            type === "LoginStudent" ||
+            type === "RegisterClub" ||
+            type === "RegisterStudent"
+        ) {
             setContentShown(false);
+        } else {
+            setContentShown(true);
         }
     }, [type]);
+
+    console.log("Footer contentShown:", contentShown, "Type:", type);
 
     return (
         <footer className="bg-navyblue text-white">

@@ -1,5 +1,25 @@
 import mongoose from "mongoose";
 
+const replySchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
+  text: { type: String, required: true },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  createdAt: { type: Date, default: Date.now },
+});
+
+const commentSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
+  text: { type: String, required: true },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  replies: [replySchema],
+  createdAt: { type: Date, default: Date.now },
+});
+
+const viewSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  viewedAt: { type: Date, default: Date.now },
+});
+
 const eventSchema = new mongoose.Schema(
   {
     mode: { type: String, enum: ["event", "blog"], required: true },
@@ -10,12 +30,7 @@ const eventSchema = new mongoose.Schema(
     location: { type: String, required: true },
     mapLink: { type: String },
     university: { type: String, required: true },
-    relatedLinks: [
-      {
-        label: { type: String },
-        url: { type: String },
-      },
-    ],
+    relatedLinks: [{ label: String, url: String }],
     contactNumber: { type: String, required: true },
     image: { type: String, required: true },
     email: { type: String, required: true },
@@ -27,14 +42,18 @@ const eventSchema = new mongoose.Schema(
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "club", // ✅ references the club/community who created it
+      ref: "club",
       required: true,
     },
-    createdAt: { type: Date, default: Date.now },
+
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+    comments: [commentSchema],
+    views: [viewSchema],
   },
-  { versionKey: false }
+  { timestamps: true, versionKey: false }
 );
 
-const eventModel = mongoose.models.event || mongoose.model("event", eventSchema);
+const eventModel =
+  mongoose.models.event || mongoose.model("event", eventSchema);
 
 export default eventModel;

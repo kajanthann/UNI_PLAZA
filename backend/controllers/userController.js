@@ -196,7 +196,6 @@ export const resetPassword = async (req, res) => {
 };
 
 // get profile
-// --- GET USER PROFILE ---
 export const getProfile = async (req, res) => {
   try {
     const userId = req.userId; // must be set in auth middleware
@@ -230,6 +229,45 @@ export const updateProfile = async (req, res) => {
     if (!updatedUser) return res.status(404).json({ success: false, message: "User not found" });
 
     res.status(200).json({ success: true, message: "Profile updated successfully", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// update
+// update Profile
+export const updateUserProfile = async (req, res) => {
+  try {
+    const userId = req.userId; // set in auth middleware
+    const { name, regNo, university, year, faculty, department, phone } = req.body;
+    const image = req.file;
+
+    // Build an object with only provided fields
+    const updateFields = {};
+    if (name) updateFields.name = name;
+    if (regNo) updateFields.regNo = regNo;
+    if (university) updateFields.university = university;
+    if (year) updateFields.year = year;
+    if (faculty) updateFields.faculty = faculty;
+    if (department) updateFields.department = department;
+    if (phone) updateFields.phone = phone;
+    if (image) updateFields.image = image.filename;
+
+    // Make sure at least one field is provided
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({ success: false, message: "No fields provided to update" });
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    ).select("-password -otp -otpExpire -resetToken -resetTokenExpire -isResetVerified -isVerified");
+
+    if (!updatedUser) return res.status(404).json({ success: false, message: "User not found" });
+
+    res.status(200).json({ success: true, message: "Profile updated successfully", user: updatedUser });
+
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

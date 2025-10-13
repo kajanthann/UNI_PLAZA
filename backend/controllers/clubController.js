@@ -261,7 +261,7 @@ export const addEvent = async (req, res) => {
 // --- EDIT EVENT ---
 export const editEvent = async (req, res) => {
   try {
-    const eventId = req.params.id;
+    const eventId = req.params.eventId; // note: match router param
     const club = req.club; // Authenticated club
 
     if (!club) return res.status(401).json({ success: false, message: "Unauthorized" });
@@ -269,51 +269,49 @@ export const editEvent = async (req, res) => {
     const event = await eventModel.findById(eventId);
     if (!event) return res.status(404).json({ success: false, message: "Event not found" });
 
-    // Only creator can edit
     if (event.createdBy.toString() !== club._id.toString()) {
       return res.status(403).json({ success: false, message: "You can only edit your own events" });
     }
 
-    // Update fields
-    const {
-      mode,
-      title,
-      description,
-      university,
-      date,
-      startTime,
-      location,
-      mapLink,
-      contactNumber,
-      relatedLinks,
-      tags,
-      email,
-    } = req.body;
+    // Only update fields if they exist in req.body
+    const fields = [
+      "mode",
+      "title",
+      "description",
+      "date",
+      "startTime",
+      "location",
+      "mapLink",
+      "contactNumber",
+      "relatedLinks",
+      "tags",
+      "email"
+    ];
 
-    if (mode) event.mode = mode;
-    if (title) event.title = title;
-    if (description) event.description = description;
-    if (university) event.university = university;
-    if (date) event.date = date;
-    if (startTime) event.startTime = startTime;
-    if (location) event.location = location;
-    if (mapLink) event.mapLink = mapLink;
-    if (contactNumber) event.contactNumber = contactNumber;
-    if (email) event.email = email;
+    fields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        event[field] = req.body[field];
+      }
+    });
 
-    if (req.file) event.image = req.file.filename; // Update image if uploaded
+    // Update image only if new file uploaded
+    if (req.file) {
+      event.image = req.file.filename;
+    }
 
-    // Parse relatedLinks & tags
-    if (relatedLinks) {
+    // Parse relatedLinks & tags if provided as JSON/string
+    if (req.body.relatedLinks) {
       try {
-        event.relatedLinks = JSON.parse(relatedLinks);
+        event.relatedLinks = JSON.parse(req.body.relatedLinks);
       } catch {
-        event.relatedLinks = [{ label: "Link", url: relatedLinks }];
+        event.relatedLinks = [{ label: "Link", url: req.body.relatedLinks }];
       }
     }
 
-    if (tags) {
-      event.tags = Array.isArray(tags) ? tags : tags.split(",").map(t => t.trim());
+    if (req.body.tags) {
+      event.tags = Array.isArray(req.body.tags)
+        ? req.body.tags
+        : req.body.tags.split(",").map(t => t.trim());
     }
 
     await event.save();
@@ -325,30 +323,33 @@ export const editEvent = async (req, res) => {
   }
 };
 
+
 // --- DELETE EVENT ---
 export const deleteEvent = async (req, res) => {
   try {
-    const eventId = req.params.id;
+    const { eventId } = req.params;
     const club = req.club;
 
-    if (!club) return res.status(401).json({ success: false, message: "Unauthorized" });
+    if (!club) 
+      return res.status(401).json({ success: false, message: "Unauthorized" });
 
-    const event = await eventModel.findById(eventId);
-    if (!event) return res.status(404).json({ success: false, message: "Event not found" });
+    // Delete the event only if it belongs to this club
+    const deletedEvent = await eventModel.findOneAndDelete({
+      _id: eventId,
+      createdBy: club._id
+    });
 
-    // Only creator can delete
-    if (event.createdBy.toString() !== club._id.toString()) {
-      return res.status(403).json({ success: false, message: "You can only delete your own events" });
-    }
-
-    await event.remove();
+    if (!deletedEvent) 
+      return res.status(404).json({ success: false, message: "Event not found or you are not authorized to delete it" });
 
     res.status(200).json({ success: true, message: "Event deleted successfully" });
+
   } catch (error) {
     console.error("Error in deleteEvent:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 // --- GET ALL EVENTS ---
 export const getAllEvents = async (req, res) => {

@@ -11,21 +11,30 @@
 
 body{
   background-color: white;
+  color: black;
 }
 
 button{
   cursor: pointer;
 }
 
-button:hover{
-  background-color: #3381bc
-}
+/*button:hover{*/
+/*  background-color: #3381bc*/
+/*}*/
 .normalButton:hover{
   background-color: white;
 }
 
 a:hover {
   color: blue;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #3B82F6;   /* border-blue-500 */
+  outline: none;           /* remove default outline */
+  box-shadow: 0 0 0 1px #54a8fb;  /* ring-1 ring-blue-200 */
 }
 
 :root {

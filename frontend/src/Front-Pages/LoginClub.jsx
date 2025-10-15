@@ -37,10 +37,10 @@ export default function LoginClub(){
     })
     return(
         <div className="md:min-h-screen flex flex-col">
-            <div className="hidden md:max-w-full">
+            <div className="md:max-w-full md:flex hidden mx-auto">
             <main>
                 <div className="relative flex flex-col">
-                    <img src={LoginImage} alt="" className="w-full md:w-4/5 opacity-60 mx-auto text-center my-10"/>
+                    <img src={LoginImage} alt="" className="w-full md:w-9/10 opacity-60 mx-auto text-center my-10"/>
                     <div className="bg-white w-2/3 md:w-3/10 absolute transform translate-y-0 left-1/3 md:left-10/20 top-1/14 md:top-2/10 rounded-2xl">
                         <div className="px-10 md:py-15">
                             <LoginSlider/>
@@ -90,7 +90,7 @@ export default function LoginClub(){
                                         )}
                                     </div>
                                     <div className="flex w-full h-15">
-                                        <div className="flex w-1/2 justify-center mx-auto">
+                                        <div className="flex w-2/3 justify-center mx-auto">
                                             <p className="me-1">Forget Password?</p>
                                             <a href="" className="text-blue-600">Click Here</a>
                                         </div>

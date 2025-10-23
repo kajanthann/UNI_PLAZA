@@ -11,6 +11,7 @@ import AddClub from "./pages/AddClub";
 import Clubs from "./pages/Clubs";
 import Students from "./pages/Students";
 import EmailVerify from "./Components/EmailVerify";
+import PostDetailsPage from "./Components/PostDetailsPage";
 
 const App = () => {
   const { aToken } = useContext(AdminContext);
@@ -31,6 +32,7 @@ const App = () => {
             <Route path="/students" element={<Students />} />
             <Route path="/login" element={<Login />} />
             <Route path="/email-verification" element={<EmailVerify />} />
+            <Route path="/admin/posts/:id" element={<PostDetailsPage />} />
           </Routes>
         </div>
       </div>

@@ -84,13 +84,12 @@ export default function ClubAds(){
                                             <input type="text" placeholder="073 923404-98" className="p-2 bg-gray-200 rounded-xl w-full"/>
                                         </div>
                                         <div className="flex flex-col w-2/3">
+                                        <div>
                                             <label htmlFor="">Upload Poster/Image(s)*</label>
-                                            <div className="flex relative">
-                                                <input type="file" onChange={handleFileChange} className="bg-gray-200 p-2 rounded-xl" placeholder="Drag and drop your event poster here, or click to browse (Max 5MB)"/>
-                                                <FontAwesomeIcon icon={faFile} className="absolute transform translate-y-2/3 translate-x-full left-1/5"/>
-                                                {/*<textarea name="" id="" rows="3" placeholder="Drag and drop your event poster here, or click to browse (Max 5MB)" className="p-2 bg-gray-200 rounded-xl w-full"/>*/}
-                                                {file && <p className="text-gray-600">Selected file: {file.name}</p>}
-                                            </div>
+                                            <label htmlFor="poster" className="block border-2 border-dashed border-gray-300 bg-gray-200 rounded-2xl p-6 text-center text-gray-500 text-sm cursor-pointer hover:bg-gray-100">Drag and drop your event poster here, or click to browse (Max 5MB)</label>
+                                            <input id="poster" type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+                                            {file && <p className="text-gray-600">Selected file: {file.name}</p>}
+                                        </div>
                                         </div>
                                     </div>
                                     <div className="my-5">

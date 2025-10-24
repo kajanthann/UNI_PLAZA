@@ -25,7 +25,7 @@ button{
   background-color: white;
 }
 
-a:hover {
+headerLink:hover {
   color: blue;
 }
 

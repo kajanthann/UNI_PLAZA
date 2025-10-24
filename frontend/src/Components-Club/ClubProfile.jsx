@@ -5,7 +5,7 @@ import clubLogo from '../assets/clubLogo.png'
 export default function ClubProfile(){
     return (
         <div>
-            <h2 className="text-3xl font-bold m-2">Club Profile</h2>
+            <h2 className="text-3xl font-bold m-2 w-9/10 mx-auto">Club Profile</h2>
             <div className="min-h-screen w-9/10 my-10 mx-auto">
                 <div className="mb-10">
                     <h2 className="text-2xl font-bold">Welcome back, Club name!</h2>

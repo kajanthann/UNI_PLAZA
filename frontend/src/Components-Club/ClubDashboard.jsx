@@ -4,7 +4,7 @@ import AdImage from '../assets/adImage.png'
 export default function ClubDashboard(){
     return (
         <div>
-            <h2 className="text-3xl font-bold m-2">Club Dashboard</h2>
+            <h2 className="text-3xl font-bold m-2 w-9/10 mx-auto">Club Dashboard</h2>
             <div className="w-9/10 mx-auto my-5 border-1 border-gray-300 rounded-2xl">
                 <div className="w-9/10 mx-auto">
                     <div className="my-4">

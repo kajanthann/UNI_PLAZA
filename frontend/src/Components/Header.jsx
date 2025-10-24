@@ -1,22 +1,21 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faBars, faTimes, faGear } from '@fortawesome/free-solid-svg-icons';
+import {faSearch, faBars, faTimes, faGear, faTableColumns,faHome,faRightFromBracket} from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import LogoImage from '../assets/logo.jpg';
+import { NavLink } from "react-router-dom";
 
 export default function Header({ name, role , image, type }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const guestLinks = [
-        { label: "Home", href: "#" },
-        { label: "Events", href: "#" },
-        { label: "About Us", href: "#" },
-        { label: "Feedback", href: "#" },
+        { label: "Home", href: "#Home" },
+        { label: "Events", href: "#Events" },
+        { label: "About Us", href: "#Footer" },
+        { label: "Feedback", href: "#Feedback" },
     ];
 
     const studentClubLinks = [
-        { label: "Home", href: "#" },
-        { label: "Student", href: "#" },
-        { label: "Contact", href: "#" },
-        { label: "Give Feedback", href: "#" },
+        { icon: faHome, label: "Home", href: "/Home" },
+        { icon: faRightFromBracket, label: "LogOut", href: "#" },
     ];
 
     const LoginRegisterLinks = [
@@ -40,17 +39,19 @@ export default function Header({ name, role , image, type }) {
                     </div>
 
                     <div className="hidden md:flex md:items-center w-full">
-                        <div className="flex space-x-14 w-1/2">
+                        <div className={`flex ${role === "Student" || role === "Club" ? "w-9/20 ml-10 space-x-40" : "w-1/2 space-x-14"}`}>
                             {linksToShow.map((link, idx) => (
-                                <a
+                                <NavLink
                                     key={idx}
-                                    href={link.href}
-                                    className="font-medium hover:text-blue-600"
+                                    to={link.href}
+                                    className="headerLink font-medium text-black hover:text-blue-600 flex items-center"
                                 >
+                                    {link.icon && <FontAwesomeIcon icon={link.icon} className="mr-2" />}
                                     {link.label}
-                                </a>
+                                </NavLink>
                             ))}
                         </div>
+
 
                         <div className="relative mx-4 flex-1 max-w-md w-1/5">
                             <input

@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 export default function Header({ name, role , image, type }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const guestLinks = [
-        { label: "Home", href: "#Home" },
+        { label: "Home", href: "Home" },
         { label: "Events", href: "#Events" },
         { label: "About Us", href: "#Footer" },
         { label: "Feedback", href: "#Feedback" },

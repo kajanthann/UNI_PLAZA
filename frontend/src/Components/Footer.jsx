@@ -20,7 +20,7 @@ export default function Footer({type}){
     console.log("Footer contentShown:", contentShown, "Type:", type);
 
     return (
-        <footer className="bg-navyblue text-white">
+        <footer id="Footer" className="bg-navyblue text-white">
             {contentShown && (
             <>
             <div className="container mx-auto py-10">

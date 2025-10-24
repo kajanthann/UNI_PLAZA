@@ -35,34 +35,36 @@ function MainContent({name,image,role,type}){
             <div>
                 <Header name={name} image={image} role={role} type={type}/>
             </div>
-            <div>
-                <Slider messages={messages} role={role}/>
-            </div>
-            <div>
-                {role === 'Club' && (
-                    <>
-                        {type === 'ClubDashboard' && <ClubDashboard/>}
-                        {type === 'ClubAds' && <ClubAds/>}
-                        {type === 'ClubNotifications' && <ClubNotifications/>}
-                        {type === 'ClubSettings'&& <ClubSettings/>}
-                        {type === 'ClubProfile' && <ClubProfile/>}
-                        {type === 'ClubFeedback' && <ClubFeedback/>}
-                    </>
-                )
-                }
-                {role === 'Student' && (
-                    <>
-                        {type === 'StudentDashboard' && <StudentDashboard/>}
-                        {type === 'StudentEventList' && <StudentEventList/>}
-                        {type === 'StudentNotifications' && <StudentNotifications/>}
-                        {type === 'StudentSettings'&& <StudentSettings/>}
-                        {type === 'StudentProfile' && <StudentProfile/>}
-                        {type === 'StudentFeedback' && <StudentFeedback/>}
-                    </>
-                )
-                }
-            </div>
+            <div className="flex min-h-screen">
+                <div>
+                    <Slider messages={messages} role={role}/>
+                </div>
+                <div>
+                    {role === 'Club' && (
+                        <>
+                            {type === 'ClubDashboard' && <ClubDashboard/>}
+                            {type === 'ClubAds' && <ClubAds/>}
+                            {type === 'ClubNotifications' && <ClubNotifications/>}
+                            {type === 'ClubSettings'&& <ClubSettings/>}
+                            {type === 'ClubProfile' && <ClubProfile/>}
+                            {type === 'ClubFeedback' && <ClubFeedback/>}
+                        </>
+                    )
+                    }
+                    {role === 'Student' && (
+                        <>
+                            {type === 'StudentDashboard' && <StudentDashboard/>}
+                            {type === 'StudentEventList' && <StudentEventList/>}
+                            {type === 'StudentNotifications' && <StudentNotifications/>}
+                            {type === 'StudentSettings'&& <StudentSettings/>}
+                            {type === 'StudentProfile' && <StudentProfile/>}
+                            {type === 'StudentFeedback' && <StudentFeedback/>}
+                        </>
+                    )
+                    }
+                </div>
 
+            </div>
         </div>
         ) : (
         <div>

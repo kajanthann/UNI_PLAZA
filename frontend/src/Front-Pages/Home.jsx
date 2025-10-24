@@ -32,7 +32,7 @@ export default function Home(){
     return (
         <div className="min-h-screen flex flex-col">
             <main>
-                <section className="flex justify-center w-full">
+                <section id="Home" className="flex justify-center w-full">
                     <div className="relative my-5 w-full md:w-10/12 md:rounded-3xl bg-blue-100 p-6 md:p-16 h-9/10">
 
                         <img src={HeroImage} alt="Hero" className="mx-auto md:w-full" />
@@ -53,7 +53,7 @@ export default function Home(){
 
 
 
-                <section className="flex justify-center w-full mt-4 mb-10">
+                <section id="Events" className="flex justify-center w-full mt-4 mb-10">
                     <div className="container w-8/10 md:w-9/10 mx-auto">
                         <div className="ml-17 my-8 text-5xl text-skyblue">Latest Events</div>
                         <div className="md:grid md:grid-cols-3 md:gap-5">
@@ -79,7 +79,7 @@ export default function Home(){
                             <div className="mx-auto w-9/10 my-3">
                                 <h2 className="font-bold text-xl font-alan pb-2">Rotract Club Member Registration</h2>
                                 <p className="pb-1 text-gray-500">June 01,2024</p>
-                                <p className="text-gray-500 pb-5">Rotaract club - University of Kelaniya</p>
+                                <p className="text-gray-500 pb-5">Rotract club - University of Kelaniya</p>
                                 <div className="flex justify-between mb-8 mt-2">
                                     <div className="px-4 py-1 text-blue-600 rounded-2xl" style={{backgroundColor:'#BBDEFB'}}>
                                         social
@@ -95,7 +95,7 @@ export default function Home(){
                             <div className="mx-auto w-9/10 my-3">
                                 <h2 className="font-bold text-xl font-alan pb-2">Rotract Club Member Registration</h2>
                                 <p className="pb-1 text-gray-500">June 01,2024</p>
-                                <p className="text-gray-500 pb-5">Rotaract club - University of Kelaniya</p>
+                                <p className="text-gray-500 pb-5">Rotract club - University of Kelaniya</p>
                                 <div className="flex justify-between mb-8 mt-2">
                                     <div className="px-4 py-1 text-blue-600 rounded-2xl" style={{backgroundColor:'#BBDEFB'}}>
                                         social
@@ -112,7 +112,7 @@ export default function Home(){
                         </div>
                     </div>
                 </section>
-                <section className="max-w-full my-8">
+                <section id="About Us" className="max-w-full my-8">
                     <div className="md:w-9/10 bg-navyblue text-white mx-auto p-20 rounded-2xl">
                         <div className="flex w-7/10 items-center justify-center">
                             <div>
@@ -129,7 +129,7 @@ export default function Home(){
                         </div>
                     </div>
                 </section>
-                <section className="max-w-full">
+                <section id="Feedback" className="max-w-full">
                     <div className="md:w-9/10 md:mx-auto">
                         <h2 className="flex justify-center text-4xl">Give us a Feedback</h2>
                         <div className="block md:grid md:grid-cols-2">

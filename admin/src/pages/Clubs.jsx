@@ -2,7 +2,8 @@ import React, { useContext, useState } from "react";
 import { AdminContext } from "../context/AdminContext";
 
 const Clubs = () => {
-  const { clubs, updateClubStatus, loadingClubs } = useContext(AdminContext);
+  const { clubs, updateClubStatus, loadingClubs, backendUrl } =
+    useContext(AdminContext);
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -21,43 +22,57 @@ const Clubs = () => {
   if (loadingClubs) return <p className="text-center">Loading clubs...</p>;
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8">
+    <div className="mx-auto md:px-20 p-6 space-y-8">
       {/* Filters */}
-      <div className="flex flex-wrap gap-4 justify-between mb-6">
-        <div className="flex gap-2 flex-wrap">
-          <span className="font-semibold text-gray-700">Role:</span>
-          {["all", "club", "community"].map((type) => (
-            <button
-              key={type}
-              onClick={() => setRoleFilter(type)}
-              className={`px-4 py-1 rounded-full border font-semibold transition ${
-                roleFilter === type
-                  ? "bg-fuchsia-700 text-white border-fuchsia-700"
-                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-              }`}
-            >
-              {type === "all"
-                ? "All"
-                : type.charAt(0).toUpperCase() + type.slice(1) + "s"}
-            </button>
-          ))}
-        </div>
+      <div className="bg-white shadow-sm border rounded-xl p-4 mb-6">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Filters</h2>
 
-        <div className="flex gap-2 flex-wrap">
-          <span className="font-semibold text-gray-700">Status:</span>
-          {["all", "approved", "pending", "rejected"].map((status) => (
-            <button
-              key={status}
-              onClick={() => setStatusFilter(status)}
-              className={`px-4 py-1 rounded-full border font-semibold transition ${
-                statusFilter === status
-                  ? "bg-fuchsia-700 text-white border-fuchsia-700"
-                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-              }`}
-            >
-              {status.charAt(0).toUpperCase() + status.slice(1)}
-            </button>
-          ))}
+        <div className="flex flex-col sm:flex-row justify-between gap-6">
+          {/* Role Filter */}
+          <div>
+            <div className="flex flex-wrap gap-3">
+              {["all", "club", "community"].map((type) => (
+                <label
+                  key={type}
+                  className="flex items-center gap-2 cursor-pointer select-none"
+                >
+                  <input
+                    type="checkbox"
+                    checked={roleFilter === type}
+                    onChange={() => setRoleFilter(type)}
+                    className="w-4 h-4 text-fuchsia-700 border-gray-300 rounded focus:ring-fuchsia-500"
+                  />
+                  <span className="text-gray-700">
+                    {type === "all"
+                      ? "All"
+                      : type.charAt(0).toUpperCase() + type.slice(1) + "s"}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Status Filter */}
+          <div>
+            <div className="flex flex-wrap gap-3">
+              {["all", "approved", "pending", "rejected"].map((status) => (
+                <label
+                  key={status}
+                  className="flex items-center gap-2 cursor-pointer select-none"
+                >
+                  <input
+                    type="checkbox"
+                    checked={statusFilter === status}
+                    onChange={() => setStatusFilter(status)}
+                    className="w-4 h-4 text-fuchsia-700 border-gray-300 rounded focus:ring-fuchsia-500"
+                  />
+                  <span className="text-gray-700">
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -76,9 +91,9 @@ const Clubs = () => {
               {/* Left Panel */}
               <div className="md:w-1/4 flex flex-col items-center justify-center p-4 bg-gray-50">
                 <img
-                  src={club.image || "https://via.placeholder.com/150"}
+                  src={`${backendUrl}/uploads/${club.image}`}
                   alt={club.clubName}
-                  className="w-32 h-32 rounded-full object-cover border"
+                  className="w-50 h-50 object-cover border"
                 />
                 <div className="text-center mt-3">
                   <p className="text-gray-600 text-sm">{club.officialEmail}</p>
@@ -104,9 +119,7 @@ const Clubs = () => {
 
                   <select
                     value={club.status}
-                    onChange={(e) =>
-                      updateClubStatus(club._id, e.target.value)
-                    }
+                    onChange={(e) => updateClubStatus(club._id, e.target.value)}
                     className={`px-3 py-1 mx-3 border rounded text-sm font-semibold ${
                       statusColors[club.status]
                     }`}

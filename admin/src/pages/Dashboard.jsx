@@ -1,18 +1,15 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Users,
   Building2,
   Globe2,
   CalendarDays,
-  ShieldCheck,
   CheckCircle2,
   XCircle,
   Clock,
   Heart,
   MessageSquare,
-  Ban,
-  Trash2,
 } from "lucide-react";
 import {
   BarChart,
@@ -29,206 +26,126 @@ import {
   LineChart,
   Line,
 } from "recharts";
+import { AdminContext } from "../context/AdminContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { students, clubs, events, fetchStudents, fetchClubs, fetchEvents } =
+    useContext(AdminContext);
+
+  useEffect(() => {
+    fetchStudents();
+    fetchClubs();
+    fetchEvents();
+  }, []);
 
   /** ---------------------------
-   *  DUMMY DATA
+   * Stats
    * --------------------------- */
   const stats = [
     {
       label: "Students",
-      count: 120,
-      icon: <Users className="" />,
+      count: students.length,
+      icon: <Users />,
       color: "from-pink-100 to-fuchsia-200",
     },
     {
       label: "Clubs",
-      count: 12,
-      icon: <Building2 className="" />,
+      count: clubs.length,
+      icon: <Building2 />,
       color: "from-purple-100 to-indigo-200",
     },
     {
       label: "Communities",
-      count: 8,
-      icon: <Globe2 className="" />,
+      count: clubs.filter((c) => c.role?.toLowerCase() === "community").length,
+      icon: <Globe2 />,
       color: "from-blue-100 to-cyan-200",
     },
     {
       label: "Events",
-      count: 15,
-      icon: <CalendarDays className="" />,
+      count: events.length,
+      icon: <CalendarDays />,
       color: "from-teal-100 to-emerald-200",
     },
     {
-      label: "Admins",
-      count: 5,
-      icon: <ShieldCheck className="" />,
-      color: "from-yellow-100 to-orange-200",
-    },
-    {
       label: "Approved",
-      count: 20,
-      icon: <CheckCircle2 className="" />,
+      count: clubs.filter((c) => c.status === "approved").length,
+      icon: <CheckCircle2 />,
       color: "from-green-100 to-green-200",
     },
     {
       label: "Rejected",
-      count: 6,
-      icon: <XCircle className="" />,
+      count: clubs.filter((c) => c.status === "rejected").length,
+      icon: <XCircle />,
       color: "from-red-100 to-red-200",
     },
     {
       label: "Pending",
-      count: 9,
-      icon: <Clock className="" />,
+      count: clubs.filter((c) => c.status === "pending").length,
+      icon: <Clock />,
       color: "from-yellow-100 to-yellow-200",
     },
   ];
-  
-  const clubCommunityGrowth = [
-    { month: "Jan", clubs: 5, communities: 3 },
-    { month: "Feb", clubs: 8, communities: 6 },
-    { month: "Mar", clubs: 12, communities: 9 },
-    { month: "Apr", clubs: 10, communities: 7 },
-  ];
+
+  /** ---------------------------
+   * Chart Data
+   * --------------------------- */
+  const clubCommunityGrowth = clubs.reduce((acc, club) => {
+    const month = new Date(club.createdAt).toLocaleString("default", {
+      month: "short",
+    });
+    let entry = acc.find((e) => e.month === month);
+    if (!entry) {
+      entry = { month, clubs: 0, communities: 0 };
+      acc.push(entry);
+    }
+    if (club.role?.toLowerCase() === "club") entry.clubs += 1;
+    else if (club.role?.toLowerCase() === "community") entry.communities += 1;
+    return acc;
+  }, []);
 
   const statusOverview = [
-    { name: "Approved", value: 20 },
-    { name: "Pending", value: 9 },
-    { name: "Rejected", value: 6 },
+    {
+      name: "Approved",
+      value: clubs.filter((c) => c.status === "approved").length,
+    },
+    {
+      name: "Pending",
+      value: clubs.filter((c) => c.status === "pending").length,
+    },
+    {
+      name: "Rejected",
+      value: clubs.filter((c) => c.status === "rejected").length,
+    },
   ];
   const COLORS = ["#10B981", "#FACC15", "#EF4444"];
 
-  const studentLoginData = [
-    { month: "Jan", logins: 50 },
-    { month: "Feb", logins: 70 },
-    { month: "Mar", logins: 90 },
-    { month: "Apr", logins: 110 },
-    { month: "May", logins: 140 },
-    { month: "Jun", logins: 180 },
-  ];
+  const eventFrequencyData = events.reduce((acc, e) => {
+    const month = new Date(e.date).toLocaleString("default", {
+      month: "short",
+    });
+    let entry = acc.find((el) => el.month === month);
+    if (!entry) {
+      entry = { month, events: 0 };
+      acc.push(entry);
+    }
+    entry.events += 1;
+    return acc;
+  }, []);
 
-  const eventFrequencyData = [
-    { month: "Jan", events: 2 },
-    { month: "Feb", events: 4 },
-    { month: "Mar", events: 3 },
-    { month: "Apr", events: 5 },
-    { month: "May", events: 6 },
-    { month: "Jun", events: 7 },
-  ];
-
-  const studentsPerUniversity = [
-    { university: "Sri Jayewardenepura", students: 45 },
-    { university: "Colombo", students: 30 },
-    { university: "Kelaniya", students: 20 },
-    { university: "Moratuwa", students: 15 },
-    { university: "Peradeniya", students: 10 },
-  ];
-
-  /** ---------------------------
-   *  DUMMY CLUBS & POSTS
-   * --------------------------- */
-  const clubs = [
-    {
-      _id: 1,
-      clubName: "Tech Sparks",
-      role: "Club",
-      university: "ABC University",
-      status: "pending",
-    },
-    {
-      _id: 2,
-      clubName: "Green Planet",
-      role: "Community",
-      university: "XYZ Institute",
-      status: "approved",
-    },
-    {
-      _id: 3,
-      clubName: "Cultural Beats",
-      role: "Club",
-      university: "LMN College",
-      status: "rejected",
-    },
-    {
-      _id: 4,
-      clubName: "Eco Warriors",
-      role: "Community",
-      university: "ABC University",
-      status: "pending",
-    },
-    {
-      _id: 5,
-      clubName: "Robotics Club",
-      role: "Club",
-      university: "XYZ Institute",
-      status: "approved",
-    },
-    {
-      _id: 6,
-      clubName: "Social Changemakers",
-      role: "Community",
-      university: "LMN College",
-      status: "rejected",
-    },
-  ];
+  const studentsPerUniversity = students.reduce((acc, s) => {
+    let entry = acc.find((e) => e.university === s.university);
+    if (!entry) {
+      entry = { university: s.university || "Unknown", students: 0 };
+      acc.push(entry);
+    }
+    entry.students += 1;
+    return acc;
+  }, []);
 
   const pendingClubs = clubs.filter((c) => c.status === "pending");
   const approvedClubs = clubs.filter((c) => c.status === "approved");
   const rejectedClubs = clubs.filter((c) => c.status === "rejected");
-
-  const posts = [
-    {
-      _id: "1",
-      title: "Robotics Hackathon 2025",
-      university: "University of Sri Jayewardenepura",
-      club: "Tech Innovators Club",
-      date: "2025-03-09",
-      status: "pending",
-      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
-      likes: 3,
-      comments: 5,
-    },
-    {
-      _id: "2",
-      title: "AI Summit 2025",
-      university: "University of Kelaniya",
-      club: "AI Research Community",
-      date: "2025-04-12",
-      status: "approved",
-      image: "https://images.unsplash.com/photo-1504386106331-3e4e71712b38",
-      likes: 10,
-      comments: 2,
-    },
-    {
-      _id: "3",
-      title: "Tech Expo 2025",
-      university: "University of Moratuwa",
-      club: "Innovators Hub",
-      date: "2025-06-15",
-      status: "approved",
-      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-      likes: 18,
-      comments: 4,
-    },
-    {
-      _id: "4",
-      title: "Music Night",
-      university: "University of Colombo",
-      club: "Music Club",
-      date: "2025-07-10",
-      status: "approved",
-      image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4",
-      likes: 25,
-      comments: 9,
-    },
-  ];
-
-  const mostLikedPosts = [...posts]
-    .sort((a, b) => b.likes - a.likes)
-    .slice(0, 5);
 
   const statusColors = {
     approved: "bg-green-100 text-green-700",
@@ -237,7 +154,22 @@ const Dashboard = () => {
   };
 
   /** ---------------------------
-   *  JSX
+   * Posts: Most Liked & Recent
+   * --------------------------- */
+  const mostLikedPosts = [...events]
+    .sort((a, b) => {
+      const likesA = Array.isArray(a.likes) ? a.likes.length : a.likes || 0;
+      const likesB = Array.isArray(b.likes) ? b.likes.length : b.likes || 0;
+      return likesB - likesA;
+    })
+    .slice(0, 5);
+
+  const recentPosts = [...events]
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 6);
+
+  /** ---------------------------
+   * JSX
    * --------------------------- */
   return (
     <div className="p-6 md:p-10 min-h-screen bg-gradient-to-br from-white to-fuchsia-50 space-y-10">
@@ -245,19 +177,16 @@ const Dashboard = () => {
         Admin Dashboard
       </h1>
 
-      {/* ---------- Stats Cards ---------- */}
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((item, idx) => (
           <div
             key={idx}
             className={`bg-gradient-to-br border border-gray-400 ${item.color} rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 px-5 py-2 flex items-center justify-between`}
           >
-            {/* Left: Icon */}
             <div className="p-2 bg-white rounded-full shadow-md flex items-center justify-center">
               {item.icon}
             </div>
-
-            {/* Right: Label & Count */}
             <div className="flex flex-col items-center">
               <p className="text-gray-700 font-medium text-lg">{item.label}</p>
               <p className="text-3xl font-bold text-fuchsia-700">
@@ -268,9 +197,8 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* ---------- Graphs Section ---------- */}
+      {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
-        {/* Club & Community Growth */}
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold mb-4">
             Monthly Club & Community Growth
@@ -288,7 +216,6 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Status Overview */}
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold mb-4">
             Club/Community Status Overview
@@ -313,9 +240,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* ---------- Event Frequency & Student Distribution ---------- */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Event Frequency */}
+      {/* Event Frequency & Students per University */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold mb-4">
             Event Frequency by Month
@@ -337,7 +263,6 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Students per University */}
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold mb-4">
             Students per University
@@ -354,12 +279,12 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* ---------- Latest Clubs/Communities ---------- */}
+      {/* Latest Clubs */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
         {[
-          { title: "Latest Pending", data: pendingClubs },
-          { title: "Latest Approved", data: approvedClubs },
-          { title: "Latest Rejected", data: rejectedClubs },
+          { title: "Pending", data: pendingClubs },
+          { title: "Approved", data: approvedClubs },
+          { title: "Rejected", data: rejectedClubs },
         ].map((group, i) => (
           <div key={i} className="bg-white rounded-2xl shadow-md p-6">
             <h2 className="text-xl font-bold mb-4 text-fuchsia-700">
@@ -386,7 +311,7 @@ const Dashboard = () => {
                       statusColors[c.status]
                     }`}
                   >
-                    {c.status.toUpperCase()}
+                    {c.status?.toUpperCase()}
                   </span>
                 </li>
               ))}
@@ -395,64 +320,67 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* ---------- Most Liked Posts ---------- */}
-      <div className="bg-white rounded-2xl shadow-md p-6 max-w-7xl mx-auto">
+      {/* Most Liked Event Posts */}
+      <div className="bg-white rounded-2xl shadow-md p-6 max-w-7xl mx-auto mt-10">
         <h2 className="text-2xl font-semibold mb-6 text-fuchsia-700">
           Top 5 Most Liked Event Posts
         </h2>
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mostLikedPosts.map((post) => (
-            <div
-              key={post._id}
-              className="relative bg-white rounded-xl border shadow hover:shadow-lg overflow-hidden transition-all cursor-pointer"
-              onClick={() => navigate(`/admin/posts/${post._id}`)}
-            >
-              <div className="flex gap-3 items-center">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-30 h-30 object-cover"
-                />
-                <div>
-                  <h3 className="text-lg font-semibold">{post.title}</h3>
-                  <p className="text-sm text-gray-600">{post.university}</p>
-                  <p className="text-sm text-gray-600">{post.club}</p>
-                  <div className="flex justify-between items-center gap-1 mt-2 font-medium">
-                    <p>{post.date}</p>
-                    <p className="flex items-center gap-1 text-red-500">
-                      <Heart className="w-4 h-4" /> {post.likes}
-                    </p>
+          {mostLikedPosts
+            .slice(0, 5)
+            .map((post) => (
+              <div
+                key={post._id}
+                className="relative bg-white rounded-xl border shadow hover:shadow-lg overflow-hidden transition-all cursor-pointer"
+                onClick={() => navigate(`/admin/posts/${post._id}`)}
+              >
+                <div className="flex gap-3 items-center p-3">
+                  <img
+                    src={`http://localhost:5000/uploads/${post.image}`}
+                    alt={post.title}
+                    className="w-24 h-24 object-cover rounded-md flex-shrink-0"
+                  />
+                  <div className="flex flex-col justify-between">
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      {post.title}
+                    </h3>
+                    <p className="text-sm text-gray-600">{post.university}</p>
+                    <p className="text-sm text-gray-600">{post.club}</p>
+                    <div className="flex justify-between items-center gap-2 mt-2 font-medium text-sm">
+                      <p>{new Date(post.date).toLocaleDateString()}</p>
+                      <p className="flex items-center gap-1 text-red-500">
+                        <Heart className="w-4 h-4" />
+                        {Array.isArray(post.likes)
+                          ? post.likes.length
+                          : post.likes || 0}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
 
-      {/* ---------- Recent Event Posts ---------- */}
+      {/* Recent Event Posts */}
       <div className="bg-white rounded-2xl shadow-md p-6 max-w-7xl mx-auto mt-10">
         <h2 className="text-2xl font-semibold mb-6 text-fuchsia-700">
           Recent Event Posts
         </h2>
-
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post) => (
+          {recentPosts.map((post) => (
             <div
               key={post._id}
               className="relative bg-white rounded-xl border shadow hover:shadow-lg overflow-hidden transition-all cursor-pointer"
               onClick={() => navigate(`/admin/posts/${post._id}`)}
             >
-              {/* Top Content: Image + Info */}
               <div className="flex gap-4 items-center">
-                {/* Image Section */}
                 <img
-                  src={post.image}
+                  src={`http://localhost:5000/uploads/${post.image}`}
                   alt={post.title}
                   className="w-30 h-30 object-cover flex-shrink-0"
                 />
-
-                {/* Info Section */}
                 <div className="flex flex-col">
                   <h3 className="text-base font-semibold text-gray-800 leading-snug">
                     {post.title}
@@ -464,25 +392,23 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-
-              {/* Bottom Content: Likes, Comments, Status */}
               <div className="px-4 py-2 border-t flex justify-between items-center text-sm text-gray-600">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1">
-                    <Heart className="w-4 h-4 text-red-500" /> {post.likes}
+                    <Heart className="w-4 h-4 text-red-500" />{" "}
+                    {post.likes?.length}
                   </div>
                   <div className="flex items-center gap-1">
                     <MessageSquare className="w-4 h-4 text-blue-500" />{" "}
-                    {post.comments}
+                    {Array.isArray(post.comments) ? post.comments.length : 0}
                   </div>
                 </div>
-
                 <span
                   className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
                     statusColors[post.status]
                   }`}
                 >
-                  {post.status.toUpperCase()}
+                  {post.status?.toUpperCase()}
                 </span>
               </div>
             </div>

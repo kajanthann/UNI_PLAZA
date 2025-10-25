@@ -41,9 +41,12 @@ const eventSchema = new mongoose.Schema(
     location: { type: String, required: true },
     mapLink: { type: String },
     university: { type: String, required: true },
+    clubName: { type: String, required: true },
+    officialEmail: { type: String, required: true },
     relatedLinks: [{ label: String, url: String }],
     contactNumber: { type: String, required: true },
     image: { type: String, required: true },
+    clubImg: { type: String, required: true },
     email: { type: String, required: true },
     tags: [{ type: String }],
     status: {

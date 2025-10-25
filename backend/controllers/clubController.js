@@ -5,6 +5,9 @@ import eventModel from "../models/eventModel.js";
 import sendEmail from "../middleware/sendEmail.js";
 import jwt from "jsonwebtoken";
 
+/** ---------------------------
+ * REGISTER CLUB / COMMUNITY
+ * --------------------------- */
 export const registerClub = async (req, res) => {
   try {
     const {
@@ -57,8 +60,8 @@ export const registerClub = async (req, res) => {
       phone,
       image,
       status: "pending",
-      otp: otp,
-      otpExpire: Date.now() + 5 * 60 * 1000 // 5 minutes
+      otp,
+      otpExpire: Date.now() + 2 * 60 * 1000 // 5 minutes
     });
 
     await newClub.save();
@@ -67,9 +70,8 @@ export const registerClub = async (req, res) => {
     await sendEmail(
       officialEmail,
       "Verify Your Account",
-      `Hello ${clubName},\n\nYour OTP for account verification is: ${otp}\nIt will expire in 5 minutes.`
+      `Hello ${clubName},\n\nYour OTP for account verification is: ${otp}\nIt will expire in 2 minutes.`
     );
-
 
     res.status(201).json({
       success: true,
@@ -83,8 +85,9 @@ export const registerClub = async (req, res) => {
   }
 };
 
-
-// --- VERIFY OTP ---
+/** ---------------------------
+ * VERIFY OTP
+ * --------------------------- */
 export const verifyOtp = async (req, res) => {
   try {
     const { clubId, otp } = req.body;
@@ -109,9 +112,9 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
-
-
-// club login
+/** ---------------------------
+ * CLUB LOGIN
+ * --------------------------- */
 export const clubLogin = async (req, res) => {
   try {
     const { officialEmail, password } = req.body;
@@ -123,10 +126,8 @@ export const clubLogin = async (req, res) => {
     const club = await clubModel.findOne({ officialEmail });
     if (!club) return res.status(404).json({ success: false, message: "Invalid Email" });
 
-    // Must have verified OTP first
     if (!club.isVerified) return res.status(400).json({ success: false, message: "Account not verified by email." });
 
-    // Must be approved by admin
     if (club.status !== "approved") {
       return res.status(403).json({ success: false, message: "Account pending admin approval." });
     }
@@ -134,7 +135,6 @@ export const clubLogin = async (req, res) => {
     const isMatch = await bcrypt.compare(password, club.password);
     if (!isMatch) return res.status(400).json({ success: false, message: "Wrong password" });
 
-    // Generate JWT
     const cToken = jwt.sign({ id: club._id, role: club.role }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
     res.cookie("cToken", cToken, {
@@ -152,7 +152,9 @@ export const clubLogin = async (req, res) => {
   }
 };
 
-// --- LOGOUT ---
+/** ---------------------------
+ * LOGOUT
+ * --------------------------- */
 export const logout = (req, res) => {
   try {
     res.clearCookie("cToken", {
@@ -167,18 +169,20 @@ export const logout = (req, res) => {
   }
 };
 
-
-// --- ADD EVENT ---
+/** ---------------------------
+ * ADD EVENT
+ * --------------------------- */
 export const addEvent = async (req, res) => {
   try {
-    const club = req.club; // Authenticated club from middleware
+    const club = req.club;
     if (!club) return res.status(401).json({ success: false, message: "Unauthorized" });
+
+    const clubDetil = await clubModel.findById(club._id);
 
     const {
       mode,
       title,
       description,
-      university,
       date,
       startTime,
       location,
@@ -191,11 +195,10 @@ export const addEvent = async (req, res) => {
 
     const image = req.file ? req.file.filename : null;
 
-    if (!mode || !title || !description || !university || !date || !startTime || !location || !image) {
+    if (!mode || !title || !description || !date || !startTime || !location || !image) {
       return res.status(400).json({ success: false, message: "All required fields must be filled, including image." });
     }
 
-    // Parse relatedLinks & tags
     let parsedLinks = [];
     let parsedTags = [];
     if (relatedLinks) {
@@ -211,7 +214,7 @@ export const addEvent = async (req, res) => {
       mode,
       title,
       description,
-      university,
+      university: clubDetil.university,
       date,
       startTime,
       location,
@@ -220,8 +223,12 @@ export const addEvent = async (req, res) => {
       relatedLinks: parsedLinks,
       tags: parsedTags,
       email,
+      clubName: clubDetil.clubName,
+      officialEmail: clubDetil.officialEmail,
+      clubImg: clubDetil.image,
+      role: clubDetil.role,
       image,
-      createdBy: { kind: "club", item: club._id }, // <-- updated here
+      createdBy: { kind: "club", item: club._id },
     });
 
     await newEvent.save();
@@ -234,7 +241,9 @@ export const addEvent = async (req, res) => {
   }
 };
 
-// --- EDIT EVENT ---
+/** ---------------------------
+ * EDIT EVENT
+ * --------------------------- */
 export const editEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -244,7 +253,6 @@ export const editEvent = async (req, res) => {
     const event = await eventModel.findById(eventId);
     if (!event) return res.status(404).json({ success: false, message: "Event not found" });
 
-    // Only allow editing if createdBy is this club
     if (event.createdBy.kind !== "club" || event.createdBy.item.toString() !== club._id.toString()) {
       return res.status(403).json({ success: false, message: "You can only edit your own events" });
     }
@@ -256,7 +264,6 @@ export const editEvent = async (req, res) => {
 
     if (req.file) event.image = req.file.filename;
 
-    // Parse relatedLinks & tags
     if (req.body.relatedLinks) {
       try {
         event.relatedLinks = JSON.parse(req.body.relatedLinks);
@@ -275,7 +282,9 @@ export const editEvent = async (req, res) => {
   }
 };
 
-// --- DELETE EVENT ---
+/** ---------------------------
+ * DELETE EVENT
+ * --------------------------- */
 export const deleteEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -297,13 +306,14 @@ export const deleteEvent = async (req, res) => {
   }
 };
 
-
-// --- GET ALL EVENTS ---
+/** ---------------------------
+ * GET ALL EVENTS
+ * --------------------------- */
 export const getAllEvents = async (req, res) => {
   try {
     const events = await eventModel.find()
-      .populate("createdBy", "clubName university email") // populate club info
-      .sort({ createdAt: -1 }); // latest first
+      .populate("createdBy", "clubName university email")
+      .sort({ createdAt: -1 });
 
     res.status(200).json({ success: true, events });
   } catch (error) {
@@ -312,8 +322,49 @@ export const getAllEvents = async (req, res) => {
   }
 };
 
-
-// profile
+/** ---------------------------
+ * UPDATE CLUB PROFILE
+ * --------------------------- */
 export const updateClubProfile = async (req, res) => {
-  // TODO
+  try {
+    const club = req.club;
+    if (!club) return res.status(401).json({ success: false, message: "Unauthorized" });
+
+    const {
+      clubName,
+      university,
+      description,
+      email,
+      phone,
+      password,
+      confirmPassword
+    } = req.body;
+
+    if (clubName) club.clubName = clubName;
+    if (university) club.university = university;
+    if (description) club.description = description;
+    if (email) {
+      if (!validator.isEmail(email)) return res.status(400).json({ success: false, message: "Invalid email" });
+      club.email = email;
+    }
+    if (phone) club.phone = phone;
+
+    // Update password
+    if (password || confirmPassword) {
+      if (!password || !confirmPassword) return res.status(400).json({ success: false, message: "Both password fields are required" });
+      if (password !== confirmPassword) return res.status(400).json({ success: false, message: "Passwords do not match" });
+      club.password = await bcrypt.hash(password, 10);
+    }
+
+    // Update image
+    if (req.file) club.image = req.file.filename;
+
+    await club.save();
+
+    res.status(200).json({ success: true, message: "Profile updated successfully", club });
+
+  } catch (error) {
+    console.error("Error in updateClubProfile:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
 };

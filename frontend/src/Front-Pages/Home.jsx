@@ -3,9 +3,24 @@ import * as Yup from "yup";
 import HeroImage from '../assets/heroImage1.png'
 import PostImage from '../assets/postImage.png'
 import FeedbackImage from '../assets/feedbackImage.png'
+import {Link, useNavigate} from "react-router-dom";
 
 
 export default function Home(){
+    const navigate = useNavigate();
+
+    const studentSignup = () => {
+        navigate("/RegisterStudent");
+    }
+
+    const clubSignup = () => {
+        navigate("/RegisterClub");
+    }
+
+    const clubSignin = () => {
+        navigate("/LoginClub");
+    }
+
     const formik = useFormik({
         initialValues: {
             fullName: "",
@@ -44,7 +59,7 @@ export default function Home(){
                             <p className="text-lg md:text-2xl font-montserrat mb-6">
                                 Your central hub for student life and club activities. Discover events, manage your club, and build your community.
                             </p>
-                            <button className="bg-sky-500 text-white px-6 py-3 rounded-2xl text-lg md:text-xl hover:bg-sky-600 transition">
+                            <button className="bg-sky-500 text-white px-6 py-3 rounded-2xl text-lg md:text-xl hover:bg-sky-600 transition" onClick={studentSignup}>
                                 Sign Up
                             </button>
                         </div>
@@ -108,7 +123,7 @@ export default function Home(){
                         </div>
                         </div>
                         <div className="flex justify-end mr-15 text-xl">
-                            <a href="" className="underline" style={{color:'#42A5F5'}}>See more +</a>
+                            <Link to='/EventDashboard' className="underline" style={{color:'#42A5F5'}}>See more +</Link>
                         </div>
                     </div>
                 </section>
@@ -122,8 +137,8 @@ export default function Home(){
                                 communicate with your community - all from one centralized dashboard.
                                 Ready to elevate your club's visibility on campus?</p>
                             <div className="flex space-x-8 p-4">
-                                <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Sign In</button>
-                                <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Register</button>
+                                <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={clubSignin}>Sign In</button>
+                                <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={clubSignup}>Register</button>
                             </div>
                             </div>
                         </div>

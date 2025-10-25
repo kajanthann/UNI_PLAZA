@@ -3,11 +3,22 @@ import {faSearch, faBars, faTimes, faGear, faTableColumns,faHome,faRightFromBrac
 import { useState } from 'react';
 import LogoImage from '../assets/logo.jpg';
 import { NavLink } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export default function Header({ name, role , image, type }) {
     const [menuOpen, setMenuOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const Clublogin = () =>{
+        navigate("/LoginClub");
+    }
+
+    const Studentlogin = () =>{
+        navigate("/LoginStudent");
+    }
+
     const guestLinks = [
-        { label: "Home", href: "Home" },
+        { label: "Home", href: "#Home" },
         { label: "Events", href: "#Events" },
         { label: "About Us", href: "#Footer" },
         { label: "Feedback", href: "#Feedback" },
@@ -41,15 +52,26 @@ export default function Header({ name, role , image, type }) {
                     <div className="hidden md:flex md:items-center w-full">
                         <div className={`flex ${role === "Student" || role === "Club" ? "w-9/20 ml-10 space-x-40" : "w-1/2 space-x-14"}`}>
                             {linksToShow.map((link, idx) => (
-                                <NavLink
-                                    key={idx}
-                                    to={link.href}
-                                    className="headerLink font-medium text-black hover:text-blue-600 flex items-center"
-                                >
-                                    {link.icon && <FontAwesomeIcon icon={link.icon} className="mr-2" />}
-                                    {link.label}
-                                </NavLink>
+                                <div key={idx}>
+                                    {role === "Student" || role === "Club" ? (
+                                        <NavLink
+                                            to={link.href}
+                                            className="headerLink font-medium text-black hover:text-blue-600 flex items-center"
+                                        >
+                                            {link.icon && <FontAwesomeIcon icon={link.icon} className="mr-2" />}
+                                            {link.label}
+                                        </NavLink>
+                                    ) : (
+                                        <a
+                                            href={link.href}
+                                            className="headerLink font-medium text-black hover:text-blue-600"
+                                        >
+                                            {link.label}
+                                        </a>
+                                    )}
+                                </div>
                             ))}
+
                         </div>
 
 
@@ -68,18 +90,18 @@ export default function Header({ name, role , image, type }) {
                             <>
                                 {type === "Home" && (
                                     <div className="flex space-x-8">
-                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Clubs</button>
-                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Students</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={Clublogin}>Clubs</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={Studentlogin}>Students</button>
                                     </div>
                                 )}
                                 {(type === "LoginClub" || type === "RegisterClub") && (
                                     <div className="flex space-x-8">
-                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Login as Student</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={Studentlogin}>Login as Student</button>
                                     </div>
                                 )}
                                 {(type === "LoginStudent" || type === "RegisterStudent") && (
                                     <div className="flex space-x-8">
-                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl">Login as Club</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={Clublogin}>Login as Club</button>
                                     </div>
                                 )}
                             </>

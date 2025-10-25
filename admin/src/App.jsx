@@ -30,7 +30,12 @@ const App = () => {
 
   return (
     <div className="bg-[#F8F9FA] min-h-screen">
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={2000} 
+        hideProgressBar={true} 
+      />
+
       <Navbar />
 
       <Routes>

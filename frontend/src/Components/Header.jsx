@@ -9,6 +9,10 @@ export default function Header({ name, role , image, type }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
 
+    const handleNavigation = (path) =>{
+        navigate(path);
+    }
+
     const Clublogin = () =>{
         navigate("/LoginClub");
     }
@@ -90,18 +94,18 @@ export default function Header({ name, role , image, type }) {
                             <>
                                 {type === "Home" && (
                                     <div className="flex space-x-8">
-                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={Clublogin}>Clubs</button>
-                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={Studentlogin}>Students</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>{handleNavigation('/LoginClub')}}>Clubs</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>{handleNavigation('/LoginStudent')}}>Students</button>
                                     </div>
                                 )}
                                 {(type === "LoginClub" || type === "RegisterClub") && (
                                     <div className="flex space-x-8">
-                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={Studentlogin}>Login as Student</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>{handleNavigation('/LoginStudent')}}>Login as Student</button>
                                     </div>
                                 )}
                                 {(type === "LoginStudent" || type === "RegisterStudent") && (
                                     <div className="flex space-x-8">
-                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={Clublogin}>Login as Club</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>{handleNavigation('/LoginClub')}}>Login as Club</button>
                                     </div>
                                 )}
                             </>

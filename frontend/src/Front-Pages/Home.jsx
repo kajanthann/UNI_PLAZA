@@ -9,16 +9,8 @@ import {Link, useNavigate} from "react-router-dom";
 export default function Home(){
     const navigate = useNavigate();
 
-    const studentSignup = () => {
-        navigate("/RegisterStudent");
-    }
-
-    const clubSignup = () => {
-        navigate("/RegisterClub");
-    }
-
-    const clubSignin = () => {
-        navigate("/LoginClub");
+    const handleNavigation = (path) =>{
+        navigate(path);
     }
 
     const formik = useFormik({
@@ -59,14 +51,12 @@ export default function Home(){
                             <p className="text-lg md:text-2xl font-montserrat mb-6">
                                 Your central hub for student life and club activities. Discover events, manage your club, and build your community.
                             </p>
-                            <button className="bg-sky-500 text-white px-6 py-3 rounded-2xl text-lg md:text-xl hover:bg-sky-600 transition" onClick={studentSignup}>
+                            <button className="bg-sky-500 text-white px-6 py-3 rounded-2xl text-lg md:text-xl hover:bg-sky-600 transition" onClick={()=>{handleNavigation('/RegisterStudent')}} >
                                 Sign Up
                             </button>
                         </div>
                     </div>
                 </section>
-
-
 
                 <section id="Events" className="flex justify-center w-full mt-4 mb-10">
                     <div className="container w-8/10 md:w-9/10 mx-auto">
@@ -137,8 +127,8 @@ export default function Home(){
                                 communicate with your community - all from one centralized dashboard.
                                 Ready to elevate your club's visibility on campus?</p>
                             <div className="flex space-x-8 p-4">
-                                <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={clubSignin}>Sign In</button>
-                                <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={clubSignup}>Register</button>
+                                <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>handleNavigation('/LoginClub')}>Sign In</button>
+                                <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>handleNavigation('/RegisterClub')}>Register</button>
                             </div>
                             </div>
                         </div>

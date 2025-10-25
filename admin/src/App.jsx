@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
-import Login from "./pages/Login";
-import { ToastContainer, toast } from "react-toastify";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { AdminContext } from "./context/AdminContext";
+import Sidebar from "./components/Sidebar";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import AllPosts from "./pages/AllPosts";
 import AddClub from "./pages/AddClub";
@@ -12,34 +11,62 @@ import Clubs from "./pages/Clubs";
 import Students from "./pages/Students";
 import EmailVerify from "./Components/EmailVerify";
 import PostDetailsPage from "./Components/PostDetailsPage";
+import Navbar from "./Components/Navbar";
+
+const ProtectedRoute = ({ children }) => {
+  const { aToken } = useContext(AdminContext);
+  const token = aToken || localStorage.getItem("aToken");
+
+  // If token missing, redirect to login page
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
 
 const App = () => {
   const { aToken } = useContext(AdminContext);
 
-  return aToken ? (
-    <div className="bg-[#F8F9FA]">
+  return (
+    <div className="bg-[#F8F9FA] min-h-screen">
       <ToastContainer />
       <Navbar />
-      <div className="flex items-start">
-        <Sidebar />
-        <div className="bg-gray-50 p-6 md:p-10 h-[100vh] overflow-y-auto w-full">
-          <Routes>
-            {/* admin */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/allPosts" element={<AllPosts />} />
-            <Route path="/addclub" element={<AddClub />} />
-            <Route path="/clubs" element={<Clubs />} />
-            <Route path="/students" element={<Students />} />
+
+      <Routes>
+        {!aToken && (
+          <>
             <Route path="/login" element={<Login />} />
             <Route path="/email-verification" element={<EmailVerify />} />
-            <Route path="/admin/posts/:id" element={<PostDetailsPage />} />
-          </Routes>
-        </div>
-      </div>
-    </div>
-  ) : (
-    <div>
-      <ToastContainer />
+          </>
+        )}
+
+        {/* Protected routes */}
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <div className="flex items-start">
+                <Sidebar />
+                <div className="bg-gray-50 h-[100vh] overflow-y-auto w-full">
+                  <Routes>
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="allPosts" element={<AllPosts />} />
+                    <Route path="addclub" element={<AddClub />} />
+                    <Route path="clubs" element={<Clubs />} />
+                    <Route path="students" element={<Students />} />
+                    <Route
+                      path="admin/posts/:id"
+                      element={<PostDetailsPage />}
+                    />
+                    <Route path="*" element={<Navigate to="/dashboard" />} />
+                  </Routes>
+                </div>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </div>
   );
 };

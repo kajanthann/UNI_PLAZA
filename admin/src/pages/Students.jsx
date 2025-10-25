@@ -61,7 +61,7 @@ const Students = () => {
                   <img
                     src={student.image}
                     alt={student.name}
-                    className="w-10 h-10 rounded-full object-cover"
+                    className="w-10 h-10 rounded-full border-1 border-gray-400 object-cover"
                   />
                 </td>
                 <td className="p-3 font-medium">{student.name}</td>

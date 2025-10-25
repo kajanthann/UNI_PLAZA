@@ -3,10 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Heart, MessageSquare, Trash2, Ban } from "lucide-react";
 
 const PostDetailsPage = () => {
-  const { id } = useParams(); // ✅ Use "id", not "_id"
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  // 🧩 Dummy post data (you can later fetch by ID)
   const post = {
     _id: id,
     title: "Robotics Hackathon 2025",
@@ -34,13 +33,8 @@ const PostDetailsPage = () => {
     status: "pending",
   };
 
-  const handleDelete = () => {
-    alert(`Deleted post ID: ${id}`);
-  };
-
-  const handleBlock = () => {
-    alert(`Blocked post ID: ${id}`);
-  };
+  const handleDelete = () => alert(`Deleted post ID: ${id}`);
+  const handleBlock = () => alert(`Blocked post ID: ${id}`);
 
   const statusColors = {
     approved: "bg-green-100 text-green-700",
@@ -49,131 +43,132 @@ const PostDetailsPage = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-8">
+    <div className="max-w-7xl mx-auto p-6 space-y-8">
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+        className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
       >
         ← Back
       </button>
 
-      {/* Image and Header */}
-      <div className="relative">
+      {/* Post Header */}
+      <div className="relative rounded-xl overflow-hidden shadow-lg">
         <img
           src={post.image}
           alt={post.title}
-          className="w-full h-64 object-cover rounded-xl shadow-md"
+          className="w-full h-64 object-cover"
         />
-
-        {/* Admin Buttons */}
+        {/* Admin Actions */}
         <div className="absolute top-3 right-3 flex gap-2">
           <button
             onClick={handleBlock}
-            className="p-2 bg-yellow-100 hover:bg-yellow-200 rounded-full"
-            title="Block Post"
+            className="p-2 bg-yellow-100 hover:bg-yellow-200 rounded-full transition"
           >
             <Ban className="w-5 h-5 text-yellow-700" />
           </button>
           <button
             onClick={handleDelete}
-            className="p-2 bg-red-100 hover:bg-red-200 rounded-full"
-            title="Delete Post"
+            className="p-2 bg-red-100 hover:bg-red-200 rounded-full transition"
           >
             <Trash2 className="w-5 h-5 text-red-700" />
           </button>
         </div>
       </div>
 
-      {/* Title and Info */}
-      <div>
-        <h1 className="text-3xl font-bold mt-4">{post.title}</h1>
-        <div className="flex items-center gap-3 mt-2 text-sm text-gray-600">
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[post.status]}`}>
+      {/* Title and Stats */}
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">{post.title}</h1>
+          <p className="text-gray-600 mt-1 font-medium">
+            🏫 {post.university} | 👥 {post.club}
+          </p>
+        </div>
+        <div className="flex items-center gap-4 mt-2 md:mt-0">
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium ${statusColors[post.status]}`}
+          >
             {post.status.toUpperCase()}
           </span>
-          <div className="flex items-center gap-2">
-            <Heart className="w-4 h-4 text-red-500" /> {post.likes.length}
+          <div className="flex items-center gap-1 text-red-500">
+            <Heart className="w-5 h-5" /> {post.likes.length}
           </div>
-          <div className="flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-blue-500" /> {post.comments.length}
+          <div className="flex items-center gap-1 text-blue-500">
+            <MessageSquare className="w-5 h-5" /> {post.comments.length}
           </div>
         </div>
-        <p className="text-gray-600 mt-2 font-medium">
-          🏫 {post.university}
-        </p>
-        <p className="text-gray-600">
-          👥 {post.club}
-        </p>
       </div>
 
-      {/* Event Info Grid */}
-      <div className="grid md:grid-cols-2 gap-6 text-gray-700">
-        <div>
-          <h3 className="font-semibold">📅 Date</h3>
-          <p>{new Date(post.date).toLocaleDateString()}</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">🕙 Start Time</h3>
-          <p>{post.startTime}</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">📍 Location</h3>
-          <a
-            href={post.mapLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 underline"
-          >
-            {post.location}
-          </a>
-        </div>
-        <div>
-          <h3 className="font-semibold">📞 Contact</h3>
-          <p>{post.contactNumber}</p>
-          <p>{post.email}</p>
-        </div>
-      </div>
+      {/* Two-column Layout */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {/* Left: Description */}
+        <div className="md:col-span-2 bg-white rounded-xl shadow p-6 space-y-4">
+          <h3 className="text-lg font-semibold text-gray-700">📝 Description</h3>
+          <p className="text-gray-600 leading-relaxed">{post.description}</p>
 
-      {/* Description */}
-      <div>
-        <h3 className="font-semibold text-gray-700 mb-2">📝 Description</h3>
-        <p className="text-gray-600 leading-relaxed">{post.description}</p>
-      </div>
+          {/* Related Links */}
+          {post.relatedLinks?.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">🔗 Related Links</h3>
+              {post.relatedLinks.map((link, i) => (
+                <a
+                  key={i}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-blue-600 underline mb-1"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          )}
 
-      {/* Related Links */}
-      {post.relatedLinks?.length > 0 && (
-        <div>
-          <h3 className="font-semibold text-gray-700 mb-2">🔗 Related Links</h3>
-          {post.relatedLinks.map((link, i) => (
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            {post.tags.map((tag, i) => (
+              <span
+                key={i}
+                className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: Event Info */}
+        <div className="bg-white rounded-xl shadow p-6 space-y-4">
+          <div>
+            <h3 className="font-semibold text-gray-700">📅 Date</h3>
+            <p>{new Date(post.date).toLocaleDateString()}</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-700">🕙 Start Time</h3>
+            <p>{post.startTime}</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-700">📍 Location</h3>
             <a
-              key={i}
-              href={link.url}
+              href={post.mapLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="block text-blue-600 underline"
+              className="text-blue-600 underline"
             >
-              {link.label}
+              {post.location}
             </a>
-          ))}
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-700">📞 Contact</h3>
+            <p>{post.contactNumber}</p>
+            <p>{post.email}</p>
+          </div>
         </div>
-      )}
-
-      {/* Tags */}
-      <div className="flex flex-wrap gap-2">
-        {post.tags.map((tag, i) => (
-          <span
-            key={i}
-            className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full"
-          >
-            #{tag}
-          </span>
-        ))}
       </div>
 
       {/* Comments */}
-      <div>
-        <h3 className="font-semibold text-gray-700 mb-4">💬 Comments</h3>
+      <div className="bg-white rounded-xl shadow p-6">
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">💬 Comments</h3>
         <div className="space-y-4">
           {post.comments.map((c, i) => (
             <div key={i} className="border rounded-lg p-3 bg-gray-50">

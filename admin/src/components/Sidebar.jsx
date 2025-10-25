@@ -1,49 +1,38 @@
-import React, { useContext } from 'react'
-// import { AdminContext } from '../context/AdminContext'
-import { NavLink } from 'react-router-dom'
-import { assets } from '../assets/assets'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { Home, FileText, PlusCircle, Users, LogIn, MailCheck } from 'lucide-react';
 
 const Sidebar = () => {
-
-    //const {cToken} = useContext(AdminContext);
+  const navItems = [
+        { path: '/dashboard', label: 'Dashboard', icon: <Home className="w-6 h-6 text-black"/> },
+        { path: '/allPosts', label: 'All Posts', icon: <FileText className="w-6 h-6"/> },
+        { path: '/addclub', label: 'Add Clubs', icon: <PlusCircle className="w-6 h-6" /> },
+        { path: '/clubs', label: 'Clubs', icon: <FileText className="w-6 h-6"/> },
+        { path: '/students', label: 'Students', icon: <Users className="w-6 h-6"/> },
+        { path: '/login', label: 'Login', icon: <LogIn className="w-6 h-6" /> },
+        { path: '/email-verification', label: 'Verification', icon: <MailCheck className="w-6 h-6"/> },
+    ];
 
   return (
     <div className='min-h-screen bg-white border-r border-gray-300'>
-        {
-            // aToken && 
-            <ul className='text-gray-700 mt-3'>
-                <NavLink className={({isActive}) => `flex items-center gap-4 py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer ${isActive ? 'border-r-5 border-fuchsia-500 bg-[#f4f1f6]' : ''}`} to={'/dashboard'}>
-                    <img src={assets.home_icon} alt="" />
-                    <p className='hidden md:block'>Dashboard</p>
-                </NavLink>
-                <NavLink className={({isActive}) => `flex items-center gap-4 py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer ${isActive ? 'border-r-5 border-fuchsia-500 bg-[#f4f1f6]' : ''}`} to={'/allPosts'}>
-                    <img src={assets.appointment_icon} alt="" />
-                    <p className='hidden md:block'>All posts</p>
-                </NavLink>
-                <NavLink className={({isActive}) => `flex items-center gap-4 py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer ${isActive ? 'border-r-5 border-fuchsia-500 bg-[#f4f1f6]' : ''}`} to={'/addclub'}>
-                    <img src={assets.add_icon} alt="" />
-                    <p className='hidden md:block'>Add Clubs</p>
-                </NavLink>
-                <NavLink className={({isActive}) => `flex items-center gap-4 py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer ${isActive ? 'border-r-5 border-fuchsia-500 bg-[#f4f1f6]' : ''}`} to={'/clubs'}>
-                    <img src={assets.appointment_icon} alt="" />
-                    <p className='hidden md:block'>Clubs</p>
-                </NavLink>
-                <NavLink className={({isActive}) => `flex items-center gap-4 py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer ${isActive ? 'border-r-5 border-fuchsia-500 bg-[#f4f1f6]' : ''}`} to={'/students'}>
-                    <img src={assets.people_icon} alt="" />
-                    <p className='hidden md:block'>Students</p>
-                </NavLink>
-                <NavLink className={({isActive}) => `flex items-center gap-4 py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer ${isActive ? 'border-r-5 border-fuchsia-500 bg-[#f4f1f6]' : ''}`} to={'/login'}>
-                    <img src={assets.people_icon} alt="" />
-                    <p className='hidden md:block'>login</p>
-                </NavLink>
-                <NavLink className={({isActive}) => `flex items-center gap-4 py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer ${isActive ? 'border-r-5 border-fuchsia-500 bg-[#f4f1f6]' : ''}`} to={'/email-verification'}>
-                    <img src={assets.people_icon} alt="" />
-                    <p className='hidden md:block'>Verification</p>
-                </NavLink>
-            </ul>
-        }
+      <ul className='text-gray-700 mt-3'>
+        {navItems.map((item, idx) => (
+          <NavLink
+            key={idx}
+            to={item.path}
+            className={({ isActive }) =>
+              `flex items-center gap-4 text-[18px] py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer transition ${
+                isActive ? 'border-r-4 border-fuchsia-500 bg-[#f4f1f6]' : ''
+              }`
+            }
+          >
+            {item.icon}
+            <p className='hidden md:block'>{item.label}</p>
+          </NavLink>
+        ))}
+      </ul>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

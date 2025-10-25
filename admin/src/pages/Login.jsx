@@ -1,84 +1,64 @@
-import React, { useContext, useState } from 'react';
-import { AdminContext } from '../context/AdminContext';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { AdminContext } from "../context/AdminContext";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { setAtoken, backendUrl } = useContext(AdminContext);
+  const { backendUrl } = useContext(AdminContext);
   const navigate = useNavigate();
 
-  const onsubmitHandler = async (event) => {
-    event.preventDefault();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const trimmedEmail = email.trim();
-    const trimmedPassword = password.trim();
-
-    if (!trimmedEmail || !trimmedPassword) {
-      toast.error('Please enter both email and password');
-      return;
-    }
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (!email || !password) return toast.error("Enter email and password");
 
     try {
-      const { data } = await axios.post(`${backendUrl}/api/admin/login`, {
-        email: trimmedEmail,
-        password: trimmedPassword,
-      });
-
-      if (data.success){
-        localStorage.setItem('aToken', data.token);
-        setAtoken(data.token);
-        toast.success(`Admin login successful`);
+      const { data } = await axios.post(`${backendUrl}/api/admin/login`, { email, password });
+      if (data.success) {
+        toast.success("OTP sent to your email");
+        navigate("/email-verification", { state: { email } }); // Pass email to OTP page
       } else {
-        toast.error(data.message || 'Login failed');
+        toast.error(data.message);
       }
-    } catch (error) {
-      console.error('Login error:', error.message);
-      toast.error(error.response?.data?.message || 'Login request failed');
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <form
-      className="min-h-[80vh] flex items-center justify-center"
-    >
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
-        <p className="text-2xl font-semibold m-auto">
-          <span className="text-black">Admin</span> Login
-        </p>
-
-        <div className="w-full">
-          <p>Email</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md transition-transform transform hover:-translate-y-1"
+      >
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+        <div className="flex flex-col gap-4">
           <input
             type="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none rounded-lg px-4 py-2 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
           />
-        </div>
-
-        <div className="w-full">
-          <p>Password</p>
           <input
             type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none rounded-lg px-4 py-2 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
           />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition"
+          >
+            Login
+          </button>
         </div>
-
-        <button
-         onClick={() => navigate("/email-verification")}
-         className="bg-blue-600 text-white w-full py-2 my-4 rounded-md text-base">
-          Login
-        </button>
-
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

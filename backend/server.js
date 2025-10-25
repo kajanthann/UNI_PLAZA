@@ -13,12 +13,15 @@ import clubRouter from './routes/clubRoute.js';
 const app = express();
 const port = process.env.PORT || 5000;
 connectDB();
-connectCloudinary();
+// connectCloudinary();
 cleanupUnverifiedUsers(); // start the cron job
 
 // middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5174", // your React app URL
+  credentials: true, // ✅ allow cookies
+}));
 app.use(cookieParser());
 
 // api endpoints

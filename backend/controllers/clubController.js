@@ -168,17 +168,11 @@ export const logout = (req, res) => {
 };
 
 
-// add event
+// --- ADD EVENT ---
 export const addEvent = async (req, res) => {
   try {
-    // AuthClub middleware already sets req.club
-    const club = req.club;
-    if (!club) {
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized. Please login as a club first.",
-      });
-    }
+    const club = req.club; // Authenticated club from middleware
+    if (!club) return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const {
       mode,
@@ -197,18 +191,13 @@ export const addEvent = async (req, res) => {
 
     const image = req.file ? req.file.filename : null;
 
-    // Required field validation
     if (!mode || !title || !description || !university || !date || !startTime || !location || !image) {
-      return res.status(400).json({
-        success: false,
-        message: "All required fields must be filled, including image.",
-      });
+      return res.status(400).json({ success: false, message: "All required fields must be filled, including image." });
     }
 
-    // Parse relatedLinks & tags if sent as strings
+    // Parse relatedLinks & tags
     let parsedLinks = [];
     let parsedTags = [];
-
     if (relatedLinks) {
       try {
         parsedLinks = JSON.parse(relatedLinks);
@@ -216,12 +205,7 @@ export const addEvent = async (req, res) => {
         parsedLinks = [{ label: "Link", url: relatedLinks }];
       }
     }
-
-    if (tags) {
-      parsedTags = Array.isArray(tags)
-        ? tags
-        : tags.split(",").map((t) => t.trim());
-    }
+    if (tags) parsedTags = Array.isArray(tags) ? tags : tags.split(",").map(t => t.trim());
 
     const newEvent = new eventModel({
       mode,
@@ -237,69 +221,42 @@ export const addEvent = async (req, res) => {
       tags: parsedTags,
       email,
       image,
-      createdBy: club._id, // automatically link to logged-in club
+      createdBy: { kind: "club", item: club._id }, // <-- updated here
     });
 
     await newEvent.save();
 
-    res.status(201).json({
-      success: true,
-      message: "Event added successfully. Awaiting admin approval.",
-      event: newEvent,
-    });
+    res.status(201).json({ success: true, message: "Event added successfully. Awaiting admin approval.", event: newEvent });
+
   } catch (error) {
     console.error("Error in addEvent:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error while adding event.",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 // --- EDIT EVENT ---
 export const editEvent = async (req, res) => {
   try {
-    const eventId = req.params.eventId; // note: match router param
-    const club = req.club; // Authenticated club
-
+    const { eventId } = req.params;
+    const club = req.club;
     if (!club) return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const event = await eventModel.findById(eventId);
     if (!event) return res.status(404).json({ success: false, message: "Event not found" });
 
-    if (event.createdBy.toString() !== club._id.toString()) {
+    // Only allow editing if createdBy is this club
+    if (event.createdBy.kind !== "club" || event.createdBy.item.toString() !== club._id.toString()) {
       return res.status(403).json({ success: false, message: "You can only edit your own events" });
     }
 
-    // Only update fields if they exist in req.body
-    const fields = [
-      "mode",
-      "title",
-      "description",
-      "date",
-      "startTime",
-      "location",
-      "mapLink",
-      "contactNumber",
-      "relatedLinks",
-      "tags",
-      "email"
-    ];
-
+    const fields = ["mode","title","description","date","startTime","location","mapLink","contactNumber","relatedLinks","tags","email"];
     fields.forEach(field => {
-      if (req.body[field] !== undefined) {
-        event[field] = req.body[field];
-      }
+      if (req.body[field] !== undefined) event[field] = req.body[field];
     });
 
-    // Update image only if new file uploaded
-    if (req.file) {
-      event.image = req.file.filename;
-    }
+    if (req.file) event.image = req.file.filename;
 
-    // Parse relatedLinks & tags if provided as JSON/string
+    // Parse relatedLinks & tags
     if (req.body.relatedLinks) {
       try {
         event.relatedLinks = JSON.parse(req.body.relatedLinks);
@@ -307,12 +264,7 @@ export const editEvent = async (req, res) => {
         event.relatedLinks = [{ label: "Link", url: req.body.relatedLinks }];
       }
     }
-
-    if (req.body.tags) {
-      event.tags = Array.isArray(req.body.tags)
-        ? req.body.tags
-        : req.body.tags.split(",").map(t => t.trim());
-    }
+    if (req.body.tags) event.tags = Array.isArray(req.body.tags) ? req.body.tags : req.body.tags.split(",").map(t => t.trim());
 
     await event.save();
 
@@ -323,27 +275,22 @@ export const editEvent = async (req, res) => {
   }
 };
 
-
 // --- DELETE EVENT ---
 export const deleteEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
     const club = req.club;
+    if (!club) return res.status(401).json({ success: false, message: "Unauthorized" });
 
-    if (!club) 
-      return res.status(401).json({ success: false, message: "Unauthorized" });
-
-    // Delete the event only if it belongs to this club
     const deletedEvent = await eventModel.findOneAndDelete({
       _id: eventId,
-      createdBy: club._id
+      "createdBy.kind": "club",
+      "createdBy.item": club._id
     });
 
-    if (!deletedEvent) 
-      return res.status(404).json({ success: false, message: "Event not found or you are not authorized to delete it" });
+    if (!deletedEvent) return res.status(404).json({ success: false, message: "Event not found or you are not authorized to delete it" });
 
     res.status(200).json({ success: true, message: "Event deleted successfully" });
-
   } catch (error) {
     console.error("Error in deleteEvent:", error);
     res.status(500).json({ success: false, message: error.message });

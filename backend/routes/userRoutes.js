@@ -2,7 +2,7 @@ import express from "express";
 import { register, login, verifyOtp, forgotPassword, verifyResetOtp, resetPassword, logout, updateProfile, getProfile, updateUserProfile } from "../controllers/userController.js";
 import { userAuth } from "../middleware/authUser.js";
 import upload from "../middleware/multer.js";
-import { addComment, addReply, addView, deleteComment, editComment, getViews, toggleCommentLike, toggleLike } from "../controllers/eventController.js";
+import { addComment, addReply, addView, deleteComment, editComment, getViews, reportEvent, toggleCommentLike, toggleLike } from "../controllers/eventController.js";
 
 const userRouter = express.Router();
 
@@ -22,7 +22,7 @@ userRouter.post("/reset-password", resetPassword);
 // User profile
 // userRouter.get("/get-profile", userAuth, getProfile);
 // userRouter.post("/update-profile", userAuth, upload.single("image"), updateProfile);
-userRouter.put("/update-u-profile", userAuth, upload.single("image"), updateUserProfile);
+userRouter.put("/update-profile", userAuth, upload.single("image"), updateUserProfile);
 
 // like comments
 userRouter.post("/:eventId/like", userAuth, toggleLike);
@@ -33,5 +33,6 @@ userRouter.post("/:eventId/comments/:commentId/replies", userAuth, addReply);
 userRouter.post("/:eventId/comments/:commentId/like", userAuth, toggleCommentLike);
 userRouter.post("/:eventId/view", userAuth, addView);
 userRouter.get("/:eventId/views", userAuth, getViews);
+userRouter.post("/:eventId/report", userAuth, reportEvent);
 
 export default userRouter;

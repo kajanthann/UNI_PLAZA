@@ -1,5 +1,7 @@
 import eventModel from "../models/eventModel.js";
+import mongoose from "mongoose";
 
+// --- TOGGLE LIKE ---
 export const toggleLike = async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -23,7 +25,7 @@ export const toggleLike = async (req, res) => {
   }
 };
 
-
+// --- ADD COMMENT ---
 export const addComment = async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -42,18 +44,15 @@ export const addComment = async (req, res) => {
   }
 };
 
-import mongoose from "mongoose";
-
+// --- EDIT COMMENT ---
 export const editComment = async (req, res) => {
   try {
     const { eventId, commentId } = req.params;
     const { text } = req.body;
     const userId = req.userId;
 
-    // Validate commentId
-    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+    if (!mongoose.Types.ObjectId.isValid(commentId))
       return res.status(400).json({ message: "Invalid comment ID" });
-    }
 
     const event = await eventModel.findById(eventId);
     if (!event) return res.status(404).json({ message: "Event not found" });
@@ -73,8 +72,7 @@ export const editComment = async (req, res) => {
   }
 };
 
-
-
+// --- DELETE COMMENT ---
 export const deleteComment = async (req, res) => {
   try {
     const { eventId, commentId } = req.params;
@@ -98,8 +96,7 @@ export const deleteComment = async (req, res) => {
   }
 };
 
-
-
+// --- ADD REPLY ---
 export const addReply = async (req, res) => {
   try {
     const { eventId, commentId } = req.params;
@@ -121,6 +118,7 @@ export const addReply = async (req, res) => {
   }
 };
 
+// --- TOGGLE COMMENT LIKE ---
 export const toggleCommentLike = async (req, res) => {
   try {
     const { eventId, commentId } = req.params;
@@ -135,13 +133,13 @@ export const toggleCommentLike = async (req, res) => {
     else comment.likes.push(userId);
 
     await event.save();
-
     res.json({ success: true, liked: !isLiked, totalLikes: comment.likes.length });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
+// --- ADD VIEW ---
 export const addView = async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -160,6 +158,7 @@ export const addView = async (req, res) => {
   }
 };
 
+// --- GET VIEWS ---
 export const getViews = async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -169,5 +168,42 @@ export const getViews = async (req, res) => {
     res.json({ success: true, totalViews: event.views.length });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+// --- REPORT EVENT ---
+export const reportEvent = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const { reason } = req.body;
+    const userId = req.userId;
+
+    if (!reason) return res.status(400).json({ message: "Reason is required" });
+
+    const event = await eventModel.findById(eventId);
+    if (!event) return res.status(404).json({ message: "Event not found" });
+
+    const alreadyReported = event.reports.some(r => r.user.toString() === userId);
+    if (alreadyReported) return res.status(400).json({ message: "You already reported this event" });
+
+    event.reports.push({ user: userId, reason });
+    await event.save();
+
+    res.status(200).json({ success: true, message: "Event reported successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// --- GET ALL EVENTS (with populated club/user info) ---
+export const getAllEvents = async (req, res) => {
+  try {
+    const events = await eventModel.find()
+      .populate("createdBy.item", "clubName university fullName email") // dynamic populate based on kind
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ success: true, events });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

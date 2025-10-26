@@ -12,6 +12,7 @@ import Students from "./pages/Students";
 import EmailVerify from "./Components/EmailVerify";
 import PostDetailsPage from "./Components/PostDetailsPage";
 import Navbar from "./Components/Navbar";
+import Setting from "./pages/Setting";
 
 const ProtectedRoute = ({ children }) => {
   const { aToken } = useContext(AdminContext);
@@ -32,8 +33,8 @@ const App = () => {
     <div className="bg-[#F8F9FA] min-h-screen">
       <ToastContainer
         position="top-center"
-        autoClose={2000} 
-        hideProgressBar={true} 
+        autoClose={2000}
+        hideProgressBar={true}
       />
 
       <Navbar />
@@ -60,6 +61,7 @@ const App = () => {
                     <Route path="addclub" element={<AddClub />} />
                     <Route path="clubs" element={<Clubs />} />
                     <Route path="students" element={<Students />} />
+                    <Route path="settings" element={<Setting />} />
                     <Route
                       path="admin/posts/:id"
                       element={<PostDetailsPage />}

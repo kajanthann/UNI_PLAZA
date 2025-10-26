@@ -7,17 +7,20 @@ import { AdminContext } from "../context/AdminContext";
 const Login = () => {
   const { backendUrl } = useContext(AdminContext);
   const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email || !password) return toast.error("Enter email and password");
+    if (!name || !email || !password)
+      return toast.error("Enter name, email, and password");
 
     setLoading(true);
     try {
       const { data } = await axios.post(`${backendUrl}/api/admin/login`, {
+        name,
         email,
         password,
       });
@@ -25,8 +28,8 @@ const Login = () => {
       if (data.success) {
         toast.success("OTP sent to your email");
         setTimeout(() => {
-          navigate("/email-verification", { state: { email } });
-        }, 800);
+          navigate("/email-verification", { state: { name, email } });
+        }, 500);
       } else {
         toast.error(data.message);
       }
@@ -45,6 +48,13 @@ const Login = () => {
         </h2>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-5">
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/70 focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-gray-400 transition"
+          />
           <input
             type="email"
             placeholder="Email"

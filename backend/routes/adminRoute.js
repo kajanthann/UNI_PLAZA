@@ -3,7 +3,8 @@ import {
   adminLogin, logoutAdmin, verifyAdminOtp,
   getAllClubs, updateClubStatus, deleteClub,
   getAllUsers, deleteUser,
-  getAllEvents, updateEventStatus, deleteEvent
+  getAllEvents, updateEventStatus, deleteEvent,
+  getAllAdmins
 } from "../controllers/adminController.js";
 import authAdmin from '../middleware/authAdmin.js';
 
@@ -33,6 +34,9 @@ adminRouter.get("/events", getAllEvents);
 // Unified status update route
 adminRouter.put("/events/:eventId/:status", updateEventStatus);
 adminRouter.delete("/events/:eventId", deleteEvent);
+
+// admin
+adminRouter.get('/admins', getAllAdmins)
 
 // Dashboard route
 adminRouter.get("/dashboard", (req, res) => {

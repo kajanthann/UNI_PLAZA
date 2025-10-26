@@ -14,6 +14,7 @@ import {
   ArrowLeft,
   AlertCircle,
   Eye,
+  CheckCircle,
 } from "lucide-react";
 import { AdminContext } from "../context/AdminContext";
 import { toast } from "react-toastify";
@@ -68,17 +69,24 @@ const PostDetailsPage = () => {
     }
   };
 
-  const handleBlock = async () => {
-    if (!post) return;
-    try {
-      await updateEventStatus(post._id, "rejected");
-      toast.success("Post blocked successfully");
-      fetchPost();
-    } catch (err) {
-      console.error(err);
-      toast.error(err.response?.data?.message || "Failed to block post");
-    }
-  };
+  const handleToggleBlock = async (id, currentStatus) => {
+  try {
+    const newStatus = currentStatus === "rejected" ? "approved" : "rejected";
+
+    await axiosInstance.put(`/api/admin/events/${id}/${newStatus}`);
+    toast.success(
+      `Event ${newStatus === "rejected" ? "blocked" : "unblocked"} successfully`
+    );
+
+    fetchPost();
+  } catch (err) {
+    console.error(err);
+    toast.error(
+      err.response?.data?.message || "Failed to update event status"
+    );
+  }
+};
+
 
   if (loading)
     return (
@@ -121,7 +129,9 @@ const PostDetailsPage = () => {
               </div>
             </div>
             <span
-              className={`px-3 py-1 rounded-full text-sm font-medium ${statusColors[post.status]}`}
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                statusColors[post.status]
+              }`}
             >
               {post.status.toUpperCase()}
             </span>
@@ -145,17 +155,33 @@ const PostDetailsPage = () => {
                 <Heart className="w-5 h-5" /> {post.likes?.length || 0}
               </div>
               <div className="flex items-center gap-1 text-blue-500">
-                <MessageSquare className="w-5 h-5" /> {post.comments?.length || 0}
+                <MessageSquare className="w-5 h-5" />{" "}
+                {post.comments?.length || 0}
               </div>
             </div>
 
             <div className="flex gap-2">
               <button
-                onClick={handleBlock}
-                className="p-2 bg-yellow-100 hover:bg-yellow-200 rounded-full transition"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleToggleBlock(post._id, post.status);
+                }}
+                className={`p-2 rounded-full shadow-sm transition ${
+                  post.status === "rejected"
+                    ? "bg-green-100 hover:bg-green-200"
+                    : "bg-yellow-100 hover:bg-yellow-200"
+                }`}
+                title={
+                  post.status === "rejected" ? "Unblock Post" : "Block Post"
+                }
               >
-                <Ban className="w-5 h-5 text-yellow-700" />
+                {post.status === "rejected" ? (
+                  <CheckCircle className="w-4 h-4 text-green-700" />
+                ) : (
+                  <Ban className="w-4 h-4 text-yellow-700" />
+                )}
               </button>
+
               <button
                 onClick={handleDelete}
                 className="p-2 bg-red-100 hover:bg-red-200 rounded-full transition"
@@ -216,7 +242,8 @@ const PostDetailsPage = () => {
             </p>
             <p className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-gray-500" />
-              <span className="font-semibold">Start Time:</span> {post.startTime}
+              <span className="font-semibold">Start Time:</span>{" "}
+              {post.startTime}
             </p>
             <p className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-gray-500" />
@@ -242,7 +269,7 @@ const PostDetailsPage = () => {
           </div>
 
           {/* Reports */}
-          {(
+          {
             <div className="mt-4 border-t pt-4">
               <h3 className="flex items-center gap-2 font-semibold text-red-600">
                 <AlertCircle className="w-5 h-5" /> Reports (
@@ -257,10 +284,10 @@ const PostDetailsPage = () => {
                 ))}
               </ul>
             </div>
-          )}
+          }
 
           {/* Comments */}
-          {(
+          {
             <div className="mt-4 border-t pt-4">
               <h3 className="flex items-center gap-2 font-semibold text-blue-600">
                 <MessageSquare className="w-5 h-5" /> Comments (
@@ -284,7 +311,7 @@ const PostDetailsPage = () => {
                 ))}
               </div>
             </div>
-          )}
+          }
         </div>
       </div>
     </div>

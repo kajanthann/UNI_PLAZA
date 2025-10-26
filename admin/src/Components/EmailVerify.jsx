@@ -8,6 +8,7 @@ const EmailVerify = () => {
   const { backendUrl, setAtoken } = useContext(AdminContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const name = location.state?.name;
   const email = location.state?.email;
 
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -16,10 +17,7 @@ const EmailVerify = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(
-      () => setTimer((t) => (t > 0 ? t - 1 : 0)),
-      1000
-    );
+    const interval = setInterval(() => setTimer((t) => (t > 0 ? t - 1 : 0)), 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -49,12 +47,12 @@ const EmailVerify = () => {
         email,
         otp: otp.join(""),
       });
+
       if (data.success) {
         localStorage.setItem("aToken", data.token);
         setAtoken(data.token);
-        toast.success("Admin logged in!");
-
-        setTimeout(() => navigate("/dashboard"), 1000);
+        toast.success(`Welcome, ${name}!`);
+        setTimeout(() => navigate("/dashboard"), 500);
       } else toast.error(data.message);
     } catch (err) {
       toast.error(err.response?.data?.message || "OTP verification failed");
@@ -64,9 +62,7 @@ const EmailVerify = () => {
   };
 
   const formatTime = (sec) =>
-    `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(
-      sec % 60
-    ).padStart(2, "0")}`;
+    `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-fuchsia-100 px-4">
@@ -75,7 +71,7 @@ const EmailVerify = () => {
           Verify OTP
         </h2>
         <p className="text-center text-gray-500 mb-6">
-          Enter the 6-digit OTP sent to your email
+          Hi <span className="font-semibold">{name}</span>, enter the 6-digit OTP sent to your email
         </p>
 
         <div className="flex justify-between gap-3 mb-6">

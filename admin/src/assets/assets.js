@@ -12,6 +12,7 @@ import appointments_icon from './appointments_icon.svg'
 import earning_icon from './earning_icon.svg'
 import patients_icon from './patients_icon.svg'
 import clubs from './exchange_icon.png'
+import feedback from './feedbackImage.png'
 import profile from './profile_icon.png'
 
 export const assets = {
@@ -29,5 +30,6 @@ export const assets = {
     appointments_icon,
     earning_icon,
     clubs,
-    profile
+    profile,
+    feedback
 }

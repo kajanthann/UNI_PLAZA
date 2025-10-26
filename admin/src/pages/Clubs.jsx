@@ -47,6 +47,15 @@ const Clubs = () => {
                       ? "All"
                       : type.charAt(0).toUpperCase() + type.slice(1) + "s"}
                   </span>
+                  <span className="text-gray-500 text-sm">
+                    (
+                    {
+                      clubs.filter((club) =>
+                        type === "all" ? true : club.role === type
+                      ).length
+                    }
+                    )
+                  </span>
                 </label>
               ))}
             </div>
@@ -55,7 +64,7 @@ const Clubs = () => {
           {/* Status Filter */}
           <div>
             <div className="flex flex-wrap gap-3">
-              {["all", "approved", "pending", "rejected"].map((status) => (
+              {["approved", "pending", "rejected"].map((status) => (
                 <label
                   key={status}
                   className="flex items-center gap-2 cursor-pointer select-none"
@@ -69,6 +78,13 @@ const Clubs = () => {
                   <span className="text-gray-700">
                     {status.charAt(0).toUpperCase() + status.slice(1)}
                   </span>
+
+                  {/* Show count only if status is not "all" */}
+                  {status !== "all" && (
+                    <span className="text-gray-500 text-sm">
+                      ({clubs.filter((club) => club.status === status).length})
+                    </span>
+                  )}
                 </label>
               ))}
             </div>

@@ -3,55 +3,98 @@ import sendEmail from "../middleware/sendEmail.js";
 import clubModel from "../models/clubModel.js";
 import userModel from "../models/userModel.js";
 import eventModel from "../models/eventModel.js";
+import adminModel from "../models/adminModel.js";
 
-// Temporary in-memory OTP store for admin login
-const adminOtpStore = {}; // { email: { otp: '123456', expiresAt: Date } }
 
-// --- Request OTP ---
+// Temporary in-memory OTP store
+// Structure: { email: { otp: "123456", expiresAt: Date, name: "Admin" } }
+const adminOtpStore = {};
+
+// --- STEP 1: Request OTP ---
 export const adminLogin = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
+    // Validate admin credentials
     if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
 
+    // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
-    adminOtpStore[email] = { otp, expiresAt };
 
-    await sendEmail(email, "Admin Login OTP", `Hello Admin!\n\nYour OTP is: ${otp}\nIt expires in 2 minutes.`);
+    // Save OTP in memory
+    adminOtpStore[email] = { otp, expiresAt, name };
+
+    // Send OTP via email
+    await sendEmail(
+      email,
+      "Admin Login OTP",
+      `Hello ${name || "Admin"}!\n\nYour OTP is: ${otp}\nIt expires in 2 minutes.`
+    );
 
     res.status(200).json({ success: true, message: "OTP sent to admin email" });
   } catch (error) {
-    console.error(error);
+    console.error("Admin login error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// --- Verify OTP & login ---
-export const verifyAdminOtp = (req, res) => {
+// --- STEP 2: Verify OTP & Complete Login ---
+export const verifyAdminOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
+    const userAgent = req.headers["user-agent"];
+    const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
-    if (!adminOtpStore[email]) {
+    // Validate OTP existence
+    const otpRecord = adminOtpStore[email];
+    if (!otpRecord) {
       return res.status(400).json({ success: false, message: "No OTP requested" });
     }
 
-    const { otp: savedOtp, expiresAt } = adminOtpStore[email];
+    const { otp: savedOtp, expiresAt, name } = otpRecord;
 
+    // Check expiry
     if (Date.now() > expiresAt) {
       delete adminOtpStore[email];
       return res.status(400).json({ success: false, message: "OTP expired" });
     }
 
+    // Check OTP match
     if (otp !== savedOtp) {
       return res.status(400).json({ success: false, message: "Invalid OTP" });
     }
 
-    const aToken = jwt.sign({ role: "admin", email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    // --- Find or create admin by name ---
+    let admin = await adminModel.findOne({ name: name || "Admin" });
+
+    if (!admin) {
+      // Create new admin
+      admin = await adminModel.create({
+        name: name || "Admin",
+        isVerified: true,
+        loginHistory: [{ time: new Date(), ipAddress: ip, deviceInfo: userAgent }],
+      });
+    } else {
+      // Check if this device already exists in login history
+      const deviceEntry = admin.loginHistory.find(d => d.deviceInfo === userAgent);
+      if (deviceEntry) {
+        deviceEntry.time = new Date(); // Update last login
+      } else {
+        admin.loginHistory.push({ time: new Date(), ipAddress: ip, deviceInfo: userAgent });
+      }
+      await admin.save();
+    }
+
+    // --- Generate JWT ---
+    const aToken = jwt.sign({ role: "admin", name }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+    // --- Clear OTP ---
     delete adminOtpStore[email];
 
+    // --- Set cookie ---
     res.cookie("aToken", aToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -59,12 +102,18 @@ export const verifyAdminOtp = (req, res) => {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    res.status(200).json({ success: true, message: "OTP verified. Admin logged in.", token: aToken });
+    res.status(200).json({
+      success: true,
+      message: "OTP verified. Admin logged in.",
+      token: aToken,
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Verify OTP error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
 
 // --- Admin Logout ---
 export const logoutAdmin = (req, res) => {
@@ -138,6 +187,22 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// --- GET ALL ADMINS ---
+export const getAllAdmins = async (req, res) => {
+  try {
+    const admins = await adminModel.find({}, { _id: 0, __v: 0 }); // exclude MongoDB _id and version
+
+    res.status(200).json({
+      success: true,
+      admins,
+    });
+  } catch (error) {
+    console.error("Get all admins error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 
 // --- DELETE USER ---
 export const deleteUser = async (req, res) => {

@@ -30,18 +30,16 @@ import { AdminContext } from "../context/AdminContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { students, clubs, events, fetchStudents, fetchClubs, fetchEvents } =
+  const { students, clubs, events, fetchStudents, fetchClubs, fetchEvents, fetchAdmins, adminData } =
     useContext(AdminContext);
 
   useEffect(() => {
     fetchStudents();
     fetchClubs();
     fetchEvents();
+    fetchAdmins();
   }, []);
 
-  /** ---------------------------
-   * Stats
-   * --------------------------- */
   const stats = [
     {
       label: "Students",
@@ -52,6 +50,12 @@ const Dashboard = () => {
     {
       label: "Clubs",
       count: clubs.length,
+      icon: <Building2 />,
+      color: "from-purple-100 to-indigo-200",
+    },
+    {
+      label: "Admins",
+      count: adminData.length,
       icon: <Building2 />,
       color: "from-purple-100 to-indigo-200",
     },
@@ -168,11 +172,8 @@ const Dashboard = () => {
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 6);
 
-  /** ---------------------------
-   * JSX
-   * --------------------------- */
   return (
-    <div className="p-6 md:p-10 min-h-screen bg-gradient-to-br from-white to-fuchsia-50 space-y-10">
+    <div className="p-6 md:p-10 min-h-screen bg-gradient-to-br space-y-10">
       <h1 className="text-4xl md:text-5xl font-bold text-fuchsia-700 mb-4">
         Admin Dashboard
       </h1>

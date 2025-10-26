@@ -9,22 +9,19 @@ const AdminContextProvider = ({ children }) => {
 
   const backendUrl = "http://localhost:5000";
 
-  // Clubs state
   const [clubs, setClubs] = useState([]);
   const [loadingClubs, setLoadingClubs] = useState(false);
-
-  // Events state
   const [events, setEvents] = useState([]);
   const [loadingEvents, setLoadingEvents] = useState(false);
-
-  // Students state
   const [students, setStudents] = useState([]);
   const [loadingStudents, setLoadingStudents] = useState(false);
+  const [adminData, setAdminData] = useState({});
 
   // Axios instance
   const axiosInstance = axios.create({
     baseURL: backendUrl,
     withCredentials: true,
+    headers: { Authorization: `Bearer ${aToken}` },
   });
 
   // --- Fetch Clubs ---
@@ -81,6 +78,21 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
+  // --- fetch admins ---
+  const fetchAdmins = async () => {
+    try {
+      const { data } = await axiosInstance.get("/api/admin/admins");
+      if (data.success) {
+        setAdminData(data.admins || []);
+        console.log("Fetched admins:", data.admins);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message);
+    }
+  };
+
   // --- Update Club Status ---
   const updateClubStatus = async (clubId, newStatus) => {
     if (newStatus === "pending") {
@@ -93,7 +105,9 @@ const AdminContextProvider = ({ children }) => {
     );
 
     try {
-      const { data } = await axiosInstance.put(`/api/admin/clubs/${clubId}/${newStatus}`);
+      const { data } = await axiosInstance.put(
+        `/api/admin/clubs/${clubId}/${newStatus}`
+      );
       if (data.success) {
         toast.success(data.message || `Club status updated to ${newStatus}`);
         fetchClubs();
@@ -138,7 +152,9 @@ const AdminContextProvider = ({ children }) => {
     );
 
     try {
-      const { data } = await axiosInstance.put(`/api/admin/events/${eventId}/${newStatus}`);
+      const { data } = await axiosInstance.put(
+        `/api/admin/events/${eventId}/${newStatus}`
+      );
       if (data.success) {
         toast.success(data.message || `Event status updated to ${newStatus}`);
         fetchEvents();
@@ -157,7 +173,9 @@ const AdminContextProvider = ({ children }) => {
     const prevEvents = [...events];
     setEvents((prev) => prev.filter((e) => e._id !== eventId));
     try {
-      const { data } = await axiosInstance.delete(`/api/admin/events/${eventId}`);
+      const { data } = await axiosInstance.delete(
+        `/api/admin/events/${eventId}`
+      );
       if (data.success) {
         toast.success(data.message || "Event deleted successfully");
       } else {
@@ -176,6 +194,7 @@ const AdminContextProvider = ({ children }) => {
       fetchClubs();
       fetchEvents();
       fetchStudents();
+      fetchAdmins();
     }
   }, [aToken]);
 
@@ -197,9 +216,13 @@ const AdminContextProvider = ({ children }) => {
     updateEventStatus,
     deleteEvent,
     axiosInstance,
+    adminData,
+    fetchAdmins
   };
 
-  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
+  return (
+    <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
+  );
 };
 
 export default AdminContextProvider;

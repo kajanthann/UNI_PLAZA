@@ -7,6 +7,7 @@
   --color-buttonBlue: #42A5F5;
   --font-montserrat: "Montserrat", sans-serif;
   --font-alan: "Alan Sans", sans-serif;
+  --breakpoint-sm: 48rem;
 }
 
 body{

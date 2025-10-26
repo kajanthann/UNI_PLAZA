@@ -86,7 +86,7 @@ export default function ClubProfile(){
                                         </div>
                                     </div>
                                     <div>
-                                        <h2>Representative Information</h2>
+                                        <h2 className="text-xl font-bold">Representative Information</h2>
                                         <div className="block my-5">
                                             <p className="text-gray-500 text-lg">Name</p>
                                             <p className="font-semibold">John Perera</p>

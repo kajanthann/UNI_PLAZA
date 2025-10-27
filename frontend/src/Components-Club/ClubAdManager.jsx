@@ -1,18 +1,13 @@
 import AdImage from '../assets/adImage.png'
-import Calendar from '../components/Calendar';
-import { useNavigate } from 'react-router-dom';
 
 
-export default function ClubDashboard(){
+export default function ClubAdManager(){
 
-    const navigate = useNavigate();
-
-    const handleNavigation = (path) =>{
-        navigate(path);
-    }
 
     const getOverviews = {
         tableColumns: [
+            {PostTitle:"Tech Fest 2025: Innovation Showcase",Type:"Event",Tags:["#IT","#Innovation","#Technology"],DateSubmitted:"23 Sep 2025",Status:"Pending",Action:"View"},
+            {PostTitle:"Tech Fest 2025: Innovation Showcase",Type:"Event",Tags:["#IT","#Music","#Technology"],DateSubmitted:"23 Sep 2025",Status:"Pending",Action:"View"},
             {PostTitle:"Tech Fest 2025: Innovation Showcase",Type:"Event",Tags:["#IT","#Innovation","#Technology"],DateSubmitted:"23 Sep 2025",Status:"Pending",Action:"View"},
             {PostTitle:"Tech Fest 2025: Innovation Showcase",Type:"Event",Tags:["#IT","#Music","#Technology"],DateSubmitted:"23 Sep 2025",Status:"Pending",Action:"View"},
         ]
@@ -29,14 +24,23 @@ export default function ClubDashboard(){
                     "                                celebrating the arrival of holy! Enjoy diverse acts from various student groups and\n" +
                     "                                indulge in delicious food from local vendors. Mark your calendars!",
                 Action:"Edit"
+            },
+            {Image:AdImage,Title:"Holy Festival-2025",Description:"Join us for an unforgettable evening of music, dance, and cultural performances\n" +
+                    "                                celebrating the arrival of holy! Enjoy diverse acts from various student groups and\n" +
+                    "                                indulge in delicious food from local vendors. Mark your calendars!",
+                Action:"Edit"
+            },
+            {Image:AdImage,Title:"Holy Festival-2025",Description:"Join us for an unforgettable evening of music, dance, and cultural performances\n" +
+                    "                                celebrating the arrival of holy! Enjoy diverse acts from various student groups and\n" +
+                    "                                indulge in delicious food from local vendors. Mark your calendars!",
+                Action:"Edit"
             }
         ]
     }
 
-
     return (
         <div>
-            <h2 className="text-3xl font-bold m-2 w-9/10 mx-auto">Club Dashboard</h2>
+            <h2 className="text-3xl font-bold m-2 w-9/10 mx-auto">Club Ad Manager</h2>
             <div className="w-9/10 mx-auto my-5 border-1 border-gray-300 rounded-2xl">
                 <div className="w-9/10 mx-auto">
                     <div className="my-4">
@@ -57,9 +61,6 @@ export default function ClubDashboard(){
                             </div>
                         </div>
                     ))}
-                    <div className="flex justify-end my-4 ">
-                        <button className="border-2 border-gray-400 text-gray-500 rounded-2xl py-2 px-4" onClick={()=>{handleNavigation('/Clubadmanager')}}>View All</button>
-                    </div>
                 </div>
             </div>
 
@@ -105,15 +106,8 @@ export default function ClubDashboard(){
                             </tbody>
 
                         </table>
-                        <div className="flex justify-end my-4 ">
-                        <button className="border-2 border-gray-400 text-gray-500 rounded-2xl py-2 px-4" onClick={()=>{handleNavigation('/Clubadmanager')}}>View All</button>
-                    </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="w-9/10 mx-auto">
-                <Calendar/>
             </div>
         </div>
     )

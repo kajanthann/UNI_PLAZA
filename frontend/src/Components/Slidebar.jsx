@@ -6,6 +6,7 @@ import {
     faComments,
     faUser,
     faSliders,
+    faBarsProgress,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 
@@ -13,9 +14,9 @@ export default function Sidebar({ role }) {
     const sliderOptions = {
         Club: [
             { icon: faTableColumns, text: "Dashboard", link: "/Clubdashboard" },
-            { icon: faCalendarDays, text: "Ads", link: "/Clubads" },
+            { icon: faCalendarDays, text: "Create Ads", link: "/Clubads" },
+            { icon: faBarsProgress, text: "Ad Manager", link: "/Clubadmanager" },
             { icon: faEnvelope, text: "Notifications", link: "/Clubnotifications" },
-            { icon: faComments, text: "Feedback", link: "/Clubfeedback" },
             { icon: faUser, text: "My Profile", link: "/Clubprofile" },
             { icon: faSliders, text: "Settings", link: "/Clubsettings" },
         ],

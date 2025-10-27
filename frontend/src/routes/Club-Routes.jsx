@@ -12,7 +12,7 @@ function ClubRoutes(){
             <Route path="/Clubnotifications" element={<MainContent name={name} role={role} type="ClubNotifications"/>}></Route>
             <Route path="/Clubsettings" element={<MainContent name={name} role={role} type="Settings"/>}></Route>
             <Route path="/Clubprofile" element={<MainContent name={name} role={role} type="ClubProfile"/>}></Route>
-            <Route path="/Clubfeedback" element={<MainContent name={name} role={role} type="ClubFeedback"/>}></Route>
+            <Route path="/Clubadmanager" element={<MainContent name={name} role={role} type="ClubAdManager"/>}></Route>
         </Routes>
     )
 }

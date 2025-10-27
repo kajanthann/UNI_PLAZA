@@ -35,7 +35,7 @@ const Calendar = () => {
     for (let d = 1; d <= daysInMonth; d++) dates.push(d);
 
     return (
-        <div className="bg-white rounded-xl border-1 border-gray-300 p-6 max-w-full my-5 mx-auto shadow-sm">
+        <div className="bg-white rounded-xl border border-gray-300 p-6 max-w-full my-5 mx-auto shadow-sm">
             <h2 className="text-xl font-semibold mb-4">Event Scheduled Calendar</h2>
 
             <div className="flex items-center justify-between bg-blue-500 text-white px-4 py-3 rounded-lg mb-4">
@@ -60,14 +60,17 @@ const Calendar = () => {
                 {dates.map((day, i) => (
                     <div
                         key={i}
-                        className={`rounded-full h-10 flex items-center justify-center cursor-pointer
-              ${!day ? "text-gray-300"
-                            : events.includes(day)
-                                ? "bg-blue-200 text-black font-medium"
-                                : "hover:bg-blue-100"}
+                        className={`h-15 flex items-center justify-center cursor-pointer
+              
             `}
                     >
-                        {day || ""}
+                        <div className={`w-10 rounded-full mx-auto ${!day ? "text-gray-300"
+                            : events.includes(day)
+                                ? "bg-blue-200 text-black font-medium"
+                                : "hover:bg-blue-100"}`}>
+                            {day || ""}
+                        </div>
+                        
                     </div>
                 ))}
             </div>

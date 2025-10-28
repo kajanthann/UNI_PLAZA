@@ -5,7 +5,8 @@ import {
   getAllUsers, deleteUser,
   getAllEvents, updateEventStatus, deleteEvent,
   getAllAdmins,
-  sendEmailTo
+  sendEmailTo,
+  getUserFeedback
 } from "../controllers/adminController.js";
 import authAdmin from '../middleware/authAdmin.js';
 
@@ -30,6 +31,7 @@ adminRouter.delete("/clubs/:clubId", deleteClub);
 // Users routes
 adminRouter.get("/users", getAllUsers);
 adminRouter.delete("/users/:userId", deleteUser);
+adminRouter.get("/users/feedbacks", getUserFeedback);
 
 // Events routes
 adminRouter.get("/events", getAllEvents);

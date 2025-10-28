@@ -17,6 +17,8 @@ const AdminContextProvider = ({ children }) => {
   const [students, setStudents] = useState([]);
   const [loadingStudents, setLoadingStudents] = useState(false);
   const [adminData, setAdminData] = useState({});
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [loadingFeedbacks, setLoadingFeedbacks] = useState(false);
 
   const navigate = useNavigate();
 
@@ -239,6 +241,23 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
+  const fetchFeedbacks = async () => {
+    setLoadingFeedbacks(true);
+    try {
+      const { data } = await axiosInstance.get("/api/admin/users/feedbacks");
+      if (data.success) {
+        setFeedbacks(data.feedbacks || []);
+        console.log("Feedbacks fetched:", data.feedbacks);
+      } else {
+        toast.error(data.message || "Failed to fetch feedbacks");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Server error");
+    } finally {
+      setLoadingFeedbacks(false);
+    }
+  };
+
   // --- Auto-fetch on token ---
   useEffect(() => {
     if (aToken) {
@@ -246,6 +265,7 @@ const AdminContextProvider = ({ children }) => {
       fetchEvents();
       fetchStudents();
       fetchAdmins();
+      fetchFeedbacks();
     }
   }, [aToken]);
 
@@ -270,6 +290,9 @@ const AdminContextProvider = ({ children }) => {
     adminData,
     fetchAdmins,
     sendEmail,
+    feedbacks,
+    loadingFeedbacks,
+    fetchFeedbacks,
   };
 
   return (

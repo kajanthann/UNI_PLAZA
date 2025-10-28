@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { ToastContainer } from "react-toastify";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { AdminContext } from "./context/AdminContext";
-import Sidebar from "./components/Sidebar";
+import Sidebar from './Components/Sidebar'
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import AllPosts from "./pages/AllPosts";
@@ -13,6 +13,7 @@ import EmailVerify from "./Components/EmailVerify";
 import PostDetailsPage from "./Components/PostDetailsPage";
 import Navbar from "./Components/Navbar";
 import Setting from "./pages/Setting";
+import FeedBack from "./pages/FeedBack";
 
 const ProtectedRoute = ({ children }) => {
   const { aToken } = useContext(AdminContext);
@@ -62,6 +63,7 @@ const App = () => {
                     <Route path="clubs" element={<Clubs />} />
                     <Route path="students" element={<Students />} />
                     <Route path="settings" element={<Setting />} />
+                    <Route path="feedbacks" element={<FeedBack />} />
                     <Route
                       path="admin/posts/:id"
                       element={<PostDetailsPage />}

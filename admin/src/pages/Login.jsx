@@ -1,81 +1,98 @@
-import React, { useContext, useState } from 'react';
-import { AdminContext } from '../context/AdminContext';
-import { toast } from 'react-toastify';
-import axios from 'axios';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { AdminContext } from "../context/AdminContext";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { setAtoken, backendUrl } = useContext(AdminContext);
+  const { backendUrl } = useContext(AdminContext);
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const onsubmitHandler = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (!name || !email || !password)
+      return toast.error("Enter name, email, and password");
 
-    const trimmedEmail = email.trim();
-    const trimmedPassword = password.trim();
-
-    if (!trimmedEmail || !trimmedPassword) {
-      toast.error('Please enter both email and password');
-      return;
-    }
-
+    setLoading(true);
     try {
       const { data } = await axios.post(`${backendUrl}/api/admin/login`, {
-        email: trimmedEmail,
-        password: trimmedPassword,
+        name,
+        email,
+        password,
       });
 
-      if (data.success){
-        localStorage.setItem('aToken', data.token);
-        setAtoken(data.token);
-        toast.success(`Admin login successful`);
+      if (data.success) {
+        toast.success("OTP sent to your email");
+        setTimeout(() => {
+          navigate("/email-verification", { state: { name, email } });
+        }, 500);
       } else {
-        toast.error(data.message || 'Login failed');
+        toast.error(data.message);
       }
-    } catch (error) {
-      console.error('Login error:', error.message);
-      toast.error(error.response?.data?.message || 'Login request failed');
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form
-      onSubmit={onsubmitHandler}
-      className="min-h-[80vh] flex items-center justify-center"
-    >
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
-        <p className="text-2xl font-semibold m-auto">
-          <span className="text-black">Admin</span> Login
-        </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-200 via-white to-pink-200 px-4">
+      <div className="bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl w-full max-w-md border border-gray-200">
+        <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
+          Admin Login
+        </h2>
 
-        <div className="w-full">
-          <p>Email</p>
+        <form onSubmit={handleLogin} className="flex flex-col gap-5">
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/70 focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-gray-400 transition"
+          />
           <input
             type="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none rounded-lg px-4 py-2 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/70 focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-gray-400 transition"
           />
-        </div>
-
-        <div className="w-full">
-          <p>Password</p>
           <input
             type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none rounded-lg px-4 py-2 transition-all duration-200"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/70 focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-gray-400 transition"
           />
-        </div>
 
-        <button className="bg-blue-600 text-white w-full py-2 my-4 rounded-md text-base">
-          Login
-        </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full flex justify-center items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 ${
+              loading ? "opacity-80 cursor-not-allowed" : ""
+            }`}
+          >
+            {loading ? (
+              <>
+                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
+          </button>
+        </form>
 
+        <p className="text-sm text-gray-500 text-center mt-6">
+          Secure admin access only
+        </p>
       </div>
-    </form>
+    </div>
   );
 };
 

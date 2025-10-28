@@ -1,21 +1,26 @@
 import jwt from "jsonwebtoken";
 
-// admin auth middleware
-const authAdmin = async (req, res, next) => {
-    try {
-        const {aToken} = req.headers;
-        if (!aToken) {
-            return res.status(401).json({ success: false, message: "Not Authorized Login Again" });
-        }
-        const decoded = jwt.verify(atoken, process.env.JWT_SECRET);
-        if (decoded !== process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD) {
-            res.status(401).json({ success: false, message: "Not Authorized Login Again" });
-        }
-        next();
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: error.message });
+const authAdmin = (req, res, next) => {
+  try {
+    const token = req.cookies.aToken || req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ success: false, message: "No token. Not authorized" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (!decoded || decoded.role !== "admin") {
+      return res.status(401).json({ success: false, message: "Not authorized" });
     }
+
+    req.admin = decoded;
+    next();
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ success: false, message: "Token expired. Please login again." });
+    } else if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ success: false, message: "Invalid token. Not authorized." });
+    } else {
+      return res.status(401).json({ success: false, message: "Authorization error" });
+    }
+  }
 };
 
-export default authAdmin
+export default authAdmin;

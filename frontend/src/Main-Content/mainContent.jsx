@@ -12,7 +12,7 @@ import {useState} from 'react'
 // Club Details
 import ClubAds from '../Components-Club/ClubAds.jsx'
 import ClubDashboard from '../Components-Club/ClubDashboard.jsx'
-import ClubFeedback from '../Components-Club/ClubFeedback.jsx'
+import ClubAdManager from '../Components-Club/ClubAdManager.jsx'
 import ClubNotifications from '../Components-Club/ClubNotifications.jsx'
 import ClubSettings from '../Components-Club/ClubSettings.jsx'
 import ClubProfile from '../Components-Club/ClubProfile.jsx'
@@ -47,7 +47,7 @@ function MainContent({name,image,role,type}){
                             {type === 'ClubNotifications' && <ClubNotifications/>}
                             {type === 'ClubSettings'&& <ClubSettings/>}
                             {type === 'ClubProfile' && <ClubProfile/>}
-                            {type === 'ClubFeedback' && <ClubFeedback/>}
+                            {type === 'ClubAdManager' && <ClubAdManager/>}
                         </>
                     )
                     }

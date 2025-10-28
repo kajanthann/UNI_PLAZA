@@ -1,5 +1,5 @@
 import add_icon from './add_icon.svg'
-import admin_logo from './admin_logo.svg'
+import logo from './logo.jpg'
 import appointment_icon from './appointment_icon.svg'
 import cancel_icon from './cancel_icon.svg'
 import doctor_icon from './doctor_icon.svg'
@@ -12,11 +12,12 @@ import appointments_icon from './appointments_icon.svg'
 import earning_icon from './earning_icon.svg'
 import patients_icon from './patients_icon.svg'
 import clubs from './exchange_icon.png'
+import feedback from './feedbackImage.png'
 import profile from './profile_icon.png'
 
 export const assets = {
     add_icon,
-    admin_logo,
+    logo,
     appointment_icon,
     cancel_icon,
     doctor_icon,
@@ -29,5 +30,6 @@ export const assets = {
     appointments_icon,
     earning_icon,
     clubs,
-    profile
+    profile,
+    feedback
 }

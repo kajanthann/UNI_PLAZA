@@ -10,6 +10,7 @@ import {
   Clock,
   Heart,
   MessageSquare,
+  UserCog,
 } from "lucide-react";
 import {
   BarChart,
@@ -56,7 +57,7 @@ const Dashboard = () => {
     {
       label: "Admins",
       count: adminData.length,
-      icon: <Building2 />,
+      icon: <UserCog />,
       color: "from-purple-100 to-indigo-200",
     },
     {
@@ -188,7 +189,7 @@ const Dashboard = () => {
             <div className="p-2 bg-white rounded-full shadow-md flex items-center justify-center">
               {item.icon}
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-end">
               <p className="text-gray-700 font-medium text-lg">{item.label}</p>
               <p className="text-3xl font-bold text-fuchsia-700">
                 {item.count}

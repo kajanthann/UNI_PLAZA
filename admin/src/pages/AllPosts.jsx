@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Trash2,
   Ban,
+  Eye,
   Heart,
   MessageSquare,
   AlertCircle,
@@ -10,6 +11,8 @@ import {
   MapPin,
   Users,
   CheckCircle,
+  Filter,
+  XCircle,
 } from "lucide-react";
 import { AdminContext } from "../context/AdminContext";
 import { toast } from "react-toastify";
@@ -24,6 +27,7 @@ const AllPosts = () => {
     rejected: false,
     reported: false,
   });
+  const [sortBy, setSortBy] = useState("default");
 
   useEffect(() => {
     fetchEvents();
@@ -32,6 +36,15 @@ const AllPosts = () => {
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setFilters((prev) => ({ ...prev, [name]: checked }));
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  const handleClearFilters = () => {
+    setFilters({ approved: false, rejected: false, reported: false });
+    setSortBy("default");
   };
 
   const statusColors = {
@@ -54,7 +67,6 @@ const AllPosts = () => {
   const handleToggleBlock = async (id, currentStatus) => {
     try {
       const newStatus = currentStatus === "rejected" ? "approved" : "rejected";
-
       await axiosInstance.put(`/api/admin/events/${id}/${newStatus}`);
       toast.success(
         `Event ${
@@ -71,20 +83,31 @@ const AllPosts = () => {
   };
 
   // --- Filtered events based on checkboxes ---
-  const filteredEvents = events.filter((post) => {
-    const filterKeys = Object.keys(filters).filter((key) => filters[key]);
-    if (filterKeys.length === 0) return true; // no filters selected → show all
+  let filteredEvents = events.filter((post) => {
+    const activeFilters = Object.keys(filters).filter((key) => filters[key]);
+    if (activeFilters.length === 0) return true; // no filters selected → show all
 
-    return filterKeys.some((key) => {
+    return activeFilters.some((key) => {
       if (key === "reported") return post.reports?.length > 0;
       return post.status === key;
     });
   });
 
+  // --- Sorting logic for most liked / viewed ---
+  if (sortBy === "likes") {
+    filteredEvents = [...filteredEvents].sort(
+      (a, b) => (b.likes?.length || 0) - (a.likes?.length || 0)
+    );
+  } else if (sortBy === "views") {
+    filteredEvents = [...filteredEvents].sort(
+      (a, b) => (b.views?.length || 0) - (a.views?.length || 0)
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-5 py-10">
+      {/* Header with filters */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 bg-white shadow-sm border rounded-xl p-4">
-        {/* Title */}
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-4 md:mb-0">
           All Posts{" "}
           <span className="text-gray-400 text-sm">
@@ -92,8 +115,18 @@ const AllPosts = () => {
           </span>
         </h1>
 
-        {/* Checkbox filters */}
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 items-center">
+          {(Object.values(filters).some(Boolean) || sortBy !== "default") && (
+            <button
+              onClick={handleClearFilters}
+              className="flex items-center cursor-pointer gap-2 text-gray-600 transition"
+              title="Clear all filters"
+            >
+              ✕
+            </button>
+          )}
+
+          {/* Checkbox filters */}
           {["approved", "rejected", "reported"].map((status) => (
             <label
               key={status}
@@ -108,9 +141,24 @@ const AllPosts = () => {
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </label>
           ))}
+
+          {/* Sorting dropdown */}
+          <div className="relative">
+            <select
+              value={sortBy}
+              onChange={handleSortChange}
+              className="border border-gray-400 rounded px-5 py-1 text-gray-700 bg-white focus:outline-none hover:bg-fuchsia-100 transition"
+            >
+              <option value="default">Sort By</option>
+              <option value="likes">Most Liked</option>
+              <option value="views">Most Viewed</option>
+            </select>
+            <Filter className="absolute right-4 top-2 w-4 h-4 text-gray-400" />
+          </div>
         </div>
       </div>
 
+      {/* Event Cards */}
       {loadingEvents ? (
         <p className="text-center mt-10 text-gray-500 animate-pulse">
           Loading events...
@@ -194,14 +242,31 @@ const AllPosts = () => {
                     <span className="flex items-center gap-1 text-red-500">
                       <Heart className="w-4 h-4" /> {post.likes?.length || 0}
                     </span>
-                    <span className="flex items-center gap-1 text-yellow-600">
-                      <AlertCircle className="w-4 h-4" />{" "}
-                      {post.reports?.length || 0}
-                    </span>
+                    {post.reports?.length > 0 && (
+                      <span className="flex items-center gap-1 text-yellow-600">
+                        <AlertCircle className="w-4 h-4" />
+                        {post.reports.length}
+                      </span>
+                    )}
                     <span className="flex items-center gap-1 text-blue-500">
                       <MessageSquare className="w-4 h-4" />{" "}
                       {post.comments?.length || 0}
                     </span>
+                    <span className="flex items-center gap-1 text-gray-500">
+                      <Eye className="w-4 h-4" /> {post.views?.length || 0}
+                    </span>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500 italic">
+                      {" "}
+                      {new Date(post.createdAt).toLocaleString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>

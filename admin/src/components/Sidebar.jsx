@@ -6,7 +6,7 @@ const Sidebar = () => {
   const navItems = [
         { path: '/dashboard', label: 'Dashboard', icon: <Home className="w-6 h-6 text-black"/> },
         { path: '/allPosts', label: 'All Posts', icon: <FileText className="w-6 h-6"/> },
-        { path: '/addclub', label: 'Add Clubs', icon: <PlusCircle className="w-6 h-6" /> },
+        { path: '/addpost', label: 'Add post', icon: <PlusCircle className="w-6 h-6" /> },
         { path: '/clubs', label: 'Clubs', icon: <FileText className="w-6 h-6"/> },
         { path: '/students', label: 'Students', icon: <Users className="w-6 h-6"/> },
         { path: '/settings', label: 'Settings', icon: <Settings className="w-6 h-6"/> },

@@ -13,7 +13,13 @@ const authAdmin = (req, res, next) => {
     req.admin = decoded;
     next();
   } catch (error) {
-    res.status(401).json({ success: false, message: "Invalid or expired token" });
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ success: false, message: "Token expired. Please login again." });
+    } else if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ success: false, message: "Invalid token. Not authorized." });
+    } else {
+      return res.status(401).json({ success: false, message: "Authorization error" });
+    }
   }
 };
 

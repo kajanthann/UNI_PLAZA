@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const AdminContext = createContext();
 
@@ -17,12 +18,34 @@ const AdminContextProvider = ({ children }) => {
   const [loadingStudents, setLoadingStudents] = useState(false);
   const [adminData, setAdminData] = useState({});
 
+  const navigate = useNavigate();
+
   // Axios instance
   const axiosInstance = axios.create({
     baseURL: backendUrl,
     withCredentials: true,
     headers: { Authorization: `Bearer ${aToken}` },
   });
+
+  // Add response interceptor
+  axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response?.status === 401) {
+        const msg = error.response.data?.message || "Unauthorized";
+        if (msg.includes("Token expired")) {
+          toast.error("Session expired. Please login again.");
+        } else {
+          toast.error(msg);
+        }
+        // Clear token
+        setAtoken("");
+        localStorage.removeItem("aToken");
+        navigate("/admin/login");
+      }
+      return Promise.reject(error);
+    }
+  );
 
   // --- Fetch Clubs ---
   const fetchClubs = async () => {
@@ -188,6 +211,34 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
+  // ✅ Send Email
+  const sendEmail = async ({ to, subject, text }) => {
+    if (!to || !subject?.trim() || !text?.trim()) {
+      toast.error("Please fill all fields before sending email.");
+      return;
+    }
+
+    try {
+      const { data } = await axiosInstance.post(`/api/admin/send-email`, {
+        to,
+        subject,
+        text,
+      });
+
+      if (data.success) {
+        toast.success(`Email sent successfully to ${to}`);
+        return true;
+      } else {
+        toast.error(data.message || "Failed to send email.");
+        return false;
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Error sending email.");
+      console.error("Email send error:", err);
+      return false;
+    }
+  };
+
   // --- Auto-fetch on token ---
   useEffect(() => {
     if (aToken) {
@@ -217,7 +268,8 @@ const AdminContextProvider = ({ children }) => {
     deleteEvent,
     axiosInstance,
     adminData,
-    fetchAdmins
+    fetchAdmins,
+    sendEmail,
   };
 
   return (

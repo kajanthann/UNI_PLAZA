@@ -4,7 +4,8 @@ import {
   getAllClubs, updateClubStatus, deleteClub,
   getAllUsers, deleteUser,
   getAllEvents, updateEventStatus, deleteEvent,
-  getAllAdmins
+  getAllAdmins,
+  sendEmailTo
 } from "../controllers/adminController.js";
 import authAdmin from '../middleware/authAdmin.js';
 
@@ -18,6 +19,7 @@ adminRouter.post("/verify-otp", verifyAdminOtp);
 adminRouter.use(authAdmin);
 
 adminRouter.post("/logout", logoutAdmin);
+adminRouter.post("/send-email", sendEmailTo);
 
 // Clubs routes
 adminRouter.get("/clubs", getAllClubs);

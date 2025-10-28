@@ -1,17 +1,30 @@
 import React, { useContext, useState } from "react";
 import { AdminContext } from "../context/AdminContext";
+import { Send } from "lucide-react";
+import { toast } from "react-toastify";
+import EmailModal from "../Components/EmailModal";
+import EmailButton from "../Components/EmailButton";
 
 const Clubs = () => {
-  const { clubs, updateClubStatus, loadingClubs, backendUrl } =
+  const { clubs, updateClubStatus, loadingClubs, axiosInstance, backendUrl, sendEmail } =
     useContext(AdminContext);
+
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedEmail, setSelectedEmail] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const statusColors = {
     approved: "bg-green-100 text-green-700",
     pending: "bg-yellow-100 text-yellow-700",
     rejected: "bg-red-100 text-red-700",
   };
+
+  const handleClearFilters = () => {
+    setRoleFilter("all");
+    setStatusFilter("all");
+  };
+
 
   const filteredClubs = clubs.filter((club) => {
     const roleMatch = roleFilter === "all" || club.role === roleFilter;
@@ -25,7 +38,18 @@ const Clubs = () => {
     <div className="mx-auto md:px-20 p-6 space-y-8">
       {/* Filters */}
       <div className="bg-white shadow-sm border rounded-xl p-4 mb-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Filters</h2>
+        <div className="flex items-center gap-2 mb-4">
+          <h2 className="text-xl font-semibold text-gray-800">Filters</h2>
+          {(roleFilter !== "all" || statusFilter !== "all") && (
+            <button
+              onClick={handleClearFilters}
+              className="text-gray-600 hover:text-red-600 font-semibold ml-2"
+              title="Clear filters"
+            >
+              ✕
+            </button>
+          )}
+        </div>
 
         <div className="flex flex-col sm:flex-row justify-between gap-6">
           {/* Role Filter */}
@@ -42,10 +66,8 @@ const Clubs = () => {
                     onChange={() => setRoleFilter(type)}
                     className="w-4 h-4 text-fuchsia-700 border-gray-300 rounded focus:ring-fuchsia-500"
                   />
-                  <span className="text-gray-700">
-                    {type === "all"
-                      ? "All"
-                      : type.charAt(0).toUpperCase() + type.slice(1) + "s"}
+                  <span className="text-gray-700 capitalize">
+                    {type === "all" ? "All" : `${type}s`}
                   </span>
                   <span className="text-gray-500 text-sm">
                     (
@@ -75,16 +97,12 @@ const Clubs = () => {
                     onChange={() => setStatusFilter(status)}
                     className="w-4 h-4 text-fuchsia-700 border-gray-300 rounded focus:ring-fuchsia-500"
                   />
-                  <span className="text-gray-700">
-                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  <span className="text-gray-700 capitalize">
+                    {status}
                   </span>
-
-                  {/* Show count only if status is not "all" */}
-                  {status !== "all" && (
-                    <span className="text-gray-500 text-sm">
-                      ({clubs.filter((club) => club.status === status).length})
-                    </span>
-                  )}
+                  <span className="text-gray-500 text-sm">
+                    ({clubs.filter((club) => club.status === status).length})
+                  </span>
                 </label>
               ))}
             </div>
@@ -109,10 +127,10 @@ const Clubs = () => {
                 <img
                   src={`${backendUrl}/uploads/${club.image}`}
                   alt={club.clubName}
-                  className="w-50 h-50 object-cover border"
+                  className="w-50 h-50 object-cover border rounded-full"
                 />
-                <div className="text-center mt-3">
-                  <p className="text-gray-600 text-sm">{club.officialEmail}</p>
+                <div className="text-center mt-2 flex flex-col">
+                  <EmailButton email={club.officialEmail} className="justify-center" />
                   <p className="text-gray-600 text-sm">{club.university}</p>
                 </div>
               </div>
@@ -162,7 +180,7 @@ const Clubs = () => {
                       <h3 className="text-lg font-semibold text-gray-700">
                         Personal Email
                       </h3>
-                      <p className="text-gray-600">{club.email}</p>
+                      <EmailButton email={club.email} />
                     </div>
                   </div>
 
@@ -196,6 +214,15 @@ const Clubs = () => {
             </div>
           </div>
         ))
+      )}
+
+      {/* ✅ Email Modal */}
+      {showModal && (
+        <EmailModal
+          onClose={() => setShowModal(false)}
+          onSend={handleSendEmail}
+          email={selectedEmail}
+        />
       )}
     </div>
   );

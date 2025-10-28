@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { AdminContext } from "../context/AdminContext";
 import { toast } from "react-toastify";
+import EmailModal from "./EmailModal";
 
 const PostDetailsPage = () => {
   const { id } = useParams();
@@ -70,23 +71,24 @@ const PostDetailsPage = () => {
   };
 
   const handleToggleBlock = async (id, currentStatus) => {
-  try {
-    const newStatus = currentStatus === "rejected" ? "approved" : "rejected";
+    try {
+      const newStatus = currentStatus === "rejected" ? "approved" : "rejected";
 
-    await axiosInstance.put(`/api/admin/events/${id}/${newStatus}`);
-    toast.success(
-      `Event ${newStatus === "rejected" ? "blocked" : "unblocked"} successfully`
-    );
+      await axiosInstance.put(`/api/admin/events/${id}/${newStatus}`);
+      toast.success(
+        `Event ${
+          newStatus === "rejected" ? "blocked" : "unblocked"
+        } successfully`
+      );
 
-    fetchPost();
-  } catch (err) {
-    console.error(err);
-    toast.error(
-      err.response?.data?.message || "Failed to update event status"
-    );
-  }
-};
-
+      fetchPost();
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        err.response?.data?.message || "Failed to update event status"
+      );
+    }
+  };
 
   if (loading)
     return (
@@ -158,6 +160,15 @@ const PostDetailsPage = () => {
                 <MessageSquare className="w-5 h-5" />{" "}
                 {post.comments?.length || 0}
               </div>
+              <div className="text-xs text-gray-500 italic">
+                {new Date(post.createdAt).toLocaleString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </div>
             </div>
 
             <div className="flex gap-2">
@@ -169,7 +180,7 @@ const PostDetailsPage = () => {
                 className={`p-2 rounded-full shadow-sm transition ${
                   post.status === "rejected"
                     ? "bg-green-100 hover:bg-green-200"
-                    : "bg-yellow-100 hover:bg-yellow-200"
+                    : "bg-yellow-100 px-2.5 hover:bg-yellow-200"
                 }`}
                 title={
                   post.status === "rejected" ? "Unblock Post" : "Block Post"

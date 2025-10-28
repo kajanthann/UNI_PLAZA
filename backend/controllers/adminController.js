@@ -158,7 +158,7 @@ export const updateClubStatus = async (req, res) => {
     club.status = status;
     await club.save();
 
-    res.status(200).json({ success: true, message: `Club ${status}`, club });
+    res.status(200).json({ success: true, message: `Club ${status} successfully`, club });
   } catch (error) {
     console.error("Error updating club status:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -264,5 +264,40 @@ export const deleteEvent = async (req, res) => {
     res.status(200).json({ success: true, message: "Event deleted successfully" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// --- SEND EMAIL ---
+export const sendEmailTo = async (req, res) => {
+  try {
+    const { to, subject, text } = req.body;
+
+    // --- Input validation ---
+    if (!to || typeof to !== "string" || !to.includes("@")) {
+      return res.status(400).json({ success: false, message: "Invalid recipient email" });
+    }
+
+    if (!subject || !subject.trim()) {
+      return res.status(400).json({ success: false, message: "Email subject is required" });
+    }
+
+    if (!text || !text.trim()) {
+      return res.status(400).json({ success: false, message: "Email message is required" });
+    }
+
+    // --- Debug logs ---
+    console.log("Sending email:");
+    console.log("To:", to);
+    console.log("Subject:", subject);
+    console.log("Message:", text);
+
+    // --- Send email ---
+    await sendEmail(to, subject, text);
+
+    console.log(`Email sent successfully to ${to}`);
+    return res.status(200).json({ success: true, message: `Email sent to ${to}` });
+  } catch (error) {
+    console.error("Error sending email:", error.message);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };

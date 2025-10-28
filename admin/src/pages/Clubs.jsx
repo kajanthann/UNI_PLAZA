@@ -43,7 +43,7 @@ const Clubs = () => {
           {(roleFilter !== "all" || statusFilter !== "all") && (
             <button
               onClick={handleClearFilters}
-              className="text-gray-600 hover:text-red-600 font-semibold ml-2"
+              className="text-gray-600 hover:text-red-600 font-semibold ml-2 cursor-pointer"
               title="Clear filters"
             >
               ✕

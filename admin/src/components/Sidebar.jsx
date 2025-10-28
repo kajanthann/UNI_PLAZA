@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, FileText, PlusCircle, Users, LogIn, MailCheck, Settings } from 'lucide-react';
+import { Home, FileText, PlusCircle, Users, LogIn, MessageCircle , Settings } from 'lucide-react';
 
 const Sidebar = () => {
   const navItems = [
@@ -10,6 +10,7 @@ const Sidebar = () => {
         { path: '/clubs', label: 'Clubs', icon: <FileText className="w-6 h-6"/> },
         { path: '/students', label: 'Students', icon: <Users className="w-6 h-6"/> },
         { path: '/settings', label: 'Settings', icon: <Settings className="w-6 h-6"/> },
+        { path: '/feedbacks', label: 'Feedbacks', icon: <MessageCircle  className="w-6 h-6"/> },
     ];
 
   return (

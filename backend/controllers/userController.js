@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import sendEmail from "../middleware/sendEmail.js";
 import userModel from "../models/userModel.js";
+import feedBackModel from "../models/feedBackModel.js";
 
 // --- REGISTER ---
 export const register = async (req, res) => {
@@ -272,3 +273,29 @@ export const updateUserProfile = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// FeesdBack
+export const submitFeedback = async (req, res) => {
+  try {
+    
+    const { name, email, message, rating, subject } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email and message are required" });
+    }
+    if (!message) {
+      return res.status(400).json({ success: false, message: "Message is required" });
+    }
+    if (!subject) {
+      return res.status(400).json({ success: false, message: "Subject is required" });
+    }
+    if (rating && (rating < 1 || rating > 5)) {
+      return res.status(400).json({ success: false, message: "Rating must be between 1 and 5" });
+    }
+    const feedback = new feedBackModel({ name, email, message, rating, subject });
+    await feedback.save();
+    res.status(200).json({ success: true, message: "Feedback submitted successfully" });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}

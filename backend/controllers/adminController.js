@@ -4,6 +4,7 @@ import clubModel from "../models/clubModel.js";
 import userModel from "../models/userModel.js";
 import eventModel from "../models/eventModel.js";
 import adminModel from "../models/adminModel.js";
+import feedBackModel from "../models/feedBackModel.js";
 
 
 // Temporary in-memory OTP store
@@ -299,5 +300,19 @@ export const sendEmailTo = async (req, res) => {
   } catch (error) {
     console.error("Error sending email:", error.message);
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get all user feedback
+export const getUserFeedback = async (req, res) => {
+  try {
+    const feedbacks = await feedBackModel
+      .find({}, { name: 1, email: 1, subject: 1, message: 1, rating: 1, createdAt: 1, _id: 0 })
+      .lean();
+
+
+    res.status(200).json({ success: true, feedbacks });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

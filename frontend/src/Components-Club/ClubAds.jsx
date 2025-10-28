@@ -55,8 +55,8 @@ export default function ClubAds(){
                         <div className="flex w-5/10 items-center mb-5">
                             <h2 className="text-2xl font-bold mr-6 ">Create New Content</h2>
                             <div className='grid grid-cols-2 gap-4 items-center'>
-                                <button className={`${form ? "text-3xl text-buttonBlue" : "text-xl text-gray-400"}`} onClick={handleForm}>Event</button>
-                                <button className={`${!form ? "text-3xl text-buttonBlue" : "text-xl text-gray-400"}`} onClick={handleForm}>Other</button>
+                                <button className={`${form ? "text-3xl text-buttonBlue underline" : "text-xl text-gray-400"}`} onClick={handleForm}>Event</button>
+                                <button className={`${!form ? "text-3xl text-buttonBlue underline" : "text-xl text-gray-400"}`} onClick={handleForm}>Other</button>
                             </div>
                         </div>
                         <div className="flex items-center">

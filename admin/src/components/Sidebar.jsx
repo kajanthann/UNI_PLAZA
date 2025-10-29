@@ -11,6 +11,7 @@ const Sidebar = () => {
         { path: '/students', label: 'Students', icon: <Users className="w-6 h-6"/> },
         { path: '/settings', label: 'Settings', icon: <Settings className="w-6 h-6"/> },
         { path: '/feedbacks', label: 'Feedbacks', icon: <MessageCircle  className="w-6 h-6"/> },
+        { path: '/animation', label: 'Animation', icon: <MessageCircle  className="w-6 h-6"/> },
     ];
 
   return (
@@ -21,13 +22,13 @@ const Sidebar = () => {
             key={idx}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center gap-4 text-[18px] py-3.5 px-3 md:px-6 lg:px-9 md:min-w-50 lg:min-w-60 cursor-pointer transition ${
+              `flex items-center gap-4 text-[18px] py-3.5 px-3 lg:px-9 lg:min-w-60 cursor-pointer transition ${
                 isActive ? 'border-r-4 border-fuchsia-500 bg-[#f4f1f6]' : ''
               }`
             }
           >
             {item.icon}
-            <p className='hidden md:block'>{item.label}</p>
+            <p className='hidden lg:block'>{item.label}</p>
           </NavLink>
         ))}
       </ul>

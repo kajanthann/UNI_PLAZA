@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { AdminContext } from "../context/AdminContext";
+import Animation from "../Components/Animation";
 
 const Students = () => {
   const { students, loadingStudents, fetchStudents } = useContext(AdminContext);
@@ -22,7 +23,7 @@ const Students = () => {
   };
 
   if (loadingStudents) {
-    return <div className="p-6 text-center">Loading students...</div>;
+    return <Animation />;
   }
 
   return (

@@ -14,6 +14,7 @@ import PostDetailsPage from "./Components/PostDetailsPage";
 import Navbar from "./Components/Navbar";
 import Setting from "./pages/Setting";
 import FeedBack from "./pages/FeedBack";
+import Animation from "./Components/Animation";
 
 const ProtectedRoute = ({ children }) => {
   const { aToken } = useContext(AdminContext);
@@ -64,6 +65,7 @@ const App = () => {
                     <Route path="students" element={<Students />} />
                     <Route path="settings" element={<Setting />} />
                     <Route path="feedbacks" element={<FeedBack />} />
+                    <Route path="animation" element={<Animation />} />
                     <Route
                       path="admin/posts/:id"
                       element={<PostDetailsPage />}

@@ -165,51 +165,33 @@ const AdminContextProvider = ({ children }) => {
   };
 
   // --- Update Event Status ---
-  const updateEventStatus = async (eventId, newStatus) => {
-    if (!["approved", "rejected"].includes(newStatus)) {
-      toast.error("Invalid status");
-      return;
-    }
-
-    const prevEvents = [...events];
-    setEvents((prev) =>
-      prev.map((e) => (e._id === eventId ? { ...e, status: newStatus } : e))
-    );
-
+  const updateEventStatus = async (id, currentStatus) => {
     try {
-      const { data } = await axiosInstance.put(
-        `/api/admin/events/${eventId}/${newStatus}`
+      const newStatus = currentStatus === "rejected" ? "approved" : "rejected";
+      await axiosInstance.put(`/api/admin/events/${id}/${newStatus}`);
+      toast.success(
+        `Event ${
+          newStatus === "rejected" ? "blocked" : "unblocked"
+        } successfully`
       );
-      if (data.success) {
-        toast.success(data.message || `Event status updated to ${newStatus}`);
-        fetchEvents();
-      } else {
-        toast.error(data.message);
-        setEvents(prevEvents);
-      }
+      fetchEvents();
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
-      setEvents(prevEvents);
+      console.error(err);
+      toast.error(
+        err.response?.data?.message || "Failed to update event status"
+      );
     }
   };
 
   // --- Delete Event ---
-  const deleteEvent = async (eventId) => {
-    const prevEvents = [...events];
-    setEvents((prev) => prev.filter((e) => e._id !== eventId));
+  const deleteEvent = async (id) => {
     try {
-      const { data } = await axiosInstance.delete(
-        `/api/admin/events/${eventId}`
-      );
-      if (data.success) {
-        toast.success(data.message || "Event deleted successfully");
-      } else {
-        toast.error(data.message);
-        setEvents(prevEvents);
-      }
+      await axiosInstance.delete(`/api/admin/events/${id}`);
+      toast.success("Event deleted successfully");
+      fetchEvents();
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
-      setEvents(prevEvents);
+      console.error(err);
+      toast.error(err.response?.data?.message || "Failed to delete event");
     }
   };
 

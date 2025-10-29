@@ -12,14 +12,14 @@ import {
   Users,
   CheckCircle,
   Filter,
-  XCircle,
 } from "lucide-react";
 import { AdminContext } from "../context/AdminContext";
 import { toast } from "react-toastify";
+import Animation from "../Components/Animation";
 
 const AllPosts = () => {
   const navigate = useNavigate();
-  const { events, loadingEvents, fetchEvents, axiosInstance, backendUrl } =
+  const { events, loadingEvents, fetchEvents, axiosInstance, backendUrl, deleteEvent, updateEventStatus } =
     useContext(AdminContext);
 
   const [filters, setFilters] = useState({
@@ -82,31 +82,47 @@ const AllPosts = () => {
     }
   };
 
-  // --- Filtered events based on checkboxes ---
+  // --- Filter logic ---
   let filteredEvents = events.filter((post) => {
     const activeFilters = Object.keys(filters).filter((key) => filters[key]);
-    if (activeFilters.length === 0) return true; // no filters selected → show all
-
+    if (activeFilters.length === 0) return true; // no filters selected
     return activeFilters.some((key) => {
       if (key === "reported") return post.reports?.length > 0;
       return post.status === key;
     });
   });
 
-  // --- Sorting logic for most liked / viewed ---
-  if (sortBy === "likes") {
-    filteredEvents = [...filteredEvents].sort(
-      (a, b) => (b.likes?.length || 0) - (a.likes?.length || 0)
-    );
-  } else if (sortBy === "views") {
-    filteredEvents = [...filteredEvents].sort(
-      (a, b) => (b.views?.length || 0) - (a.views?.length || 0)
-    );
+  // --- Sort logic ---
+  switch (sortBy) {
+    case "likes":
+      filteredEvents = [...filteredEvents].sort(
+        (a, b) => (b.likes?.length || 0) - (a.likes?.length || 0)
+      );
+      break;
+    case "views":
+      filteredEvents = [...filteredEvents].sort(
+        (a, b) => (b.views?.length || 0) - (a.views?.length || 0)
+      );
+      break;
+    case "latest":
+      filteredEvents = [...filteredEvents].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      break;
+    case "oldest":
+      filteredEvents = [...filteredEvents].sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
+      break;
+    default:
+      break;
   }
+
+  if (loadingEvents) return <Animation />;
 
   return (
     <div className="max-w-7xl mx-auto px-5 py-10">
-      {/* Header with filters */}
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 bg-white shadow-sm border rounded-xl p-4">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-4 md:mb-0">
           All Posts{" "}
@@ -119,10 +135,10 @@ const AllPosts = () => {
           {(Object.values(filters).some(Boolean) || sortBy !== "default") && (
             <button
               onClick={handleClearFilters}
-              className="flex items-center cursor-pointer gap-2 text-gray-600 transition"
+              className="flex items-center cursor-pointer gap-2 text-gray-600 hover:text-red-500 transition"
               title="Clear all filters"
             >
-              ✕
+              ✕ Clear
             </button>
           )}
 
@@ -152,6 +168,8 @@ const AllPosts = () => {
               <option value="default">Sort By</option>
               <option value="likes">Most Liked</option>
               <option value="views">Most Viewed</option>
+              <option value="latest">Latest</option>
+              <option value="oldest">Oldest</option>
             </select>
             <Filter className="absolute right-4 top-2 w-4 h-4 text-gray-400" />
           </div>
@@ -159,11 +177,7 @@ const AllPosts = () => {
       </div>
 
       {/* Event Cards */}
-      {loadingEvents ? (
-        <p className="text-center mt-10 text-gray-500 animate-pulse">
-          Loading events...
-        </p>
-      ) : filteredEvents.length === 0 ? (
+      {filteredEvents.length === 0 ? (
         <p className="text-center mt-10 text-gray-600">No events found.</p>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -256,17 +270,14 @@ const AllPosts = () => {
                       <Eye className="w-4 h-4" /> {post.views?.length || 0}
                     </span>
                   </div>
-                  <div>
-                    <div className="text-xs text-gray-500 italic">
-                      {" "}
-                      {new Date(post.createdAt).toLocaleString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </div>
+                  <div className="text-xs text-gray-500 italic">
+                    {new Date(post.createdAt).toLocaleString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </div>
                 </div>
               </div>
@@ -276,7 +287,7 @@ const AllPosts = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleToggleBlock(post._id, post.status);
+                    updateEventStatus(post._id, post.status);
                   }}
                   className={`p-2 rounded-full shadow-sm transition ${
                     post.status === "rejected"
@@ -297,7 +308,7 @@ const AllPosts = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDelete(post._id);
+                    deleteEvent(post._id);
                   }}
                   className="p-2 bg-red-100 hover:bg-red-200 rounded-full shadow-sm transition"
                   title="Delete Post"

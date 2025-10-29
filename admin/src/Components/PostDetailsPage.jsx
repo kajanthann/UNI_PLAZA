@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import { AdminContext } from "../context/AdminContext";
 import { toast } from "react-toastify";
-import EmailModal from "./EmailModal";
 
 const PostDetailsPage = () => {
   const { id } = useParams();
@@ -58,11 +57,11 @@ const PostDetailsPage = () => {
     fetchPost();
   }, [id]);
 
+  // Handle Delete using context function
   const handleDelete = async () => {
     if (!post) return;
     try {
-      await deleteEvent(post._id);
-      toast.success("Post deleted successfully");
+      await deleteEvent(post._id); // context function handles toast & fetch
       navigate(-1);
     } catch (err) {
       console.error(err);
@@ -70,23 +69,15 @@ const PostDetailsPage = () => {
     }
   };
 
-  const handleToggleBlock = async (id, currentStatus) => {
+  // Handle Block/Unblock using context function
+  const handleToggleBlock = async () => {
+    if (!post) return;
     try {
-      const newStatus = currentStatus === "rejected" ? "approved" : "rejected";
-
-      await axiosInstance.put(`/api/admin/events/${id}/${newStatus}`);
-      toast.success(
-        `Event ${
-          newStatus === "rejected" ? "blocked" : "unblocked"
-        } successfully`
-      );
-
-      fetchPost();
+      await updateEventStatus(post._id, post.status); // context handles toast & fetch
+      fetchPost(); // refresh local post after update
     } catch (err) {
       console.error(err);
-      toast.error(
-        err.response?.data?.message || "Failed to update event status"
-      );
+      toast.error(err.response?.data?.message || "Failed to update event status");
     }
   };
 
@@ -157,8 +148,7 @@ const PostDetailsPage = () => {
                 <Heart className="w-5 h-5" /> {post.likes?.length || 0}
               </div>
               <div className="flex items-center gap-1 text-blue-500">
-                <MessageSquare className="w-5 h-5" />{" "}
-                {post.comments?.length || 0}
+                <MessageSquare className="w-5 h-5" /> {post.comments?.length || 0}
               </div>
               <div className="text-xs text-gray-500 italic">
                 {new Date(post.createdAt).toLocaleString("en-GB", {
@@ -173,18 +163,13 @@ const PostDetailsPage = () => {
 
             <div className="flex gap-2">
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleToggleBlock(post._id, post.status);
-                }}
+                onClick={handleToggleBlock}
                 className={`p-2 rounded-full shadow-sm transition ${
                   post.status === "rejected"
                     ? "bg-green-100 hover:bg-green-200"
                     : "bg-yellow-100 px-2.5 hover:bg-yellow-200"
                 }`}
-                title={
-                  post.status === "rejected" ? "Unblock Post" : "Block Post"
-                }
+                title={post.status === "rejected" ? "Unblock Post" : "Block Post"}
               >
                 {post.status === "rejected" ? (
                   <CheckCircle className="w-4 h-4 text-green-700" />
@@ -274,17 +259,15 @@ const PostDetailsPage = () => {
             </p>
             <p className="flex items-center gap-2">
               <Eye className="w-4 h-4 text-gray-500" />
-              <span className="font-semibold">Views:</span>{" "}
-              {post.views?.length || 0}
+              <span className="font-semibold">Views:</span> {post.views?.length || 0}
             </p>
           </div>
 
           {/* Reports */}
-          {
+          {(
             <div className="mt-4 border-t pt-4">
               <h3 className="flex items-center gap-2 font-semibold text-red-600">
-                <AlertCircle className="w-5 h-5" /> Reports (
-                {post.reports.length})
+                <AlertCircle className="w-5 h-5" /> Reports ({post.reports.length})
               </h3>
               <ul className="list-disc pl-6 mt-2 text-sm text-gray-700">
                 {post.reports.map((r, i) => (
@@ -295,14 +278,13 @@ const PostDetailsPage = () => {
                 ))}
               </ul>
             </div>
-          }
+          )}
 
           {/* Comments */}
-          {
+          {(
             <div className="mt-4 border-t pt-4">
               <h3 className="flex items-center gap-2 font-semibold text-blue-600">
-                <MessageSquare className="w-5 h-5" /> Comments (
-                {post.comments.length})
+                <MessageSquare className="w-5 h-5" /> Comments ({post.comments.length})
               </h3>
               <div className="mt-2 space-y-2">
                 {post.comments.map((c, i) => (
@@ -322,7 +304,7 @@ const PostDetailsPage = () => {
                 ))}
               </div>
             </div>
-          }
+          )}
         </div>
       </div>
     </div>

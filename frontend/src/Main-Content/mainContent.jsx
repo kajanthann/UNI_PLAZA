@@ -39,7 +39,7 @@ function MainContent({name,image,role,type}){
                 <div>
                     <Slider messages={messages} role={role}/>
                 </div>
-                <div>
+                <div className="w-full">
                     {role === 'Club' && (
                         <>
                             {type === 'ClubDashboard' && <ClubDashboard/>}

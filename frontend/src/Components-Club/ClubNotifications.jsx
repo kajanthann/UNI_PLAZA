@@ -1,8 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUserTie,faTriangleExclamation,faCrown,faCalendar} from '@fortawesome/free-solid-svg-icons';
 import AdDetailsImage from '../assets/ad_details_image.png'
+import {useState} from "react";
 
 export default function ClubNotifications(){
+    const [common,setCommon] = useState(true);
+    const [unread, setUnread] = useState(false);
+    const [register,setRegister] = useState(false);
+    const [adminApprove,setAdminApprove] = useState(false);
 
     const Notifications = {
         common: [
@@ -23,16 +28,163 @@ export default function ClubNotifications(){
         ],
     };
 
+    const functionChange = (bool1,bool2,bool3,bool4)=>{
+        setCommon(bool1);
+        setUnread(bool2);
+        setRegister(bool3);
+        setAdminApprove(bool4);
+    }
+
 
     return (
-        <div className="flex flex-col w-full">
-            <h2 className="text-3xl font-bold m-2 w-[90%] mx-auto">Club Profile</h2>
-            <div className="w-[90%] mx-auto">
-                <div className="flex whitespace-nowrap gap-10 text-gray-600 text-lg font-semibold">
-                    <div className="cursor-pointer hover:text-blue-600">All Notifications</div>
-                    <div className="cursor-pointer hover:text-blue-600">Unread</div>
-                    <div className="cursor-pointer hover:text-blue-600">Registration</div>
-                    <div className="cursor-pointer hover:text-blue-600">Admin Updates</div>
+        <div className="flex flex-col w-full min-h-screen my-5">
+            <h2 className="text-3xl font-bold m-2 w-93/100 mx-auto">Club Profile</h2>
+            <div className="flex w-93/100 mx-auto">
+                <div className="w-5/7 mr-4">
+                    <div className="flex justify-end my-3">
+                        <div className="grid grid-cols-2 gap-4">
+                            <button className="bg-blue-100 p-2 text-skyblue font-semibold rounded-lg">Delete All</button>
+                            <button className="bg-blue-100 p-2 text-skyblue font-semibold rounded-lg">Mark All as Read</button>
+                        </div>
+                    </div>
+                    <div className="flex whitespace-nowrap gap-10 text-gray-600 text-lg font-semibold mb-5">
+                        <div className={`cursor-pointer hover:text-blue-600 w-1/4 ${common ? "border-b-2 border-buttonBlue text-buttonBlue":"text-black"}`} onClick={()=>(functionChange(true,false,false,false))}>All Notifications</div>
+                        <div className={`cursor-pointer hover:text-blue-600 w-1/4 ${unread ? "border-b-2 border-buttonBlue text-buttonBlue":"text-black"}`} onClick={()=>(functionChange(false,true,false,false))}>Unread
+                            <span> ({Notifications.unread.length})</span>
+                        </div>
+                        <div className={`cursor-pointer hover:text-blue-600 w-1/4 ${register ? "border-b-2 border-buttonBlue text-buttonBlue":"text-black"}`} onClick={()=>(functionChange(false,false,true,false))}>Registration
+                            <span> ({Notifications.registrations.length})</span>
+                        </div>
+                        <div className={`cursor-pointer hover:text-blue-600 w-1/4 ${adminApprove ? "border-b-2 border-buttonBlue text-buttonBlue":"text-black"}`} onClick={()=>(functionChange(false,false,false,true))}>Admin Updates
+                            <span> ({Notifications.adminApproval.length})</span>
+                        </div>
+                    </div>
+                    <div className="w-full my-5">
+                        {
+                            common && (
+                                <>
+                                    {
+                                        Notifications.common.map((item, index) => (
+                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl">
+                                                <div className="w-1/7">
+                                                    <div className="w-fit mx-auto">
+                                                        <FontAwesomeIcon icon={item.icon} size={"xl"}/>
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col w-5/7">
+                                                    <span className="font-bold text-lg">{item.title}</span>
+                                                    <span>{item.msg}</span>
+                                                </div>
+                                                <div className="flex w-1/7">
+                                                    <span className="flex text-center items-end">{item.time}</span>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </>
+                            )
+                        }
+
+                        {
+                            unread && (
+                                <>
+                                    {
+                                        Notifications.unread.map((item, index) => (
+                                            <div key={index} className="flex items-center mb-5">
+                                                <div className="w-1/4">
+                                                    <FontAwesomeIcon icon={item.icon} size={"xl"} className=""/>
+                                                </div>
+                                                <div className="flex flex-col w-1/2">
+                                                    <span className="font-bold text-lg">{item.title}</span>
+                                                    <span>{item.msg}</span>
+                                                </div>
+                                                <div className="flex w-1/4">
+                                                    <span className="flex text-center items-end">{item.time}</span>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </>
+                            )
+                        }
+
+                        {
+                            register && (
+                                <>
+                                    {
+                                        Notifications.registrations.map((item, index) => (
+                                            <div key={index} className="flex items-center mb-5">
+                                                <div className="w-1/4">
+                                                    <FontAwesomeIcon icon={item.icon} size={"xl"} className=""/>
+                                                </div>
+                                                <div className="flex flex-col w-1/2">
+                                                    <span className="font-bold text-lg">{item.title}</span>
+                                                    <span>{item.msg}</span>
+                                                </div>
+                                                <div className="flex w-1/4">
+                                                    <span className="flex text-center items-end">{item.time}</span>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </>
+                            )
+                        }
+
+                        {
+                            adminApprove && (
+                                <>
+                                    {
+                                        Notifications.adminApproval.map((item, index) => (
+                                            <div key={index} className="flex items-center mb-5">
+                                                <div className="w-1/4">
+                                                    <FontAwesomeIcon icon={item.icon} size={"xl"} className=""/>
+                                                </div>
+                                                <div className="flex flex-col w-1/2">
+                                                    <span className="font-bold text-lg">{item.title}</span>
+                                                    <span>{item.msg}</span>
+                                                </div>
+                                                <div className="flex w-1/4">
+                                                    <span className="flex text-center items-end">{item.time}</span>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </>
+                            )
+                        }
+
+                    </div>
+                </div>
+                <div  className="w-2/7 border border-gray-300 p-3 rounded-2xl">
+                    <h3 className="text-2xl font-bold">Quick Status</h3>
+                    <div className="flex my-5 bg-gray-100 rounded-xl">
+                        <div className="w-fit m-4">
+                            <h3 className="text-lg font-bold mb-1">New Registrations</h3>
+                            <span className="text-3xl font-bold mb-1">12</span>
+                            <p>new students registered in last 24h</p>
+                        </div>
+                    </div>
+                    <div className="flex my-5 bg-gray-100 rounded-xl mb-5">
+                        <div className="w-fit m-4">
+                            <h3 className="text-lg font-bold mb-1">Urgent Issues</h3>
+                            <span className="text-3xl font-bold mb-1">1</span>
+                            <p>event requires approval</p>
+                        </div>
+                    </div>
+                    <div className="flex my-5 bg-gray-100 rounded-xl mb-5">
+                        <div className="w-fit m-4">
+                            <h3 className="text-lg font-bold mb-1">Upcoming Deadlines</h3>
+                            <span className="text-3xl font-bold mb-1">2</span>
+                            <p>Days to closes the Tech Workshop registration</p>
+                        </div>
+                    </div>
+                    <div className="flex my-5 bg-gray-100 rounded-xl mb-5">
+                        <div className="w-fit m-4">
+                            <h3 className="text-lg font-bold mb-1">Total Unread</h3>
+                            <span className="text-3xl font-bold">25</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

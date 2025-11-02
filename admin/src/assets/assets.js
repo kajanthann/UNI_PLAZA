@@ -14,6 +14,7 @@ import patients_icon from './patients_icon.svg'
 import clubs from './exchange_icon.png'
 import feedback from './feedbackImage.png'
 import profile from './profile_icon.png'
+import upload from './cloud.png'
 
 export const assets = {
     add_icon,
@@ -31,5 +32,6 @@ export const assets = {
     earning_icon,
     clubs,
     profile,
-    feedback
+    feedback,
+    upload
 }

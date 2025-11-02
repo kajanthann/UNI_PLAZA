@@ -6,9 +6,15 @@ import {
   getAllEvents, updateEventStatus, deleteEvent,
   getAllAdmins,
   sendEmailTo,
-  getUserFeedback
+  getUserFeedback,
+  adminAddPost,
+  adminEditPost,
+  adminDeletePost,
+  togglePublishPost,
+  getAllAdminPost
 } from "../controllers/adminController.js";
 import authAdmin from '../middleware/authAdmin.js';
+import upload from '../middleware/multer.js';
 
 const adminRouter = express.Router();
 
@@ -41,6 +47,11 @@ adminRouter.delete("/events/:eventId", deleteEvent);
 
 // admin
 adminRouter.get('/admins', getAllAdmins)
+adminRouter.post("/add", upload.single("image"), adminAddPost);
+adminRouter.put("/:postId/edit", upload.single("image"), adminEditPost);
+adminRouter.delete("/delete/:postId", adminDeletePost);
+adminRouter.patch("/is-publish/:postId", togglePublishPost);
+adminRouter.get("/all-posts", getAllAdminPost);
 
 // Dashboard route
 adminRouter.get("/dashboard", (req, res) => {

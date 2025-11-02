@@ -7,9 +7,9 @@ export const AdminContext = createContext();
 
 const AdminContextProvider = ({ children }) => {
   const [aToken, setAtoken] = useState(localStorage.getItem("aToken") || "");
-
   const backendUrl = "http://localhost:5000";
 
+  // States
   const [clubs, setClubs] = useState([]);
   const [loadingClubs, setLoadingClubs] = useState(false);
   const [events, setEvents] = useState([]);
@@ -19,28 +19,29 @@ const AdminContextProvider = ({ children }) => {
   const [adminData, setAdminData] = useState({});
   const [feedbacks, setFeedbacks] = useState([]);
   const [loadingFeedbacks, setLoadingFeedbacks] = useState(false);
+  const [adminPosts, setAdminPosts] = useState([]);
+  const [loadingAdminPosts, setLoadingAdminPosts] = useState(false);
 
   const navigate = useNavigate();
 
-  // Axios instance
+  // Axios instance with interceptor
   const axiosInstance = axios.create({
     baseURL: backendUrl,
     withCredentials: true,
     headers: { Authorization: `Bearer ${aToken}` },
   });
 
-  // Add response interceptor
   axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
       if (error.response?.status === 401) {
         const msg = error.response.data?.message || "Unauthorized";
-        if (msg.includes("Token expired")) {
-          toast.error("Session expired. Please login again.");
-        } else {
-          toast.error(msg);
-        }
-        // Clear token
+        toast.error(
+          msg.includes("Token expired")
+            ? "Session expired. Please login again."
+            : msg
+        );
+
         setAtoken("");
         localStorage.removeItem("aToken");
         navigate("/admin/login");
@@ -49,81 +50,25 @@ const AdminContextProvider = ({ children }) => {
     }
   );
 
-  // --- Fetch Clubs ---
+  // ----------------------------
+  // CLUB MANAGEMENT
+  // ----------------------------
+
   const fetchClubs = async () => {
     setLoadingClubs(true);
     try {
       const { data } = await axiosInstance.get("/api/admin/clubs");
-      if (data.success) {
-        setClubs(data.clubs || []);
-        console.log("Fetched clubs:", data.clubs);
-      } else {
-        toast.error(data.message);
-      }
+      if (data.success) setClubs(data.clubs || []);
+      else toast.error(data.message);
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
+      toast.error(err.response?.data?.message || "Failed to fetch clubs");
     } finally {
       setLoadingClubs(false);
     }
   };
 
-  // --- Fetch Events ---
-  const fetchEvents = async () => {
-    setLoadingEvents(true);
-    try {
-      const { data } = await axiosInstance.get("/api/admin/events");
-      if (data.success) {
-        setEvents(data.events || []);
-        console.log("Fetched events:", data.events);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
-    } finally {
-      setLoadingEvents(false);
-    }
-  };
-
-  // --- Fetch Students ---
-  const fetchStudents = async () => {
-    setLoadingStudents(true);
-    try {
-      const { data } = await axiosInstance.get("/api/admin/users");
-      if (data.success) {
-        setStudents(data.users || []);
-        console.log("Fetched students:", data.users);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
-    } finally {
-      setLoadingStudents(false);
-    }
-  };
-
-  // --- fetch admins ---
-  const fetchAdmins = async () => {
-    try {
-      const { data } = await axiosInstance.get("/api/admin/admins");
-      if (data.success) {
-        setAdminData(data.admins || []);
-        console.log("Fetched admins:", data.admins);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
-    }
-  };
-
-  // --- Update Club Status ---
   const updateClubStatus = async (clubId, newStatus) => {
-    if (newStatus === "pending") {
-      toast.error("Cannot manually set status to pending");
-      return;
-    }
+    if (newStatus === "pending") return toast.error("Cannot set to pending");
     const prevClubs = [...clubs];
     setClubs((prev) =>
       prev.map((c) => (c._id === clubId ? { ...c, status: newStatus } : c))
@@ -134,81 +79,134 @@ const AdminContextProvider = ({ children }) => {
         `/api/admin/clubs/${clubId}/${newStatus}`
       );
       if (data.success) {
-        toast.success(data.message || `Club status updated to ${newStatus}`);
+        toast.success(`Club status updated to ${newStatus}`);
         fetchClubs();
       } else {
         toast.error(data.message);
         setClubs(prevClubs);
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
+      toast.error(err.response?.data?.message || "Failed to update status");
       setClubs(prevClubs);
     }
   };
 
-  // --- Delete Club ---
   const deleteClub = async (clubId) => {
     const prevClubs = [...clubs];
     setClubs((prev) => prev.filter((c) => c._id !== clubId));
     try {
       const { data } = await axiosInstance.delete(`/api/admin/clubs/${clubId}`);
-      if (data.success) {
-        toast.success(data.message || "Club deleted successfully");
-      } else {
+      if (data.success) toast.success("Club deleted successfully");
+      else {
         toast.error(data.message);
         setClubs(prevClubs);
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
+      toast.error(err.response?.data?.message || "Failed to delete club");
       setClubs(prevClubs);
     }
   };
 
-  // --- Update Event Status ---
+  // ----------------------------
+  // EVENT MANAGEMENT
+  // ----------------------------
+
+  const fetchEvents = async () => {
+    setLoadingEvents(true);
+    try {
+      const { data } = await axiosInstance.get("/api/admin/events");
+      if (data.success) setEvents(data.events || []);
+      else toast.error(data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to fetch events");
+    } finally {
+      setLoadingEvents(false);
+    }
+  };
+
   const updateEventStatus = async (id, currentStatus) => {
     try {
       const newStatus = currentStatus === "rejected" ? "approved" : "rejected";
       await axiosInstance.put(`/api/admin/events/${id}/${newStatus}`);
-      toast.success(
-        `Event ${
-          newStatus === "rejected" ? "blocked" : "unblocked"
-        } successfully`
-      );
+      toast.success(`Event ${newStatus === "rejected" ? "blocked" : "unblocked"} successfully`);
       fetchEvents();
     } catch (err) {
-      console.error(err);
-      toast.error(
-        err.response?.data?.message || "Failed to update event status"
-      );
+      toast.error(err.response?.data?.message || "Failed to update event status");
     }
   };
 
-  // --- Delete Event ---
   const deleteEvent = async (id) => {
     try {
       await axiosInstance.delete(`/api/admin/events/${id}`);
       toast.success("Event deleted successfully");
       fetchEvents();
     } catch (err) {
-      console.error(err);
       toast.error(err.response?.data?.message || "Failed to delete event");
     }
   };
 
-  // ✅ Send Email
-  const sendEmail = async ({ to, subject, text }) => {
-    if (!to || !subject?.trim() || !text?.trim()) {
-      toast.error("Please fill all fields before sending email.");
-      return;
+  // ----------------------------
+  // STUDENT MANAGEMENT
+  // ----------------------------
+
+  const fetchStudents = async () => {
+    setLoadingStudents(true);
+    try {
+      const { data } = await axiosInstance.get("/api/admin/users");
+      if (data.success) setStudents(data.users || []);
+      else toast.error(data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to fetch students");
+    } finally {
+      setLoadingStudents(false);
     }
+  };
+
+  // ----------------------------
+  // ADMINS
+  // ----------------------------
+
+  const fetchAdmins = async () => {
+    try {
+      const { data } = await axiosInstance.get("/api/admin/admins");
+      if (data.success) setAdminData(data.admins || []);
+      else toast.error(data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to fetch admins");
+    }
+  };
+
+  // ----------------------------
+  // FEEDBACK
+  // ----------------------------
+
+  const fetchFeedbacks = async () => {
+    setLoadingFeedbacks(true);
+    try {
+      const { data } = await axiosInstance.get("/api/admin/users/feedbacks");
+      if (data.success) setFeedbacks(data.feedbacks || []);
+      else toast.error(data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to fetch feedbacks");
+    } finally {
+      setLoadingFeedbacks(false);
+    }
+  };
+
+  // ----------------------------
+  // EMAIL
+  // ----------------------------
+
+  const sendEmail = async ({ to, subject, text }) => {
+    if (!to || !subject?.trim() || !text?.trim())
+      return toast.error("Please fill all fields before sending email.");
 
     try {
-      const { data } = await axiosInstance.post(`/api/admin/send-email`, {
+      const { data } = await axiosInstance.post("/api/admin/send-email", {
         to,
         subject,
         text,
       });
-
       if (data.success) {
         toast.success(`Email sent successfully to ${to}`);
         return true;
@@ -218,29 +216,78 @@ const AdminContextProvider = ({ children }) => {
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Error sending email.");
-      console.error("Email send error:", err);
       return false;
     }
   };
 
-  const fetchFeedbacks = async () => {
-    setLoadingFeedbacks(true);
+  // ----------------------------
+  // ADMIN POSTS
+  // ----------------------------
+
+  const adminFetchPosts = async () => {
+    setLoadingAdminPosts(true);
     try {
-      const { data } = await axiosInstance.get("/api/admin/users/feedbacks");
-      if (data.success) {
-        setFeedbacks(data.feedbacks || []);
-        console.log("Feedbacks fetched:", data.feedbacks);
-      } else {
-        toast.error(data.message || "Failed to fetch feedbacks");
-      }
+      const { data } = await axiosInstance.get("/api/admin/all-posts");
+      if (data.success) setAdminPosts(data.posts || []);
+      else toast.error(data.message || "Failed to load posts.");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Server error");
+      toast.error(err.response?.data?.message || "Failed to load posts.");
     } finally {
-      setLoadingFeedbacks(false);
+      setLoadingAdminPosts(false);
     }
   };
 
-  // --- Auto-fetch on token ---
+  const handleAdminPostDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
+    try {
+      const { data } = await axiosInstance.delete(`/api/admin/delete/${id}`);
+      if (data.success) {
+        toast.success("Post deleted successfully!");
+        adminFetchPosts();
+      } else toast.error(data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to delete post.");
+    }
+  };
+
+  const handleTogglePublish = async (id) => {
+    try {
+      const { data } = await axiosInstance.patch(`/api/admin/is-publish/${id}`);
+      if (data.success) {
+        toast.success(data.message);
+        adminFetchPosts();
+      } else toast.error(data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to toggle publish status.");
+    }
+  };
+
+  const handleUpdateAdminPost = async (postId, title, description, imageFile) => {
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      if (imageFile) formData.append("image", imageFile);
+
+      const { data } = await axiosInstance.put(
+        `/api/admin/${postId}/edit`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      if (data.success) {
+        toast.success("Post updated successfully!");
+        adminFetchPosts();
+      } else toast.error(data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update post.");
+    }
+  };
+
+  // ----------------------------
+  // AUTO FETCH ON LOGIN
+  // ----------------------------
+
   useEffect(() => {
     if (aToken) {
       fetchClubs();
@@ -248,33 +295,44 @@ const AdminContextProvider = ({ children }) => {
       fetchStudents();
       fetchAdmins();
       fetchFeedbacks();
+      adminFetchPosts();
     }
   }, [aToken]);
+
+  // ----------------------------
+  // CONTEXT VALUE
+  // ----------------------------
 
   const value = {
     aToken,
     setAtoken,
     backendUrl,
+    axiosInstance,
     clubs,
     loadingClubs,
-    events,
-    loadingEvents,
-    students,
-    loadingStudents,
     fetchClubs,
-    fetchEvents,
-    fetchStudents,
     updateClubStatus,
     deleteClub,
+    events,
+    loadingEvents,
+    fetchEvents,
     updateEventStatus,
     deleteEvent,
-    axiosInstance,
+    students,
+    loadingStudents,
+    fetchStudents,
     adminData,
     fetchAdmins,
-    sendEmail,
     feedbacks,
     loadingFeedbacks,
     fetchFeedbacks,
+    sendEmail,
+    adminPosts,
+    loadingAdminPosts,
+    adminFetchPosts,
+    handleAdminPostDelete,
+    handleTogglePublish,
+    handleUpdateAdminPost,
   };
 
   return (

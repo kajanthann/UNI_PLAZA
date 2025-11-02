@@ -1,22 +1,32 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, FileText, PlusCircle, Users, LogIn, MessageCircle , Settings } from 'lucide-react';
+import {
+  Home,
+  FileText,
+  PlusCircle,
+  Users,
+  Edit,
+  MessageCircle,
+  Settings,
+  Activity,
+} from 'lucide-react';
 
 const Sidebar = () => {
   const navItems = [
-        { path: '/dashboard', label: 'Dashboard', icon: <Home className="w-6 h-6 text-black"/> },
-        { path: '/allPosts', label: 'All Posts', icon: <FileText className="w-6 h-6"/> },
-        { path: '/addpost', label: 'Add post', icon: <PlusCircle className="w-6 h-6" /> },
-        { path: '/clubs', label: 'Clubs', icon: <FileText className="w-6 h-6"/> },
-        { path: '/students', label: 'Students', icon: <Users className="w-6 h-6"/> },
-        { path: '/settings', label: 'Settings', icon: <Settings className="w-6 h-6"/> },
-        { path: '/feedbacks', label: 'Feedbacks', icon: <MessageCircle  className="w-6 h-6"/> },
-        { path: '/animation', label: 'Animation', icon: <MessageCircle  className="w-6 h-6"/> },
-    ];
+    { path: '/dashboard', label: 'Dashboard', icon: <Home className="w-6 h-6 text-black"/> },
+    { path: '/allPosts', label: 'All Posts', icon: <FileText className="w-6 h-6 text-blue-500" /> },
+    { path: '/manage-post', label: 'Manage Post', icon: <Edit className="w-6 h-6 text-green-500" /> },
+    { path: '/create-post', label: 'Create Post', icon: <PlusCircle className="w-6 h-6 text-purple-500" /> },
+    { path: '/clubs', label: 'Clubs', icon: <Activity className="w-6 h-6 text-orange-500" /> },
+    { path: '/students', label: 'Students', icon: <Users className="w-6 h-6 text-teal-500" /> },
+    { path: '/feedbacks', label: 'Feedbacks', icon: <MessageCircle className="w-6 h-6 text-pink-500" /> },
+    { path: '/settings', label: 'Settings', icon: <Settings className="w-6 h-6 text-gray-700" /> },
+    { path: '/animation', label: 'Animations', icon: <Activity className="w-6 h-6 text-indigo-500" /> },
+  ];
 
   return (
-    <div className='min-h-screen bg-white border-r border-gray-300'>
-      <ul className='text-gray-700 mt-3'>
+    <div className="min-h-screen bg-white border-r border-gray-300">
+      <ul className="text-gray-700 mt-3">
         {navItems.map((item, idx) => (
           <NavLink
             key={idx}
@@ -28,7 +38,7 @@ const Sidebar = () => {
             }
           >
             {item.icon}
-            <p className='hidden lg:block'>{item.label}</p>
+            <p className="hidden lg:block">{item.label}</p>
           </NavLink>
         ))}
       </ul>

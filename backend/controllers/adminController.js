@@ -316,3 +316,144 @@ export const getUserFeedback = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Create a new post
+export const adminAddPost = async (req, res) => {
+  try {
+    const { title, description } = req.body;
+    const image = req.file ? req.file.filename : null;
+
+    if (!title || !description || !image) {
+      return res.status(400).json({
+        success: false,
+        message: "Title, description, and image are required.",
+      });
+    }
+
+    const admin = await adminModel.findOne();
+    if (!admin) {
+      return res.status(404).json({ success: false, message: "Admin not found." });
+    }
+
+    const newPost = {
+      title,
+      description,
+      image,
+      likes: [],
+      comments: [],
+      views: [],
+      reports: [],
+      isPublished: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    admin.posts.push(newPost);
+    await admin.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Post added successfully.",
+      post: newPost,
+    });
+  } catch (error) {
+    console.error("Error in adminAddPost:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Edit existing post
+export const adminEditPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { title, description } = req.body;
+    const image = req.file ? req.file.filename : null;
+
+    const admin = await adminModel.findOne();
+    if (!admin) return res.status(404).json({ success: false, message: "Admin not found." });
+
+    const post = admin.posts.id(postId);
+    if (!post) return res.status(404).json({ success: false, message: "Post not found." });
+
+    if (title) post.title = title;
+    if (description) post.description = description;
+    if (image) post.image = image;
+    post.updatedAt = new Date();
+
+    await admin.save();
+
+    res.json({ success: true, message: "Post updated successfully.", post });
+  } catch (error) {
+    console.error("Error in adminEditPost:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Delete post
+export const adminDeletePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const admin = await adminModel.findOne();
+    if (!admin) return res.status(404).json({ success: false, message: "Admin not found." });
+
+    admin.posts = admin.posts.filter((p) => p._id.toString() !== postId);
+    await admin.save();
+
+    res.json({ success: true, message: "Post deleted successfully." });
+  } catch (error) {
+    console.error("Error in adminDeletePost:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Toggle publish/unpublish
+export const togglePublishPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const admin = await adminModel.findOne();
+    if (!admin) return res.status(404).json({ success: false, message: "Admin not found." });
+
+    const post = admin.posts.id(postId);
+    if (!post) return res.status(404).json({ success: false, message: "Post not found." });
+
+    post.isPublished = !post.isPublished;
+    post.updatedAt = new Date();
+
+    if (post.isPublished) {
+      post.publishedAt = new Date(); // Set publish timestamp
+    } else {
+      post.publishedAt = null; // Optional: reset when unpublished
+    }
+
+    await admin.save();
+
+    res.json({
+      success: true,
+      message: `Post ${post.isPublished ? "published" : "unpublished"} successfully.`,
+      post,
+    });
+  } catch (error) {
+    console.error("Error in togglePublishPost:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+// Get all posts
+export const getAllAdminPost = async (req, res) => {
+  try {
+    const admin = await adminModel.findOne();
+    if (!admin) return res.status(404).json({ success: false, message: "Admin not found." });
+
+    res.json({
+      success: true,
+      message: "All posts fetched successfully.",
+      posts: admin.posts.reverse(), // show latest first
+    });
+  } catch (error) {
+    console.error("Error in getAllAdminPost:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

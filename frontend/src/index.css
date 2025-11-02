@@ -5,10 +5,12 @@
   --color-navyblue: #032E5E;
   --color-linecolor: #566B83;
   --color-buttonBlue: #42A5F5;
+  --color-lightblue: #A9D8FF;
   --font-montserrat: "Montserrat", sans-serif;
   --font-alan: "Alan Sans", sans-serif;
   --breakpoint-sm: 48rem;
 }
+
 
 body{
   background-color: white;

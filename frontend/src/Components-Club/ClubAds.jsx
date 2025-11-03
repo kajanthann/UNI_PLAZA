@@ -9,7 +9,7 @@ export default function ClubAds(){
     const [input,setInput] = useState("");
     const [tags,setTags] = useState([]);
     const [active,setActive] = useState(false);
-    const [form,setForm] = useState(false);
+    const [form,setForm] = useState(true);
 
     const handleKeyDown = (e) => {
         if(e.key === "Tab" || e.key === ","){

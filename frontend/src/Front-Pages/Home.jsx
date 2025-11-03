@@ -45,9 +45,9 @@ export default function Home(){
                         <img src={HeroImage} alt="Hero" className="mx-auto md:w-full" />
 
                         <div className="absolute top-1/2 left-1/2 md:left-4/10 transform -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-6/10 text-left">
-                            <h1 className="font-extrabold text-2xl md:text-4xl mb-4 font-alan">
+                            <h2 className="font-bold text-4xl md:text-6xl mb-4 font-alan">
                                 Connect, Explore, Thrive with Uni Plaza
-                            </h1>
+                            </h2>
                             <p className="text-lg md:text-2xl font-montserrat mb-6">
                                 Your central hub for student life and club activities. Discover events, manage your club, and build your community.
                             </p>
@@ -118,9 +118,9 @@ export default function Home(){
                     </div>
                 </section>
                 <section id="About Us" className="max-w-full my-8">
-                    <div className="md:w-9/10 bg-navyblue text-white mx-auto p-20 rounded-2xl">
+                    <div className="md:w-9/10 bg-navyblue text-white mx-auto p-5 md:p-20 md:rounded-2xl">
                         <div className="flex w-7/10 items-center justify-center">
-                            <div>
+                            <div className="sm:mx-auto">
                             <h2 className="text-4xl m-4">Manage Your Club. Maximize Your Impact.</h2>
                             <p className="m-4">Uni plaza provides dedicated tools for your club's success.
                                 Seamlessly create events, manage your member roster, handle registrations, and

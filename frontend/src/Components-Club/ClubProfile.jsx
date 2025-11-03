@@ -29,42 +29,6 @@ export default function ClubProfile(){
                                 </div>
                             </div>
                             <div className="flex">
-                                {/*<form action="">*/}
-                                {/*    <div className="">*/}
-                                {/*        <div className="block">*/}
-                                {/*            <label htmlFor="">Description</label>*/}
-                                {/*            <textarea name="" id="" rows="3" className="w-full"></textarea>*/}
-                                {/*        </div>*/}
-                                {/*        <div className="block">*/}
-                                {/*            <label htmlFor="">University</label>*/}
-                                {/*            <input type="text" className="w-full"/>*/}
-                                {/*        </div>*/}
-                                {/*        <div className="block">*/}
-                                {/*            <label htmlFor="">Official Email</label>*/}
-                                {/*            <input type="text" className="w-full"/>*/}
-                                {/*        </div>*/}
-                                {/*    </div>*/}
-                                {/*    <div>*/}
-                                {/*        <h2>Representative Information</h2>*/}
-                                {/*        <div className="block">*/}
-                                {/*            <label htmlFor="">Name</label>*/}
-                                {/*            <input type="text" className="w-full"/>*/}
-                                {/*        </div>*/}
-                                {/*        <div className="block">*/}
-                                {/*            <label htmlFor="">Role</label>*/}
-                                {/*            <input type="text" className="w-full"/>*/}
-                                {/*        </div>*/}
-                                {/*        <div className="block">*/}
-                                {/*            <label htmlFor="">Email</label>*/}
-                                {/*            <input type="text" className="w-full"/>*/}
-                                {/*        </div>*/}
-                                {/*        <div className="block">*/}
-                                {/*            <label htmlFor="">Phone</label>*/}
-                                {/*            <input type="text" className="w-full"/>*/}
-                                {/*        </div>*/}
-                                {/*    </div>*/}
-                                {/*</form>*/}
-
                                 <div>
                                     <div className="">
                                         <div className="block my-5">

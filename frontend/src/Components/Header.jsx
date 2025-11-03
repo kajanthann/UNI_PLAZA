@@ -13,19 +13,12 @@ export default function Header({ name, role , image, type }) {
         navigate(path);
     }
 
-    const Clublogin = () =>{
-        navigate("/LoginClub");
-    }
-
-    const Studentlogin = () =>{
-        navigate("/LoginStudent");
-    }
-
     const guestLinks = [
         { label: "Home", href: "#Home" },
         { label: "Events", href: "#Events" },
         { label: "About Us", href: "#Footer" },
         { label: "Feedback", href: "#Feedback" },
+        { label: "Event Dashboard", href: "/EventDashboard" },
     ];
 
     const studentClubLinks = [
@@ -34,9 +27,8 @@ export default function Header({ name, role , image, type }) {
     ];
 
     const LoginRegisterLinks = [
-        { label: "Home", href: "#" },
-        { label: "Contact", href: "#" },
-        { label: "Event Dashboard", href: "#" }
+        { label: "Home", href: "/Home" },
+        { label: "Event Dashboard", href: "/EventDashboard" }
     ];
 
     const linksToShow = (role === "Student" || role === "Club")
@@ -46,15 +38,15 @@ export default function Header({ name, role , image, type }) {
 
     return (
         <nav className="bg-white shadow-md w-full z-50 relative">
-            <div className="w-9/10 mx-auto px-4">
+            <div className="w-93/100 mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
 
-                    <div className="flex-shrink-0 w-1/4">
+                    <div className="flex-shrink-0 w-1/5">
                         <img src={LogoImage} alt="Logo" className="w-14" />
                     </div>
 
                     <div className="hidden md:flex md:items-center w-full">
-                        <div className={`flex ${role === "Student" || role === "Club" ? "w-9/20 ml-10 space-x-40" : "w-1/2 space-x-14"}`}>
+                        <div className={`flex ${role === "Student" || role === "Club" ? "w-10/20 ml-10 space-x-40" : "w-1/2 space-x-14"}`}>
                             {linksToShow.map((link, idx) => (
                                 <div key={idx}>
                                     {role === "Student" || role === "Club" ? (
@@ -85,7 +77,7 @@ export default function Header({ name, role , image, type }) {
                                 placeholder="Search Content"
                                 className="w-3/4 h-3/4 border border-gray-400 rounded-2xl pl-10 pr-4 py-2 text-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
                             />
-                            <div className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+                            <div className="absolute inset-y-0 left-3 md:flex hidden items-center text-gray-400">
                                 <FontAwesomeIcon icon={faSearch} />
                             </div>
                         </div>
@@ -93,6 +85,12 @@ export default function Header({ name, role , image, type }) {
                         {role === ""  ? (
                             <>
                                 {type === "Home" && (
+                                    <div className="flex space-x-8">
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>{handleNavigation('/LoginClub')}}>Clubs</button>
+                                        <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>{handleNavigation('/LoginStudent')}}>Students</button>
+                                    </div>
+                                )}
+                                {type === "EventDashboard"  && (
                                     <div className="flex space-x-8">
                                         <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>{handleNavigation('/LoginClub')}}>Clubs</button>
                                         <button className="bg-skyblue text-white px-5 py-2 rounded-2xl" onClick={()=>{handleNavigation('/LoginStudent')}}>Students</button>

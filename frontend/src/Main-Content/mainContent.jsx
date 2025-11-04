@@ -28,16 +28,17 @@ import StudentProfile from '../Components-Student/StudentProfile.jsx'
 
 function MainContent({name,image,role,type}){
     const [messages] = useState([]);
+    const [menuOpen, setMenuOpen] = useState(false);
     return (
         <>
         {role ? (
         <div>
             <div>
-                <Header name={name} image={image} role={role} type={type}/>
+                <Header name={name} image={image} role={role} type={type} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
             </div>
             <div className="flex min-h-screen">
                 <div>
-                    <Slider messages={messages} role={role}/>
+                    <Slider messages={messages} role={role} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
                 </div>
                 <div className="w-full">
                     {role === 'Club' && (
@@ -69,7 +70,7 @@ function MainContent({name,image,role,type}){
         ) : (
         <div>
             <div>
-                <Header name={name} image={image} role={role} type={type}/>
+                <Header name={name} image={image} role={role} type={type} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
             </div>
             <div>
                 <>

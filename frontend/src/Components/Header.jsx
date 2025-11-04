@@ -5,13 +5,19 @@ import LogoImage from '../assets/logoImage.jpg';
 import { NavLink } from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 
-export default function Header({ name, role , image, type }) {
-    const [menuOpen, setMenuOpen] = useState(false);
+export default function Header({ name, role , image, type, menuOpen, setMenuOpen }) {
+
     const navigate = useNavigate();
 
     const handleNavigation = (path) =>{
         navigate(path);
     }
+
+    const guestTypes = [
+        "Home","LoginClub","LoginStudent","RegisterClub","RegisterStudent","EventDashboard"
+    ];
+        
+    
 
     const guestLinks = [
         { label: "Home", href: "#Home" },
@@ -48,8 +54,8 @@ export default function Header({ name, role , image, type }) {
 
                     </div>
 
-                    <div className="hidden md:flex md:items-center w-full">
-                        <div className={`flex ${role === "Student" || role === "Club" ? "w-10/20 ml-10 space-x-40" : "w-1/2 space-x-14"}`}>
+                    <div className={`${type === guestTypes ? "hidden md:flex" : "flex"}  items-center w-full`}>
+                        <div className={`flex ${role === "Student" || role === "Club" ? "w-10/20 ml-10 space-x-10 md:space-x-40" : "w-1/2 space-x-14"}`}>
                             {linksToShow.map((link, idx) => (
                                 <div key={idx}>
                                     {role === "Student" || role === "Club" ? (
@@ -74,7 +80,7 @@ export default function Header({ name, role , image, type }) {
                         </div>
 
 
-                        <div className="relative mx-4 flex-1 max-w-md w-1/5">
+                        <div className={`hidden md:flex items-center relative mx-4 flex-1 max-w-md w-1/5`} style={{minWidth:"240px"}}>
                             <input
                                 type="text"
                                 placeholder="Search Content"
@@ -114,15 +120,18 @@ export default function Header({ name, role , image, type }) {
 
                         ) : (
                             <div className="flex space-x-4 items-center">
-                                <button className="text-black text-2xl ps-2 pe-4 rounded-2xl">
+                                <button className={`hidden md:flex text-black text-2xl ps-2 pe-4 rounded-2xl`}>
                                     <FontAwesomeIcon icon={faGear} />
                                 </button>
-                                <div className="flex space-x-4">
+                                <div className="sm:flex md:flex xp:hidden space-x-4">
+                                    <a href="/Clubprofile">
+                                        <img src={image} alt="Profile" className="w-13 h-13 rounded-full border" />
+                                    </a>
                                     <div className="text-left items-center">
                                         <p className="text-sm">Hello!</p>
                                         <p className="font-semibold">{name}</p>
                                     </div>
-                                    <img src={image} alt="Profile" className="w-13 h-13 rounded-full border" />
+                                    
                                 </div>
                             </div>
                         )}
@@ -139,7 +148,7 @@ export default function Header({ name, role , image, type }) {
                 </div>
             </div>
 
-            {menuOpen && (
+            {menuOpen && type === "Home" || type === "LoginClub" || type === "LoginStudent" || type === "RegisterClub" || type === "RegisterStudent" || type === "EventDashboard" &&(
                 <div className="fixed inset-0 bg-black/50 z-40">
                 <div className="md:hidden absolute min-h-screen w-1/2 bg-white border border-gray-300 shadow-md" style={{height:"500vh"}}>
                     <div className="flex items-center justify-end w-full p-4 border-b-1 border-gray-300">

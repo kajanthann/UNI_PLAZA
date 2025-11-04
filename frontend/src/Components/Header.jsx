@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faSearch, faBars, faTimes, faGear, faTableColumns,faHome,faRightFromBracket} from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import LogoImage from '../assets/logo.jpg';
+import LogoImage from '../assets/logoImage.jpg';
 import { NavLink } from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 
@@ -42,7 +42,11 @@ export default function Header({ name, role , image, type }) {
                 <div className="flex justify-between items-center h-16">
 
                     <div className="flex-shrink-0 w-1/5">
+<<<<<<< HEAD
+                        <img src={LogoImage} alt="Logo" className="w-30" />
+=======
                         <img src={LogoImage} alt="Logo" className="w-14" />
+>>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
                     </div>
 
                     <div className="hidden md:flex md:items-center w-full">
@@ -130,28 +134,47 @@ export default function Header({ name, role , image, type }) {
                             onClick={() => setMenuOpen(!menuOpen)}
                             className="text-gray-700 focus:outline-none"
                         >
-                            <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} size="lg" />
+                            <FontAwesomeIcon icon={faBars} size="lg" />
                         </button>
                     </div>
                 </div>
             </div>
 
             {menuOpen && (
-                <div className="md:hidden bg-white shadow-md">
-                    <div className="px-4 pt-4 pb-6 space-y-4">
+                <div className="fixed inset-0 bg-black/50 z-40">
+                <div className="md:hidden absolute min-h-screen w-1/2 bg-white border border-gray-300 shadow-md" style={{height:"500vh"}}>
+                    <div className="flex items-center justify-end w-full p-4 border-b-1 border-gray-300">
+                        <div className="flex-shrink-0 w-9/10 mx-auto">
+                            <img src={LogoImage} alt="Logo" className="w-30" />
+                        </div>
+                        <button
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            className="text-gray-700 focus:outline-none"
+                        >
+                            <FontAwesomeIcon icon={faTimes} size="lg" />
+                        </button>
+                    </div>
+                    <div className="px-4 pt-4 pb-6 space-y-8">
                         {linksToShow.map((link, idx) => (
-                            <a key={idx} href={link.href} className="block font-medium">
-                                {link.label}
-                            </a>
+                            <div className="hover:bg-blue-600 hover:text-white p-2">
+                                <a key={idx} href={link.href} className="block font-medium" onClick={() => setMenuOpen(!menuOpen)}>
+                                    {link.label}
+                                </a>
+                            </div>
                         ))}
 
                         {role === "" && (
                             <>
-                                <a href="#" className="block font-medium">Login as Club</a>
-                                <a href="#" className="block font-medium">Login as Student</a>
+                                <div className="hover:bg-blue-600 hover:text-white p-2">
+                                    <a href="/LoginClub" className="block font-medium">Login as Club</a>
+                                </div>
+                                <div className="hover:bg-blue-600 hover:text-white p-2">
+                                    <a href="/LoginStudent" className="block font-medium">Login as Student</a>
+                                </div>
                             </>
                         )}
                     </div>
+                </div>
                 </div>
             )}
         </nav>

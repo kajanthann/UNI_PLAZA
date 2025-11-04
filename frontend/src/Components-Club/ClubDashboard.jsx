@@ -103,9 +103,9 @@ export default function ClubDashboard(){
 
 
     return (
-        <div className={`relative ${open? "bg-black/50" :"bg-white"}`}>
-            <h2 className="text-3xl font-bold m-2 w-9/10 mx-auto">Club Dashboard</h2>
-            <div className="w-9/10 mx-auto my-5 border-1 border-gray-300 rounded-2xl">
+        <div className={`relative ${open? "bg-black/50" :"bg-white my-4"}`}>
+            <h2 className="text-3xl font-bold mb-2 w-92/100 mx-auto">Club Dashboard</h2>
+            <div className="w-92/100 mx-auto my-5 border-1 border-gray-300 rounded-2xl">
                 <div className="w-9/10 mx-auto">
                     <div className="my-4">
                         <h2 className="text-2xl font-bold mb-2">Current Active Ads</h2>

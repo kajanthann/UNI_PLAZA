@@ -94,7 +94,6 @@ export default function ClubAdManager() {
     <div className={`relative my-4 pb-10 ${open ? "bg-black/50" : "bg-white"}`}>
       <h2 className="text-2xl md:text-3xl font-bold mb-2 w-92/100 mx-auto text-center md:text-left">Club Ad Manager</h2>
 
-      {/* Active Ads */}
       <div className="w-92/100 mx-auto my-5 border border-gray-300 rounded-2xl">
         <div className="w-9/10 mx-auto">
           <div className="my-4">
@@ -118,7 +117,6 @@ export default function ClubAdManager() {
         </div>
       </div>
 
-      {/* Ads Overview */}
       <div className="w-9/10 mx-auto my-5 border border-gray-300 rounded-2xl">
         <div className="w-9/10 mx-auto">
           <div className="my-4">
@@ -166,7 +164,6 @@ export default function ClubAdManager() {
         </div>
       </div>
 
-      {/* Modal */}
       {open && selected && (
         <div className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center">
           <div className="bg-white w-11/12 md:w-9/10 rounded-2xl shadow-lg p-3 md:p-5 max-h-[95vh] overflow-y-auto relative">

@@ -4,10 +4,6 @@ import { useState, useEffect } from "react";
 import * as Yup from "yup";
 import LoginImage from "../assets/loginImage.png"
 import LogoImage from '../assets/logoImage.jpg'
-// import LoginImage from "../assets/loginImage.png"
-import LogoImage from '../assets/logoImage.jpg'
-import LoginImage from "../assets/loginbg.jpg"
-import LoginSlider from "../components/LoginSlider";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from "react-router-dom";
 import {faCircleUser,faEye,faEyeSlash,faEnvelope,faLock} from '@fortawesome/free-solid-svg-icons';

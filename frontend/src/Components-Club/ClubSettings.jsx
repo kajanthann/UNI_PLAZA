@@ -46,7 +46,7 @@ export default function ClubSettings() {
 
     return (
         <div className="flex flex-col w-full min-h-screen">
-            <div className="w-93/100 my-5 mx-auto">
+            <div className="w-92/100 my-4 mx-auto">
                 <h2 className="text-3xl font-bold mb-5">Club Settings</h2>
                 {activeTab === "" && settingsTab && (
                     <div className="mx-auto p-8 rounded-2xl border border-gray-200 shadow-md" style={{}}>

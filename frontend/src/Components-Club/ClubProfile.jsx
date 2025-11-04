@@ -7,18 +7,16 @@ export default function ClubProfile() {
             <h2 className="text-2xl md:text-3xl font-bold m-2 w-92/100 mx-auto text-left">Club Profile</h2>
 
             <div className="min-h-screen w-92/100 my-10 mx-auto">
-                {/* Welcome Section */}
+            
                 <div className="mb-10 text-center md:text-left">
                     <h2 className="text-xl md:text-2xl font-bold">Welcome back, Club name!</h2>
                     <p className="text-base md:text-xl">Manage your club's profile, create new advertisements, and track your campaigns.</p>
                 </div>
 
-                {/* Main Content */}
                 <div className="flex flex-col md:flex-row gap-6">
-                    {/* Left Panel */}
+
                     <div className="relative md:w-1/2 w-full border border-gray-300 rounded-2xl">
 
-                         {/* Mobile Image View */}
                     <div className="absolute flex md:hidden w-full h-full">
                         <img
                             src={clubDashboardImage}
@@ -30,7 +28,6 @@ export default function ClubProfile() {
                         <div className="w-9/10 mx-auto my-5">
                             <h2 className="text-lg md:text-xl font-bold text-left">Club Information</h2>
 
-                            {/* Logo & Name Section */}
                             <div className="flex sm:flex-row items-center justify-center sm:justify-start w-full sm:w-2/3 my-3 mx-auto sm:mx-0">
                                 <div className="flex-1 flex justify-center sm:justify-start mb-4 sm:mb-0">
                                     <img src={clubLogo} alt="Club Logo" className="w-24 sm:w-32 md:w-auto" />
@@ -46,7 +43,6 @@ export default function ClubProfile() {
                                 </div>
                             </div>
 
-                            {/* Club Info */}
                             <div className="flex flex-col my-5">
                                 <div className="block my-5">
                                     <p className="text-gray-500 text-base md:text-lg">Description</p>
@@ -67,7 +63,6 @@ export default function ClubProfile() {
                                 </div>
                             </div>
 
-                            {/* Representative Info */}
                             <div className="my-5">
                                 <h2 className="text-lg md:text-xl font-bold text-left">Representative Information</h2>
 
@@ -91,7 +86,6 @@ export default function ClubProfile() {
                         </div>
                     </div>
 
-                    {/* Right Image */}
                     <div className="md:flex hidden justify-center items-center">
                         <img
                             src={clubDashboardImage}
@@ -100,7 +94,6 @@ export default function ClubProfile() {
                         />
                     </div>
 
-                   
                 </div>
             </div>
         </div>

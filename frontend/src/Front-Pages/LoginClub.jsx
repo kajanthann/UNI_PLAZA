@@ -2,14 +2,11 @@ import React from "react";
 import {useFormik} from "formik";
 import { useState, useEffect } from "react";
 import * as Yup from "yup";
-<<<<<<< HEAD
 import LoginImage from "../assets/loginImage.png"
 import LogoImage from '../assets/logoImage.jpg'
-=======
 // import LoginImage from "../assets/loginImage.png"
 import LogoImage from '../assets/logoImage.jpg'
 import LoginImage from "../assets/loginbg.jpg"
->>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
 import LoginSlider from "../components/LoginSlider";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from "react-router-dom";
@@ -48,13 +45,10 @@ export default function LoginClub(){
             <div className="w-full">
             <main>
                 <div className="">
-<<<<<<< HEAD
                     <img src={LoginImage} alt="" className="md:flex hidden relative w-full md:w-full opacity-70"/>
                     <div className="bg-white w-9/10 my-5 md:my-0 mx-auto border border-gray-200 px-3 py-5 md:w-2/5 md:absolute transform translate-y-0 md:top-1/5 md:left-1/3 rounded-2xl shadow-lg">
-=======
                     <img src={LoginImage} alt="" className="relative w-full md:w-full opacity-70"/>
-                    <div className="bg-white w-2/5 absolute transform translate-y-0 top-1/5 left-1/3 rounded-2xl shadow-lg">
->>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
+
                         <div>
                             <img src={LogoImage} alt="" className="w-1/2 mx-auto my-5"/>
                             <div className="text-center">
@@ -120,10 +114,7 @@ export default function LoginClub(){
                                     <button type="submit" className="w-full bg-buttonBlue text-white px-5 py-3 rounded-xl mb-8">Log In</button>
                                     <div className="flex w-fit mx-auto">
                                         <p className="me-1">Didn't have an account</p>
-<<<<<<< HEAD
-=======
                                         {/*<a href="" className="text-blue-600">Register Now</a>*/}
->>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
                                         <Link to='/RegisterClub' className="text-blue-600">Register Now</Link>
                                     </div>
                                 </div>

@@ -2,19 +2,16 @@ import React from "react";
 import {useFormik} from "formik";
 import { useState, useEffect } from "react";
 import * as Yup from "yup";
-<<<<<<< HEAD
 import LoginImage from "../assets/loginbg.jpg"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import {faCircleUser, faEnvelope, faEye, faEyeSlash, faLock} from "@fortawesome/free-solid-svg-icons";
 import LogoImage from "../assets/logoImage.jpg";
-=======
 import LoginImage from "../assets/loginImage.png"
 import LoginSlider from "../components/LoginSlider";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import {faCircleUser, faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
->>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
 
 export default function LoginStudent(){
     const [submitData,setSubmitData] = useState(null);
@@ -44,7 +41,6 @@ export default function LoginStudent(){
         },
     })
     return(
-<<<<<<< HEAD
         <div className="min-h-screen flex flex-col">
             <div className="w-full">
                 <main>
@@ -64,7 +60,6 @@ export default function LoginStudent(){
                                     <div className="">
                                         <div className="h-15 my-8 relative">
                                             <FontAwesomeIcon icon={faEnvelope} size={"lg"} className="text-gray-400 absolute transform translate-y-3 left-1/50"/>
-=======
         <div className="md:min-h-screen flex flex-col">
             <div className="md:max-w-full md:flex hidden mx-auto">
                 <main>
@@ -77,7 +72,6 @@ export default function LoginStudent(){
                                     <div className="">
 
                                         <div className="h-15 my-8 relative">
->>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
                                             <input
                                                 id="student_password"
                                                 name="student_password"
@@ -86,7 +80,6 @@ export default function LoginStudent(){
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
                                                 value={formik.values.subject}
-<<<<<<< HEAD
                                                 className={`pl-10 w-full py-2 border-b-2 text-black bg-white border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 ${
                                                     formik.touched.username && formik.errors.username ? "border-red-500" : "border-black"
                                                 }`}
@@ -109,7 +102,6 @@ export default function LoginStudent(){
                                                 value={formik.values.subject}
                                                 className={`pl-10 w-full py-2 border-b-2 text-black bg-white border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 ${
                                                     formik.touched.password && formik.errors.password ? "border-red-500" : "border-black"
-=======
                                                 className={`pl-4 w-full py-2 border-b-2 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 ${
                                                     formik.touched.student_username && formik.errors.student_username ? "border-red-500" : "border-black"
                                                 }`}
@@ -131,7 +123,6 @@ export default function LoginStudent(){
                                                 value={formik.values.subject}
                                                 className={`pl-4 w-full py-2 border-b-2 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 ${
                                                     formik.touched.student_password && formik.errors.student_password ? "border-red-500" : "border-black"
->>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
                                                 }`}
                                             />
                                             <p className="absolute transform translate-y-0 bottom-10/25 left-47/50 normalButton" onClick={passwordShow}>
@@ -140,7 +131,6 @@ export default function LoginStudent(){
                                                     (<FontAwesomeIcon icon={faEye} size={"lg"}/>)
                                                 }
                                             </p>
-<<<<<<< HEAD
                                             {formik.touched.password && formik.errors.password && (
                                                 <div className="text-red-500 text-sm">{formik.errors.password}</div>
                                             )}
@@ -149,7 +139,6 @@ export default function LoginStudent(){
                                             <div className="flex items-center space-x-2">
                                                 <input type="checkbox" id="remember" className="w-4 h-4" />
                                                 <label htmlFor="remember" className="text-md">Remember Me</label>
-=======
                                             {formik.touched.student_password && formik.errors.student_password && (
                                                 <div className="text-red-500 text-sm">{formik.errors.student_password}</div>
                                             )}
@@ -158,20 +147,16 @@ export default function LoginStudent(){
                                             <div className="flex w-2/3 justify-center mx-auto">
                                                 <p className="me-1">Forget Password?</p>
                                                 <a href="" className="text-blue-600">Click Here</a>
->>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
                                             </div>
                                             <a href="#" className="text-blue-500 underline text-md">Forgot Password?</a>
                                         </div>
                                         <button type="submit" className="w-full bg-buttonBlue text-white px-5 py-3 rounded-xl mb-8">Log In</button>
-<<<<<<< HEAD
                                         <div className="flex w-fit mx-auto">
                                             <p className="me-1">Didn't have an account</p>
                                             <Link to='/RegisterClub' className="text-blue-600">Register Now</Link>
-=======
                                         <div className="flex">
                                             <p className="me-1">Register as Club</p>
                                             <Link to="/RegisterClub" className="text-blue-600">Click Here</Link>
->>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
                                         </div>
                                     </div>
                                 </form>

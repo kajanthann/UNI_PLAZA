@@ -42,11 +42,11 @@ export default function Header({ name, role , image, type }) {
                 <div className="flex justify-between items-center h-16">
 
                     <div className="flex-shrink-0 w-1/5">
-<<<<<<< HEAD
+
                         <img src={LogoImage} alt="Logo" className="w-30" />
-=======
+
                         <img src={LogoImage} alt="Logo" className="w-14" />
->>>>>>> 2de20495273c670a5121d6069acabae2de7604f7
+
                     </div>
 
                     <div className="hidden md:flex md:items-center w-full">

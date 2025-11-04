@@ -45,7 +45,6 @@ export default function Header({ name, role , image, type }) {
 
                         <img src={LogoImage} alt="Logo" className="w-30" />
 
-                        <img src={LogoImage} alt="Logo" className="w-14" />
 
                     </div>
 

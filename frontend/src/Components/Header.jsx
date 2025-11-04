@@ -67,7 +67,7 @@ export default function Header({ name, role, image, type, menuOpen, setMenuOpen 
               className={`flex ${
                 role === 'Student' || role === 'Club'
                   ? 'w-10/20 ml-10 space-x-10 md:space-x-40'
-                  : 'w-1/2 space-x-10 lg:space-x-14'
+                  : 'w-1/2 space-x-10 lg:space-x-12'
               }`}
             >
               {linksToShow.map((link, idx) => (

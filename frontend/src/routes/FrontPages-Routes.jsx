@@ -1,17 +1,13 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-// import Home from '../Front-Pages/Home.jsx';
-// import LoginClub from '../Front-Pages/LoginClub.jsx';
-// import LoginStudent from '../Front-Pages/LoginStudent.jsx';
-// import RegisterClub from '../Front-Pages/RegisterClub.jsx';
-// import RegisterStudent from '../Front-Pages/RegisterStudent.jsx';
-// import EventDashboard from '../Front-Pages/EventDashboard.jsx';
 import MainContent from "../Main-Content/mainContent.jsx";
 
 function FrontPagesRoutes() {
     return (
         <Routes>
+            {/* <Route path="/VerifyEmail" element={<MainContent role='' type="VerifyEmail"/>}/> */}
             <Route path="/" element={<MainContent role='' type="Home"/>}/>
+            <Route path="/Test" element={<MainContent role='' type="Test"/>}/>
             <Route path="/Home" element={<MainContent role='' type="Home"/>}/>
             <Route path="/LoginClub" element={<MainContent role='' type="LoginClub"/>}/>
             <Route path="/LoginStudent" element={<MainContent role='' type="LoginStudent"/>}/>

@@ -2,19 +2,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUserPen,faLock,faCircleUser,faBell,faTrash,faShareSquare,faArrowLeft,faShieldHalved,faRightFromBracket} from '@fortawesome/free-solid-svg-icons';
 import {useState} from "react";
 import clubLogo from "../assets/clubLogo.png";
+import { useNavigate } from 'react-router-dom';
+import VerifyEmail from '../Components/VerifyEmail';
 
 export default function ClubSettings() {
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("");
     const [settingsTab, setSettingsTab] = useState(true);
     const [enabled, setEnabled] = useState(false);
     const [checked, setChecked] = useState(false);
+    const [open,setOpen] = useState(false);
 
     const Settings = [
         {icon:faUserPen,name:"Club Profile",bar:faShareSquare,onClick: () => (setActiveTab("profile") && setSettingsTab(false))},
         {icon:faCircleUser,name:"Account",bar:faShareSquare,onClick: () => (setActiveTab("account") && setSettingsTab(false))},
         {icon:faLock,name:"Security",bar:faShareSquare,onClick: () => (setActiveTab("security") && setSettingsTab(false))},
         {icon:faBell,name:"Notifications",bar:"",onClick: () => (setEnabled(!enabled) && setSettingsTab(true))},
-        {icon:faTrash,name:"Delete Account",bar:"",onClick: () => (setSettingsTab(true))},
+        {icon:faTrash,name:"Delete Account",bar:"",onClick: () => (setSettingsTab(true) && setOpen(true) )},
     ];
 
     const Security = [
@@ -45,7 +49,20 @@ export default function ClubSettings() {
     }
 
     return (
-        <div className="flex flex-col w-full min-h-screen">
+        <div className="relative flex flex-col w-full min-h-screen">
+            {open && (
+                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+                    <div className="relative bg-white w-2/5 p-8 rounded-2xl shadow-2xl">
+                    <button
+                        onClick={() => setOpen(false)}
+                        className="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold"
+                    >
+                        ×
+                    </button>
+                    <VerifyEmail />
+                    </div>
+                </div>
+            )}
             <div className="w-92/100 my-4 mx-auto">
                 <h2 className="text-3xl font-bold mb-5">Club Settings</h2>
                 {activeTab === "" && settingsTab && (

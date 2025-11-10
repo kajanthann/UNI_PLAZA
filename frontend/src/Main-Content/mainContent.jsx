@@ -7,6 +7,8 @@ import RegisterClub from "../Front-Pages/RegisterClub.jsx";
 import RegisterStudent from "../Front-Pages/RegisterStudent.jsx";
 import EventDashboard from "../Front-Pages/EventDashboard.jsx";
 import Slider from '../Components/Slidebar.jsx'
+import Test from '../Components/Test.jsx'
+import VerifyEmail from "../Components/VerifyEmail.jsx";
 import {useState} from 'react'
 
 // Club Details
@@ -74,6 +76,8 @@ function MainContent({name,image,role,type}){
             </div>
             <div>
                 <>
+                    {/* {type === 'VerifyEmail' && <VerifyEmail/>} */}
+                    {type === 'Test' && <Test/>}
                     {type === 'Home' && <Home/>}
                     {type === 'LoginClub' && <LoginClub/>}
                     {type === 'LoginStudent' && <LoginStudent/>}

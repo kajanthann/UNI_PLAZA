@@ -43,7 +43,6 @@ export default function LoginStudent(){
                         <div className="">
                             <img src={LoginImage} alt="" className="md:flex hidden relative w-full md:w-full opacity-70"/>
                             <div className="bg-white w-9/10 my-5 md:my-0 mx-auto border border-gray-200 px-3 py-5 md:w-2/5 md:absolute transform translate-y-0 md:top-1/5 md:left-1/3 rounded-2xl shadow-lg">
-                            <img src={LoginImage} alt="" className="relative w-full md:w-full opacity-70"/>
         
                                 <div>
                                     <img src={LogoImage} alt="" className="w-1/2 mx-auto my-5"/>

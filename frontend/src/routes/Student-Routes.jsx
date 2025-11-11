@@ -8,7 +8,7 @@ function StudentRoutes(){
     return (
         <Routes>
             <Route path="/Studentdashboard" element={<MainContent name={name} role={role} type="StudentDashboard"/>}></Route>
-            <Route path="/Studentevenlist" element={<MainContent name={name} role={role} type="StudentEvenList"/>}></Route>
+            <Route path="/Studentevenlist" element={<MainContent name={name} role={role} type="StudentEventList"/>}></Route>
             <Route path="/Studentnotifications" element={<MainContent name={name} role={role} type="StudentNotifications"/>}></Route>
             <Route path="/Studentsettings" element={<MainContent name={name} role={role} type="StudentSettings"/>}></Route>
             <Route path="/Studentprofile" element={<MainContent name={name} role={role} type="StudentProfile"/>}></Route>

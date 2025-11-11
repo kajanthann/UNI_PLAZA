@@ -1,6 +1,6 @@
 import { useState,useEffect,useRef } from "react";
 
-export default function VerifyEmail() {
+export default function VerifyEmail({closeModal}) {
   const email = "amy*****@gmail.com";
 
   const [timeLeft,setTimeLeft] = useState(120);
@@ -42,8 +42,8 @@ export default function VerifyEmail() {
   };
 
   return (
-      <div className="absolute top-1/5 left-1/4 w-2/5 bg-white p-8 rounded-2xl shadow-lg">
-    
+        <div className="">
+        <div className="absolute top-1/5 left-1/3 w-2/5 bg-white p-8 rounded-2xl shadow-lg">
         <h2 className="font-bold text-3xl text-center mb-3">Verify Email</h2>
         <p className="text-gray-600 text-center mb-5">
           Enter the OTP sent to <span className="font-semibold">{email}</span> to verify.
@@ -76,10 +76,11 @@ export default function VerifyEmail() {
 
           <div className="flex justify-between mt-4">
             <button
-              type="button"
-              className="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+            type="button"
+            onClick={closeModal}
+            className="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
             >
-              No, Cancel
+            No, Cancel
             </button>
             <button
               type="submit"
@@ -90,5 +91,6 @@ export default function VerifyEmail() {
           </div>
         </form>
       </div>
-  );
+      </div>
+      );
 }

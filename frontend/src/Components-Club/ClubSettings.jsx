@@ -38,6 +38,7 @@ export default function ClubSettings() {
         repPhone: "071 734 2934",
     });
 
+
     const handleBack = () =>{
         setActiveTab("");
         setSettingsTab(true);
@@ -48,19 +49,21 @@ export default function ClubSettings() {
         setFormData((pre) => ({...pre,[name]:value}));
     }
 
+    const handleAccount = (e) => {
+        e.preventDefault();
+        setOpen(true);
+    };
+
+    const handleProfile = (e) => {
+        e.preventDefault();
+        setOpen(true);
+    };
+
     return (
-        <div className="relative flex flex-col w-full min-h-screen">
+        <div className={`relative flex flex-col w-full min-h-screen `}>
             {open && (
-                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-                    <div className="relative bg-white w-2/5 p-8 rounded-2xl shadow-2xl">
-                    <button
-                        onClick={() => setOpen(false)}
-                        className="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold"
-                    >
-                        ×
-                    </button>
-                    <VerifyEmail />
-                    </div>
+                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+                    <VerifyEmail closeModal={() => setOpen(false)} />
                 </div>
             )}
             <div className="w-92/100 my-4 mx-auto">
@@ -230,7 +233,7 @@ export default function ClubSettings() {
                                                 <input type="text" name="officialEmail" className="border border-gray-400 bg-gray-100 p-2 w-full rounded-xl" value={formData.officialEmail} onChange={handleChange}/>
                                             </div>
                                             <div className="text-end">
-                                                <button type="submit" className="bg-buttonBlue text-lg text-white px-8 py-2 rounded-xl">Save Changes</button>
+                                                <button type="submit" onClick={handleProfile} className="bg-buttonBlue text-lg text-white px-8 py-2 rounded-xl">Save Changes</button>
                                             </div>
                                         </div>
                                     </form>
@@ -270,7 +273,7 @@ export default function ClubSettings() {
                                         <input type="text" name="repPhone" className="border border-gray-400 bg-gray-100 p-2 w-full rounded-xl" value={formData.repPhone} onChange={handleChange}/>
                                     </div>
                                     <div className="text-end">
-                                        <button type="submit" className="bg-buttonBlue text-lg text-white px-8 py-2 rounded-xl">Save Changes</button>
+                                        <button type="submit" onClick={handleAccount} className="bg-buttonBlue text-lg text-white px-8 py-2 rounded-xl">Save Changes</button>
                                     </div>
                                 </div>
                             </form>

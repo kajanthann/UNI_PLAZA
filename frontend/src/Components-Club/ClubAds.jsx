@@ -37,7 +37,12 @@ export default function ClubAds(){
 
     return (
         <div className="pb-10 my-4">
-            <h2 className="text-2xl md:text-3xl font-bold mb-2 w-92/100 mx-auto text-center md:text-left">Club Ads</h2>
+            <div className="mt-8 mb-4 w-92/100 mx-auto text-center md:text-left">
+                <h2 className="mb-2 text-2xl md:text-3xl font-bold">Create Events</h2>
+                <p className="text-md text-gray-500">Create and Explore your club events from here</p>
+            </div>
+
+
             <div className="w-92/100 mx-auto">
 
                 <div className="flex flex-col md:flex-row items-center bg-blue-200 my-5 rounded-2xl p-4 md:p-0">

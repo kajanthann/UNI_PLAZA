@@ -38,7 +38,10 @@ export default function ClubNotifications(){
 
     return (
         <div className="flex flex-col w-full min-h-screen my-4">
-            <h2 className="text-3xl font-bold mb-2 w-93/100 mx-auto">Club Notifications</h2>
+            <div className="mt-5 mb-4 w-92/100 mx-auto text-center md:text-left">
+                <h2 className="mb-2 text-2xl md:text-3xl font-bold">Notifications</h2>
+                <p className="text-md text-gray-500">Check and get a notify your club updates</p>
+            </div>
             <div className="flex w-92/100 mx-auto">
                 <div className="w-5/7 mr-4">
                     <div className="flex justify-end my-3">

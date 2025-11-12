@@ -92,7 +92,10 @@ export default function ClubAdManager() {
 
   return (
     <div className={`relative my-4 pb-10 ${open ? "bg-black/50" : "bg-white"}`}>
-      <h2 className="text-2xl md:text-3xl font-bold mb-2 w-92/100 mx-auto text-center md:text-left">Club Ad Manager</h2>
+      <div className="mt-7 mb-4 w-92/100 mx-auto text-center md:text-left">
+        <h2 className="mb-2 text-2xl md:text-3xl font-bold">Event Manager</h2>
+        <p className="text-md text-gray-500">Manage your club's profile, create new advertisements, and track your campaigns.</p>
+      </div>
 
       <div className="w-92/100 mx-auto my-5 border border-gray-300 rounded-2xl">
         <div className="w-9/10 mx-auto">

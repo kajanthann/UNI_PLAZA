@@ -1,18 +1,15 @@
 import clubDashboardImage from '../assets/clubDashboard.png'
 import clubLogo from '../assets/clubLogo.png'
 
-export default function ClubProfile() {
+export default function ClubProfile({image}) {
     return (
-        <div className="my-4 pb-10">
-            <h2 className="text-2xl md:text-3xl font-bold m-2 w-92/100 mx-auto text-left">Club Profile</h2>
+        <div className="min-h-screen my-4 pb-10">
+            <div className="mt-7 mb-4 w-92/100 mx-auto text-center md:text-left">
+                <h2 className="mb-2 text-2xl md:text-3xl font-bold">Profile</h2>
+                <p className="text-md text-gray-500">Manage your club's profile</p>
+            </div>
 
-            <div className="min-h-screen w-92/100 my-10 mx-auto">
-            
-                <div className="mb-10 text-center md:text-left">
-                    <h2 className="text-xl md:text-2xl font-bold">Welcome back, Club name!</h2>
-                    <p className="text-base md:text-xl">Manage your club's profile, create new advertisements, and track your campaigns.</p>
-                </div>
-
+            <div className="w-92/100 my-10 mx-auto">
                 <div className="flex flex-col md:flex-row gap-6">
 
                     <div className="relative md:w-1/2 w-full border border-gray-300 rounded-2xl">
@@ -29,8 +26,8 @@ export default function ClubProfile() {
                             <h2 className="text-lg md:text-xl font-bold text-left">Club Information</h2>
 
                             <div className="flex sm:flex-row items-center justify-center sm:justify-start w-full sm:w-2/3 my-3 mx-auto sm:mx-0">
-                                <div className="flex-1 flex justify-center sm:justify-start mb-4 sm:mb-0">
-                                    <img src={clubLogo} alt="Club Logo" className="w-24 sm:w-32 md:w-auto" />
+                                <div className="ml-10 flex-1 flex justify-center sm:justify-start mb-4 sm:mb-0">
+                                    <img src={image} alt="Club Logo" className="object-cover rounded-2xl w-24 h-24 sm:w-32 md:w-auto" />
                                 </div>
                                 <div className="flex-1 flex flex-col items-center justify-center text-center sm:text-left">
                                     <p className="text-lg md:text-xl font-semibold">Club Name</p>

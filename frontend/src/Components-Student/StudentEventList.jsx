@@ -5,6 +5,7 @@ import { faBookmark, faSearch } from "@fortawesome/free-solid-svg-icons";
 export default function StudentEventList() {
     const [activeTab, setActiveTab] = useState("upcoming");
     const [open, setOpen] = useState(false);
+    const [openClub, setOpenClub] = useState(false);
 
     const sortOptions = [
         "Sort By: Date (Newest First)",
@@ -13,15 +14,35 @@ export default function StudentEventList() {
         "Sort By: Alphabetical (Z-A)",
     ];
 
+    const clubs = [
+        "All Clubs",
+        "Gavel Club",
+        "Rotaract Club",
+        "Advancers Club",
+        "Music Production Club",
+        "Environmental Society",
+        "AI & Robotics Society",
+    ];
+
+    const [selectedClub, setSelectedClub] = useState(clubs[0]);
     const [selectedSort, setSelectedSort] = useState(sortOptions[0]);
+
     const dropdownRef = useRef();
+    const dropdownClubsRef = useRef();
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setOpen(false);
             }
+            if (
+                dropdownClubsRef.current &&
+                !dropdownClubsRef.current.contains(event.target)
+            ) {
+                setOpenClub(false);
+            }
         };
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
@@ -31,26 +52,10 @@ export default function StudentEventList() {
         setOpen(false);
     };
 
-    const registeredEvents = [
-        {
-            date: "TUE, DEC 12 • 7:00 PM",
-            title: "Winter Music Fest",
-            host: "Music Production Club",
-            image: "https://picsum.photos/id/1011/800/500",
-        },
-        {
-            date: "THU, DEC 14 • 5:30 PM",
-            title: "Hackathon Kick-off",
-            host: "Coding Society",
-            image: "https://picsum.photos/id/180/800/500",
-        },
-        {
-            date: "THU, DEC 15 • 4:30 PM",
-            title: "Hackathon Kick-off",
-            host: "Coding Society",
-            image: "https://picsum.photos/id/180/800/500",
-        },
-    ];
+    const handleSelectClub = (optionClubs) => {
+        setSelectedClub(optionClubs);
+        setOpenClub(false);
+    };
 
     const recommendedEvents = [
         {
@@ -78,69 +83,32 @@ export default function StudentEventList() {
             image: "https://picsum.photos/id/1039/800/500",
         },
         {
-            date: "FRI, DEC 15 • 9:00 AM",
-            title: "Morning Yoga Session",
-            host: "Wellness Club",
-            image: "https://picsum.photos/id/433/800/500",
+            date: "MON, DEC 18 • 5:00 PM",
+            title: "Coding Marathon 2024",
+            host: "Advancers Club",
+            image: "https://picsum.photos/id/180/800/500",
         },
         {
-            date: "FRI, DEC 15 • 6:00 PM",
-            title: "Tech Talk: AI in 2024",
-            host: "AI & Robotics Society",
-            image: "https://picsum.photos/id/0/800/500",
-        },
-        {
-            date: "SAT, DEC 16 • 11:00 AM",
-            title: "Startup Ideation Workshop",
-            host: "Entrepreneurs Club",
-            image: "https://picsum.photos/id/339/800/500",
-        },
-        {
-            date: "SUN, DEC 17 • 2:00 PM",
-            title: "End of Year Campus Fair",
-            host: "Student Activities Office",
-            image: "https://picsum.photos/id/1039/800/500",
+            date: "WED, DEC 20 • 10:00 AM",
+            title: "Public Speaking Challenge",
+            host: "Gavel Club",
+            image: "https://picsum.photos/id/1011/800/500",
         },
     ];
 
     return (
         <div className="min-h-screen px-10 py-8">
+            {/* Page Title */}
             <div className="mb-8">
-                <h2 className="text-3xl font-bold">Student Event Lists</h2>
+                <h2 className="text-3xl font-bold">Event Lists</h2>
             </div>
 
-            {/*/!* Registered Events Section *!/*/}
-            {/*<div className="flex justify-between items-center mb-4">*/}
-            {/*    <h2 className="text-xl font-semibold">Upcoming Registered Events</h2>*/}
-            {/*</div>*/}
-
-            {/*<div className="grid md:grid-cols-2 gap-4 mb-10 hover:text-white">*/}
-            {/*    {registeredEvents.map((event, i) => (*/}
-            {/*        <div*/}
-            {/*            key={i}*/}
-            {/*            className="flex items-center border border-gray-700 rounded-xl p-4 cursor-pointer hover:bg-blue-200 transition"*/}
-            {/*        >*/}
-            {/*            <img*/}
-            {/*                src={event.image}*/}
-            {/*                alt={event.title}*/}
-            {/*                className="w-28 h-20 rounded-lg object-cover mr-4"*/}
-            {/*            />*/}
-            {/*            <div className="text-black">*/}
-            {/*                <p className="text-blue-400 text-xs font-semibold">{event.date}</p>*/}
-            {/*                <h3 className="font-semibold text-lg">{event.title}</h3>*/}
-            {/*                <p className="text-gray-500 text-sm">Hosted by {event.host}</p>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    ))}*/}
-            {/*</div>*/}
-
-            {/* Recommended Events Section */}
+            {/* Main Layout */}
             <div className="flex gap-5">
-                {/* Left: Events & Controls */}
-                <div className="w-6/8">
+                {/* Left Side – Event List */}
+                <div className="w-3/4">
                     {/* Header Row */}
                     <div className="flex justify-between items-center gap-4 mb-8">
-                        {/* Section Title */}
                         <h2 className="text-xl font-semibold text-gray-800">
                             Recommended For You
                         </h2>
@@ -155,11 +123,11 @@ export default function StudentEventList() {
                                 type="text"
                                 placeholder="Search Content"
                                 className="w-full border border-gray-400 rounded-2xl pl-10 pr-4 py-2 text-lg
-                           focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
+                 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
                             />
                         </div>
 
-                        {/* Dropdown */}
+                        {/* Sort Dropdown */}
                         <div className="relative inline-block text-left" ref={dropdownRef}>
                             <button
                                 className="bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-500 hover:text-white transition"
@@ -223,33 +191,88 @@ export default function StudentEventList() {
                     </div>
                 </div>
 
-                {/* Right: Filter Sidebar */}
-                <div className="flex flex-col w-2/8 mt-10">
-                    <div className="px-6 py-8 h-full border border-gray-200 rounded-xl">
-                        {/* Category Section */}
-                        <div className="flex flex-col mt-5 mx-2">
-                            <h2 className="mb-2 text-2xl font-bold">Category</h2>
-                            {["Academic", "Social", "Sports"].map((label, i) => (
-                                <div key={i} className="flex text-lg my-2">
-                                    <input type="checkbox" className="mr-2" />
-                                    <label>{label}</label>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Event Type Section */}
-                        <div className="flex flex-col mt-10 mx-2">
-                            <h2 className="mb-2 text-2xl font-bold">Event Type</h2>
-                            {["Workshop", "Seminar", "Social Gathering", "Performance"].map(
-                                (label, i) => (
+                {/* Right Side – Filter Sidebar */}
+                <div className="w-1/4 mt-10">
+                    <form>
+                        <div className="px-6 py-8 border border-gray-200 rounded-xl">
+                            {/* Category Section */}
+                            <div className="flex flex-col mt-5 mx-2">
+                                <h2 className="mb-2 text-2xl font-bold">Category</h2>
+                                {["Academic", "Social", "Sports"].map((label, i) => (
                                     <div key={i} className="flex text-lg my-2">
                                         <input type="checkbox" className="mr-2" />
                                         <label>{label}</label>
                                     </div>
-                                )
-                            )}
+                                ))}
+                            </div>
+
+                            {/* Event Type Section */}
+                            <div className="flex flex-col mt-10 mx-2">
+                                <h2 className="mb-2 text-2xl font-bold">Event Type</h2>
+                                {["Workshop", "Seminar", "Social Gathering", "Performance"].map(
+                                    (label, i) => (
+                                        <div key={i} className="flex text-lg my-2">
+                                            <input type="checkbox" className="mr-2" />
+                                            <label>{label}</label>
+                                        </div>
+                                    )
+                                )}
+                            </div>
+
+                            {/* Clubs Dropdown */}
+                            <div className="flex flex-col mt-10 mx-2">
+                                <label className="text-xl font-bold mb-2">Clubs</label>
+                                <div
+                                    className="relative inline-block text-left"
+                                    ref={dropdownClubsRef}
+                                >
+                                    <button
+                                        type="button"
+                                        className="bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-500 hover:text-white transition w-full text-left"
+                                        onClick={() => setOpenClub(!openClub)}
+                                    >
+                                        {selectedClub} ▼
+                                    </button>
+
+                                    {openClub && (
+                                        <div className="absolute left-0 mt-2 w-full bg-white text-gray-800 rounded-lg shadow-lg border border-gray-200 z-50">
+                                            <ul className="flex flex-col">
+                                                {clubs.map((optionClubs, index) => (
+                                                    <li
+                                                        key={index}
+                                                        onClick={() => handleSelectClub(optionClubs)}
+                                                        className={`px-4 py-2 hover:bg-blue-100 cursor-pointer ${
+                                                            selectedClub === optionClubs
+                                                                ? "bg-blue-50 font-semibold text-blue-600"
+                                                                : ""
+                                                        }`}
+                                                    >
+                                                        {optionClubs}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Buttons */}
+                            <div className="flex mt-10 mx-2 gap-4">
+                                <button
+                                    type="submit"
+                                    className="w-1/2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                                >
+                                    Apply Filters
+                                </button>
+                                <button
+                                    type="button"
+                                    className="w-1/2 bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+                                >
+                                    Clear
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

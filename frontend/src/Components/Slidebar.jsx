@@ -8,6 +8,7 @@ import {
   faSliders,
   faBarsProgress,
   faTimes,
+  faListCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import LogoImage from "../assets/logoImage.jpg";
@@ -25,10 +26,10 @@ export default function Sidebar({ role, menuOpen, setMenuOpen }) {
     Student: [
       { icon: faTableColumns, text: "Dashboard", link: "/Studentdashboard" },
       { icon: faCalendarDays, text: "Event List", link: "/Studentevenlist" },
+      { icon: faListCheck, text: "Event Manager", link: "/Studenteventmanager" },
       { icon: faEnvelope, text: "Notifications", link: "/Studentnotifications" },
-      { icon: faComments, text: "Feedback", link: "/Studentfeedback" },
       { icon: faUser, text: "My Profile", link: "/Studentprofile" },
-      { icon: faSliders, text: "Settings", link: "/Studentsettings" },
+      // { icon: faSliders, text: "Settings", link: "/Studentsettings" },
     ],
   };
 

@@ -66,8 +66,12 @@ export default function ClubSettings() {
                     <VerifyEmail closeModal={() => setOpen(false)} />
                 </div>
             )}
+            <div className="mt-7 mb-4 w-92/100 mx-auto text-center md:text-left">
+                <h2 className="mb-2 text-2xl md:text-3xl font-bold">Settings</h2>
+                <p className="text-md text-gray-500">Edit and update your club settings</p>
+            </div>
             <div className="w-92/100 my-4 mx-auto">
-                <h2 className="text-3xl font-bold mb-5">Club Settings</h2>
+
                 {activeTab === "" && settingsTab && (
                     <div className="mx-auto p-8 rounded-2xl border border-gray-200 shadow-md" style={{}}>
                         {Settings.map((item,index)=>(

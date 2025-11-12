@@ -22,7 +22,7 @@ import ClubProfile from '../Components-Club/ClubProfile.jsx'
 // Student Details
 import StudentDashboard from '../Components-Student/StudentDashboard.jsx'
 import StudentEventList from '../Components-Student/StudentEventList.jsx'
-import StudentFeedback from '../Components-Student/StudentFeedback.jsx'
+import StudentEventManager from '../Components-Student/StudentEventManager.jsx'
 import StudentNotifications from '../Components-Student/StudentNotifications.jsx'
 import StudentSettings from '../Components-Student/StudentSettings.jsx'
 import StudentProfile from '../Components-Student/StudentProfile.jsx'
@@ -49,7 +49,7 @@ function MainContent({name,image,role,type}){
                             {type === 'ClubAds' && <ClubAds/>}
                             {type === 'ClubNotifications' && <ClubNotifications/>}
                             {type === 'ClubSettings'&& <ClubSettings/>}
-                            {type === 'ClubProfile' && <ClubProfile/>}
+                            {type === 'ClubProfile' && <ClubProfile image={image}/>}
                             {type === 'ClubAdManager' && <ClubAdManager/>}
                         </>
                     )
@@ -60,8 +60,8 @@ function MainContent({name,image,role,type}){
                             {type === 'StudentEventList' && <StudentEventList/>}
                             {type === 'StudentNotifications' && <StudentNotifications/>}
                             {type === 'StudentSettings'&& <StudentSettings/>}
-                            {type === 'StudentProfile' && <StudentProfile/>}
-                            {type === 'StudentFeedback' && <StudentFeedback/>}
+                            {type === 'StudentProfile' && <StudentProfile image={image}/>}
+                            {type === 'StudentEventManager' && <StudentEventManager/>}
                         </>
                     )
                     }

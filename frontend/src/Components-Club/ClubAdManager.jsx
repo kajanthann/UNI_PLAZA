@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import AdImage from '../assets/adImage.png';
 import AdDetailsImage from '../assets/ad_details_image.png';
+import {useNavigate} from "react-router-dom";
 
 export default function ClubAdManager() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
   const [open, setOpen] = useState(false);
+
+  const handlepath = (path) => {
+    navigate(path);
+  }
 
   const getOverviews = {
     tableColumns: [
@@ -111,7 +117,7 @@ export default function ClubAdManager() {
                 <p>{item.Description}</p>
               </div>
               <div className="flex items-center justify-center md:justify-end">
-                <button className="bg-buttonBlue text-white rounded-2xl py-2 px-4 w-full md:w-auto">
+                <button className="bg-buttonBlue text-white rounded-2xl py-2 px-4 w-full md:w-auto" onClick={()=>(handlepath(`/Clubadedit/${index + 1}`))}>
                   {item.Action}
                 </button>
               </div>

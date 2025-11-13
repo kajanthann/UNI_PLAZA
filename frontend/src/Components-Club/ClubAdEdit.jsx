@@ -2,7 +2,7 @@ import CreateAds from "../assets/createAds.png";
 import {useState} from "react";
 
 
-export default function Test() {
+export default function ClubAdEdit() {
     const [file,setFile] = useState(null);
     const [input,setInput] = useState("");
     const [tags,setTags] = useState([]);
@@ -44,6 +44,8 @@ export default function Test() {
                 <div className="border border-gray-400 rounded-2xl mb-10">
                     <div className="w-9/10 mx-auto my-5">
                         <div className="my-5">
+                            <h2 className="text-lg md:text-xl font-bold">Create Event Ad</h2>
+                            <p className="text-base md:text-lg mb-5">Fill in the details for your event advertisement.</p>
                             <form action="">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-5">
                                     <div className="flex flex-col">

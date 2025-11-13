@@ -16,20 +16,20 @@ import LogoImage from "../assets/logoImage.jpg";
 export default function Sidebar({ role, menuOpen, setMenuOpen }) {
   const sliderOptions = {
     Club: [
-      { icon: faTableColumns, text: "Dashboard", link: "/Clubdashboard" },
-      { icon: faCalendarDays, text: "Create Ads", link: "/Clubads" },
-      { icon: faBarsProgress, text: "Ad Manager", link: "/Clubadmanager" },
-      { icon: faEnvelope, text: "Notifications", link: "/Clubnotifications" },
-      { icon: faUser, text: "My Profile", link: "/Clubprofile" },
-      { icon: faSliders, text: "Settings", link: "/Clubsettings" },
+      { icon: faTableColumns, text: "Dashboard", link: "/Club/dashboard" },
+      { icon: faCalendarDays, text: "Create Ads", link: "/Club/ads" },
+      { icon: faBarsProgress, text: "Ad Manager", link: "/Club/admanager" },
+      { icon: faEnvelope, text: "Notifications", link: "/Club/notifications" },
+      { icon: faUser, text: "My Profile", link: "/Club/profile" },
+      { icon: faSliders, text: "Settings", link: "/Club/settings" },
     ],
     Student: [
-      { icon: faTableColumns, text: "Dashboard", link: "/Studentdashboard" },
-      { icon: faCalendarDays, text: "Event List", link: "/Studentevenlist" },
-      { icon: faListCheck, text: "Event Manager", link: "/Studenteventmanager" },
-      { icon: faEnvelope, text: "Notifications", link: "/Studentnotifications" },
-      { icon: faUser, text: "My Profile", link: "/Studentprofile" },
-      // { icon: faSliders, text: "Settings", link: "/Studentsettings" },
+      { icon: faTableColumns, text: "Dashboard", link: "/Student/dashboard" },
+      { icon: faCalendarDays, text: "Event List", link: "/Student/evenlist" },
+      { icon: faListCheck, text: "Event Manager", link: "/Student/eventmanager" },
+      { icon: faEnvelope, text: "Notifications", link: "/Student/notifications" },
+      { icon: faUser, text: "My Profile", link: "/Student/profile" },
+      // { icon: faSliders, text: "Settings", link: "/Student/settings" },
     ],
   };
 

@@ -2,12 +2,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUserTie,faTriangleExclamation,faCrown,faCalendar} from '@fortawesome/free-solid-svg-icons';
 import AdDetailsImage from '../assets/ad_details_image.png'
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-export default function ClubNotifications(){
+export default function ClubNotifications({open,setOpen,openModel, setOpenModel}) {
+    const navigate = useNavigate();
     const [common,setCommon] = useState(true);
     const [unread, setUnread] = useState(false);
     const [register,setRegister] = useState(false);
     const [adminApprove,setAdminApprove] = useState(false);
+    const [openModel, setOpenModel] = useState(false);
 
     const Notifications = {
         common: [
@@ -35,9 +38,8 @@ export default function ClubNotifications(){
         setAdminApprove(bool4);
     }
 
-
     return (
-        <div className="flex flex-col w-full min-h-screen my-4">
+        <div className={`relative flex flex-col w-full min-h-screen my-4 ${openModel ? "bg-black/50" : "bg-white"}`}>
             <div className="mt-5 mb-4 w-92/100 mx-auto text-center md:text-left">
                 <h2 className="mb-2 text-2xl md:text-3xl font-bold">Notifications</h2>
                 <p className="text-md text-gray-500">Check and get a notify your club updates</p>
@@ -68,7 +70,7 @@ export default function ClubNotifications(){
                                 <>
                                     {
                                         Notifications.common.map((item, index) => (
-                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl">
+                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl" onClick={()=>{navigate(`/Club/notification/details/${index+1}`,{state:item},{setOpen(true)})}>
                                                 <div className="w-1/7">
                                                     <div className="w-fit mx-auto">
                                                         <FontAwesomeIcon icon={item.icon} size={"xl"}/>

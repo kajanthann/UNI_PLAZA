@@ -8,10 +8,6 @@ export default function ClubAdManager() {
   const [selected, setSelected] = useState(null);
   const [open, setOpen] = useState(false);
 
-  const handlepath = (path) => {
-    navigate(path);
-  }
-
   const getOverviews = {
     tableColumns: [
       { id: 1, PostTitle: "Tech Fest 2025: Innovation Showcase", Type: "Event", Tags: ["#IT", "#Innovation", "#Technology"], DateSubmitted: "23 Sep 2025", Status: "Pending", Action: "View" },
@@ -44,7 +40,8 @@ export default function ClubAdManager() {
         EventTitle: "Tech Fest 2025: Innovation Showcase",
         EventDate: "October 26, 2024",
         StartTime: "09:00 AM - 05:00 PM",
-        StarLocation: "University Main Auditorium",
+        StarHall: "University Main Auditorium",
+        StarLocation: "https://www.google.com/",
         University: "University of Kelaniya",
         Contact: "contact@uniplaza-union.com",
         Description: "Join us for the annual Tech Innovate Summit, a day filled with cutting-edge technology discussions, workshops, and networking opportunities.",
@@ -60,8 +57,9 @@ export default function ClubAdManager() {
         EventTitle: "Music Night Fiesta 2025",
         EventDate: "November 5, 2024",
         StartTime: "06:00 PM - 11:00 PM",
-        StarLocation: "University Open Ground",
-        University: "University of Kelaniya",
+        StarHall:"University Open Ground",
+        StarLocation: "https://www.google.com/",
+        University: "University of Sri Jayawardenepura",
         Contact: "events@uniplaza-union.com",
         Description: "Celebrate the spirit of music with performances from talented university bands, DJs, and solo artists. Enjoy the rhythm, lights, and vibes of the biggest music night of the year.",
         Phone: "071 712 4567",
@@ -76,7 +74,8 @@ export default function ClubAdManager() {
         EventTitle: "AI & Robotics Meetup",
         EventDate: "September 30, 2024",
         StartTime: "10:00 AM - 04:00 PM",
-        StarLocation: "Engineering Building, Hall 2",
+        StarHall: "Engineering Building, Hall 2",
+        StarLocation: "https://www.google.com/",
         University: "University of Kelaniya",
         Contact: "techclub@uniplaza-union.com",
         Description: "Join experts and students for a full day of robotics and AI exploration. Participate in live demos, project showcases, and interactive sessions about automation and intelligent systems.",
@@ -117,7 +116,10 @@ export default function ClubAdManager() {
                 <p>{item.Description}</p>
               </div>
               <div className="flex items-center justify-center md:justify-end">
-                <button className="bg-buttonBlue text-white rounded-2xl py-2 px-4 w-full md:w-auto" onClick={()=>(handlepath(`/Clubadedit/${index + 1}`))}>
+                <button className="bg-buttonBlue text-white rounded-2xl py-2 px-4 w-full md:w-auto" onClick={() => {
+                  const selectedAd = AdDetails.Ads.find(a => a.Ad_id === index + 1);
+                  navigate(`/Club/ad/edit/${index + 1}`, { state: selectedAd });
+                }}>
                   {item.Action}
                 </button>
               </div>

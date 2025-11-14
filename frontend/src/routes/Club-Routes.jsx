@@ -1,12 +1,12 @@
 import {Route,Routes} from "react-router-dom";
 import MainContent from "../Main-Content/mainContent.jsx";
-import DefaultClubimage from '../assets/club-profile-image.png';
+import DefaultClubImage from '../assets/club-profile-image.png';
 
 
 function ClubRoutes(){
     const name ="Gavel Club";
     const role = "Club";
-    const image = DefaultClubimage;
+    const image = DefaultClubImage;
     return (
         <Routes>
             <Route path="/Club/dashboard" element={<MainContent image={image} name={name} role={role} type="ClubDashboard"/>}></Route>
@@ -16,6 +16,7 @@ function ClubRoutes(){
             <Route path="/Club/profile" element={<MainContent image={image} name={name} role={role} type="ClubProfile"/>}></Route>
             <Route path="/Club/admanager" element={<MainContent image={image} name={name} role={role} type="ClubAdManager"/>}></Route>
             <Route path="/Club/ad/edit/:adId" element={<MainContent image={image} name={name} role={role} type="ClubAdEdit"/>}></Route>
+            <Route path="/Club/notification/details/:msgId" element={<MainContent image={image} name={name} role={role} type="NotificationDetails"/>}></Route>
         </Routes>
     )
 }

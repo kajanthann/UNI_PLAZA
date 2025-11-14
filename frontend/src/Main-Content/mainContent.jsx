@@ -18,7 +18,8 @@ import ClubAdManager from '../Components-Club/ClubAdManager.jsx'
 import ClubNotifications from '../Components-Club/ClubNotifications.jsx'
 import ClubSettings from '../Components-Club/ClubSettings.jsx'
 import ClubProfile from '../Components-Club/ClubProfile.jsx'
-import ClubAdEdit from "../Components-Club/ClubAdEdit.jsx";
+import ClubAdEdit from "../Components/ClubAdEdit.jsx";
+import NotificationDetails from "../Components/NotificationDetails.jsx"
 
 // Student Details
 import StudentDashboard from '../Components-Student/StudentDashboard.jsx'
@@ -53,6 +54,7 @@ function MainContent({name,image,role,type}){
                             {type === 'ClubProfile' && <ClubProfile image={image}/>}
                             {type === 'ClubAdManager' && <ClubAdManager/>}
                             {type === 'ClubAdEdit' && <ClubAdEdit/>}
+                            {type === 'NotificationDetails' && <NotificationDetails/>}
                         </>
                     )
                     }

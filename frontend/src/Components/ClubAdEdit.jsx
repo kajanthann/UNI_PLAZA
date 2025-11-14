@@ -55,7 +55,7 @@ export default function ClubAdEdit() {
         alert("Ad updated successfully!");
         navigate("/Club/ad");
     };
-    
+
     return (
         <div className="pb-10 my-4">
             <div className="mt-8 mb-4 w-92/100 mx-auto text-center md:text-left">

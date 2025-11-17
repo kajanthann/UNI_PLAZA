@@ -8,7 +8,6 @@ import RegisterStudent from "../Front-Pages/RegisterStudent.jsx";
 import EventDashboard from "../Front-Pages/EventDashboard.jsx";
 import Slider from '../Components/Slidebar.jsx'
 import Test from '../Components/Test.jsx'
-import VerifyEmail from "../Components/VerifyEmail.jsx";
 import {useState} from 'react'
 
 // Club Details
@@ -28,6 +27,7 @@ import StudentEventManager from '../Components-Student/StudentEventManager.jsx'
 import StudentNotifications from '../Components-Student/StudentNotifications.jsx'
 import StudentSettings from '../Components-Student/StudentSettings.jsx'
 import StudentProfile from '../Components-Student/StudentProfile.jsx'
+import StudentAdView from '../Components/StudentAdView.jsx'
 
 
 function MainContent({name,image,role,type}){
@@ -66,6 +66,7 @@ function MainContent({name,image,role,type}){
                             {type === 'StudentSettings'&& <StudentSettings/>}
                             {type === 'StudentProfile' && <StudentProfile image={image}/>}
                             {type === 'StudentEventManager' && <StudentEventManager/>}
+                            {type === 'StudentAdView' && <StudentAdView/>}
                         </>
                     )
                     }

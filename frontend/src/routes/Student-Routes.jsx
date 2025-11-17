@@ -15,6 +15,7 @@ function StudentRoutes(){
             <Route path="/Student/settings" element={<MainContent image={image} name={name} role={role} type="StudentSettings"/>}></Route>
             <Route path="/Student/profile" element={<MainContent image={image} name={name} role={role} type="StudentProfile"/>}></Route>
             <Route path="/Student/eventmanager" element={<MainContent image={image} name={name} role={role} type="StudentEventManager"/>}></Route>
+            <Route path="/Student/adview/:adId" element={<MainContent image={image} name={name} role={role} type="StudentAdView"/>}></Route>
         </Routes>
     )
 }

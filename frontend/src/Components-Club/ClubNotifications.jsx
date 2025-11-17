@@ -2,15 +2,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUserTie,faTriangleExclamation,faCrown,faCalendar} from '@fortawesome/free-solid-svg-icons';
 import AdDetailsImage from '../assets/ad_details_image.png'
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
 
-export default function ClubNotifications({open,setOpen,openModel, setOpenModel}) {
-    const navigate = useNavigate();
+export default function ClubNotifications() {
     const [common,setCommon] = useState(true);
     const [unread, setUnread] = useState(false);
     const [register,setRegister] = useState(false);
     const [adminApprove,setAdminApprove] = useState(false);
     const [openModel, setOpenModel] = useState(false);
+
+    const [selectedNotification, setSelectedNotification] = useState(null);
 
     const Notifications = {
         common: [
@@ -39,7 +39,7 @@ export default function ClubNotifications({open,setOpen,openModel, setOpenModel}
     }
 
     return (
-        <div className={`relative flex flex-col w-full min-h-screen my-4 ${openModel ? "bg-black/50" : "bg-white"}`}>
+        <div className={`relative flex flex-col w-full min-h-screen my-4`}>
             <div className="mt-5 mb-4 w-92/100 mx-auto text-center md:text-left">
                 <h2 className="mb-2 text-2xl md:text-3xl font-bold">Notifications</h2>
                 <p className="text-md text-gray-500">Check and get a notify your club updates</p>
@@ -48,8 +48,8 @@ export default function ClubNotifications({open,setOpen,openModel, setOpenModel}
                 <div className="w-5/7 mr-4">
                     <div className="flex justify-end my-3">
                         <div className="grid grid-cols-2 gap-4">
-                            <button className="bg-blue-100 p-2 text-skyblue font-semibold rounded-lg">Delete All</button>
-                            <button className="bg-blue-100 p-2 text-skyblue font-semibold rounded-lg">Mark All as Read</button>
+                            <button className="bg-blue-100 p-2 text-skyblue hover:bg-blue-300 hover:text-blue-600 font-semibold rounded-lg">Delete All</button>
+                            <button className="bg-blue-100 p-2 text-skyblue hover:bg-blue-300 hover:text-blue-600 font-semibold rounded-lg">Mark All as Read</button>
                         </div>
                     </div>
                     <div className="flex whitespace-nowrap gap-10 text-gray-600 text-lg font-semibold mb-5">
@@ -64,13 +64,18 @@ export default function ClubNotifications({open,setOpen,openModel, setOpenModel}
                             <span> ({Notifications.adminApproval.length})</span>
                         </div>
                     </div>
+
                     <div className="w-full my-5">
-                        {
-                            common && (
+                        {common && (
                                 <>
                                     {
                                         Notifications.common.map((item, index) => (
-                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl" onClick={()=>{navigate(`/Club/notification/details/${index+1}`,{state:item},{setOpen(true)})}>
+                                            <div key={index}
+                                                 className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl"
+                                                 onClick={() => {
+                                                     setSelectedNotification(item);
+                                                     setOpenModel(true);
+                                                 }}>
                                                 <div className="w-1/7">
                                                     <div className="w-fit mx-auto">
                                                         <FontAwesomeIcon icon={item.icon} size={"xl"}/>
@@ -95,7 +100,11 @@ export default function ClubNotifications({open,setOpen,openModel, setOpenModel}
                                 <>
                                     {
                                         Notifications.unread.map((item, index) => (
-                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl">
+                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl"
+                                                 onClick={() => {
+                                                     setSelectedNotification(item);
+                                                     setOpenModel(true);
+                                                 }}>
                                                 <div className="w-1/7">
                                                     <div className="w-fit mx-auto">
                                                         <FontAwesomeIcon icon={item.icon} size={"xl"}/>
@@ -120,7 +129,11 @@ export default function ClubNotifications({open,setOpen,openModel, setOpenModel}
                                 <>
                                     {
                                         Notifications.registrations.map((item, index) => (
-                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl">
+                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl"
+                                                 onClick={() => {
+                                                     setSelectedNotification(item);
+                                                     setOpenModel(true);
+                                                 }}>
                                                 <div className="w-1/7">
                                                     <div className="w-fit mx-auto">
                                                         <FontAwesomeIcon icon={item.icon} size={"xl"}/>
@@ -145,7 +158,11 @@ export default function ClubNotifications({open,setOpen,openModel, setOpenModel}
                                 <>
                                     {
                                         Notifications.adminApproval.map((item, index) => (
-                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl">
+                                            <div key={index} className="flex items-center mb-5 hover:cursor-pointer bg-gray-100 rounded-2xl"
+                                                 onClick={() => {
+                                                     setSelectedNotification(item);
+                                                     setOpenModel(true);
+                                                 }}>
                                                 <div className="w-1/7">
                                                     <div className="w-fit mx-auto">
                                                         <FontAwesomeIcon icon={item.icon} size={"xl"}/>
@@ -167,7 +184,8 @@ export default function ClubNotifications({open,setOpen,openModel, setOpenModel}
 
                     </div>
                 </div>
-                <div  className="w-2/7 border border-gray-300 p-3 rounded-2xl">
+
+                <div className="w-2/7 border border-gray-300 p-3 rounded-2xl">
                     <h3 className="text-2xl font-bold">Quick Status</h3>
                     <div className="flex my-5 bg-blue-100 border border-blue-400 rounded-xl">
                         <div className="w-fit m-4">
@@ -198,6 +216,46 @@ export default function ClubNotifications({open,setOpen,openModel, setOpenModel}
                     </div>
                 </div>
             </div>
+
+            {openModel && selectedNotification && (
+                <div className="fixed inset-0 flex justify-center items-center bg-black/55 z-50">
+                    <div className="bg-white w-11/12 md:w-1/2 lg:w-3/7 rounded-2xl shadow-lg p-6 relative">
+
+                        <button
+                            onClick={() => setOpenModel(false)}
+                            className="absolute top-3 right-4 text-gray-600 hover:text-black text-xl"
+                        >
+                            ×
+                        </button>
+
+                        <div className="flex items-center gap-3 mb-5">
+                            <FontAwesomeIcon icon={selectedNotification.icon} size="xl" className="text-blue-600"/>
+                            <h2 className="text-2xl font-bold">{selectedNotification.title}</h2>
+                        </div>
+
+                        <p className="text-gray-700 text-lg py-5">{selectedNotification.msg}</p>
+
+                        <div className="flex justify-between mt-5 text-gray-500">
+                            <span><strong>Date:</strong> {selectedNotification.date}</span>
+                            <span><strong>Time:</strong> {selectedNotification.time}</span>
+                        </div>
+
+                        <div className="mt-6 flex justify-end gap-4">
+                            <button
+                                className="text-gray-500  font-medium text-md border-1 border-gray-400 hover:bg-gray-500 hover:text-white py-2 px-4 rounded-md"
+                            >
+                                Delete Message
+                            </button>
+                            <button
+                                className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-md py-2 px-4 rounded-md"
+                            >
+                                Mark as Read
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 };

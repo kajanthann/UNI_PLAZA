@@ -5,6 +5,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 export default function StudentEventManager() {
     const [filter, setFilter] = useState("upcoming");
     const [search, setSearch] = useState("");
+    const [state,setState] = useState(null);
 
     const events = [
         {
@@ -121,6 +122,7 @@ export default function StudentEventManager() {
                                 <td className="py-4 px-6 text-gray-500 hover:text-white">{event.location}</td>
                                 <td className="py-4 px-6">
                                     <button className="text-blue-500 hover:underline hover:text-blue-50 mr-3">
+>
                                         View Details
                                     </button>
                                     <button className="text-red-400 hover:underline hover:text-red-50">

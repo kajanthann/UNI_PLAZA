@@ -25,11 +25,11 @@ export default function Header({ name, role, image, type, menuOpen, setMenuOpen 
   ];
 
   const guestLinks = [
-    { label: 'Home', href: '#Home' },
-    { label: 'Events', href: '#Events' },
-    { label: 'About Us', href: '#Footer' },
+    // { label: 'Home', href: '#Home' },
+    { label: 'Events', href: '/EventDashboard' },
     { label: 'Feedback', href: '#Feedback' },
-    { label: 'Event Dashboard', href: '/EventDashboard' }
+    { label: 'About Us', href: '#Footer' },
+    // { label: 'Event Dashboard', href: '/EventDashboard' }
   ];
 
   const studentClubLinks = [
@@ -90,13 +90,13 @@ export default function Header({ name, role, image, type, menuOpen, setMenuOpen 
               </div>
 
               <div
-                  className="hidden md:flex items-center relative mx-4 flex-1 max-w-md w-1/5"
+                  className="hidden md:flex items-center relative mx-4 flex-1 max-w-md w-2/5"
                   style={{ minWidth: '240px' }}
               >
                 <input
                     type="text"
                     placeholder="Search Content"
-                    className="w-3/4 h-3/4 border border-gray-400 rounded-2xl pl-10 pr-4 py-2 text-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
+                    className="w-full h-3/4 border border-gray-400 rounded-2xl pl-10 pr-4 py-2 text-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
                 />
                 <div className="absolute inset-y-0 left-3 flex items-center text-gray-400">
                   <FontAwesomeIcon icon={faSearch} />

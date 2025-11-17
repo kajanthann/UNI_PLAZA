@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
-export default function NotificationDetails({ open, setOpen,openModel, setOpenModel}) {
+export default function NotificationDetails() {
     const { state } = useLocation();
     const { msgId } = useParams();
     const [open, setOpen] = useState(true);
@@ -12,7 +14,6 @@ export default function NotificationDetails({ open, setOpen,openModel, setOpenMo
 
     const handleClose = () => {
         setOpen(false);
-        setOpenModel(false);
     }
     const handleMarkRead = () => {
         alert("✅ Notification marked as read!");
@@ -69,5 +70,6 @@ export default function NotificationDetails({ open, setOpen,openModel, setOpenMo
                 </div>
             </div>
         </div>
+
     );
 }

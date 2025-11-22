@@ -14,6 +14,7 @@ function FrontPagesRoutes() {
             <Route path="/RegisterClub" element={<MainContent role='' type="RegisterClub"/>}/>
             <Route path="/RegisterStudent" element={<MainContent role='' type="RegisterStudent"/>}/>
             <Route path="/EventDashboard" element={<MainContent role='' type="EventDashboard"/>}/>
+            <Route path="/EventDashboard/adview/:adId" element={<MainContent role='' type="EventAdView"/>}></Route>
             {/*<Route path="/" element={<Home/>} />*/}
             {/*<Route path="/Home" element={<Home/>} />*/}
             {/*<Route path="/LoginClub" element={<LoginClub/>} />*/}

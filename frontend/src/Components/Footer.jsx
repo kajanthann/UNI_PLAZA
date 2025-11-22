@@ -23,7 +23,7 @@ export default function Footer({type}){
         <footer id="Footer" className="bg-navyblue text-white">
             {contentShown && (
             <>
-            <div className="container mx-auto py-8">
+            <div className="container mx-auto py-6">
                 <div className="md:flex grid grid-cols-2 gap-10 ml-10 mx-auto">
                 <section className="md:flex-1">
                     <h2 className="text-2xl mb-4">Company Info</h2>
@@ -71,7 +71,7 @@ export default function Footer({type}){
             <hr className="text-linecolor"/>
             </>
             )}
-            <div className="flex justify-center py-5 text-gray-400">
+            <div className="flex justify-center py-4 text-gray-400">
                 &copy;2023 Eventify. All rights reserved.
             </div>
         </footer>

@@ -4,10 +4,15 @@ import HeroImage from '../assets/heroImage1.png'
 import PostImage from '../assets/postImage.png'
 import FeedbackImage from '../assets/feedbackImage.png'
 import {Link, useNavigate} from "react-router-dom";
+import api from '../api/axios';
+import { useState } from "react";
 
 
 export default function Home(){
     const navigate = useNavigate();
+    const [rate, setRate] = useState(0);
+    const [hover, setHover] = useState(0);
+
 
     const handleNavigation = (path) =>{
         navigate(path);
@@ -18,7 +23,8 @@ export default function Home(){
             fullName: "",
             email: "",
             subject: "",
-            message: ""
+            message: "",
+            rating:"",
         },
         enableReinitialize: true,
         validationSchema: Yup.object().shape({
@@ -26,6 +32,7 @@ export default function Home(){
             email: Yup.string().email("Invalid Email").required("Email is required"),
             subject: Yup.string().required("Subjects is required"),
             message: Yup.string().min(10,"Message too small").required("Message is required"),
+            rating:Yup.number().required("Rating is required"),
         }),
         onSubmit: (values, { resetForm }) => {
             console.log(values);
@@ -34,6 +41,24 @@ export default function Home(){
         },
 
     })
+
+    const sendFeedback = async (values) =>{
+        const { fullName, email, subject, message,rating } = values;
+        try{
+            const response = await api.post('/user/feedback',{
+                  name:fullName,email,subject,message,rating
+            })
+            if(response.status === 200){
+                console.log('Your feedback successfully submitted');
+                alert('Your feedback successfully submitted');
+            }
+        }
+        catch(error){
+            console.error('Feedback submitting error:', error.response?.data || error.message);
+            alert("Error to submit your feedback. Please check your input or try again later.");
+        }
+        
+    };
     
 
     return (
@@ -145,7 +170,10 @@ export default function Home(){
                             </div>
                             <div>
                                 <div className="md:w-9/10 my-15">
-                                <form action="">
+                                <form onSubmit={async(e)=>{
+                                    e.preventDefault();
+                                    await sendFeedback(formik.values);
+                                }}>
                                     <div className="md:w-6/10 w-8/10 mx-auto">
                                     <div className="h-22">
                                         <label htmlFor="fullName" className="block font-medium mb-1">Full Name</label>
@@ -201,7 +229,7 @@ export default function Home(){
                                             <div className="text-red-500 text-sm">{formik.errors.subject}</div>
                                         )}
                                     </div>
-                                    <div className="h-22">
+                                    <div className="h-50">
                                         <label htmlFor="message" className="block font-medium mb-1">Message</label>
                                         <textarea rows="5"
                                             id="message"
@@ -209,7 +237,7 @@ export default function Home(){
                                             placeholder="Enter your Message"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                            value={formik.values.fullName}
+                                            value={formik.values.message}
                                             className={`pl-4 w-full py-2 rounded-xl bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 ${
                                                 formik.touched.message && formik.errors.message ? "border-red-500" : "border-gray-300"
                                             }`}
@@ -218,7 +246,33 @@ export default function Home(){
                                             <div className="text-red-500 text-sm">{formik.errors.message}</div>
                                         )}
                                     </div>
-                                    <button type="submit" className="mt-28 w-full bg-skyblue text-white px-5 py-2 rounded-xl">Submit Feedback</button>
+                                    <div>
+                                        <label className="block font-medium mb-1">
+                                            How would you rate your experience?
+                                        </label>
+
+                                        <div className="flex space-x-3">
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                            <span
+                                                key={star}
+                                                onClick={() => {
+                                                setRate(star);
+                                                formik.setFieldValue("rating", star);
+                                                }}
+                                                onMouseEnter={() => setHover(star)}
+                                                onMouseLeave={() => setHover(0)}
+                                                className={`text-3xl cursor-pointer transition-colors duration-200 ${
+                                                star <= (hover || rate)
+                                                    ? "text-yellow-400"
+                                                    : "text-gray-300"
+                                                }`}
+                                            >
+                                                ★
+                                            </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <button type="submit" className="mt-8 w-full bg-skyblue text-white px-5 py-2 rounded-xl">Submit Feedback</button>
                                     </div>
                                 </form>
                                 </div>

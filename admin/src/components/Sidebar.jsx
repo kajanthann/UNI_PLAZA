@@ -32,7 +32,7 @@ const Sidebar = () => {
             key={idx}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center gap-4 text-[18px] py-3.5 px-3 lg:px-9 lg:min-w-60 cursor-pointer transition ${
+              `flex items-center gap-4 text-[18px] py-3.5 px-3 lg:px-9 lg:min-w-60 cursor-pointer hover:bg-[#f4f1f6] transition ${
                 isActive ? 'border-r-4 border-fuchsia-500 bg-[#f4f1f6]' : ''
               }`
             }

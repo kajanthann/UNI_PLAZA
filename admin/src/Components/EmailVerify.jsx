@@ -13,7 +13,7 @@ const EmailVerify = () => {
 
   const [otp, setOtp] = useState(Array(6).fill(""));
   const inputsRef = useRef([]);
-  const [timer, setTimer] = useState(150);
+  const [timer, setTimer] = useState(120);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

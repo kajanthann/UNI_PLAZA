@@ -17,6 +17,7 @@ import Animation from "./Components/Animation";
 import ManageAdminPost from "./pages/manageAdminPost";
 import AdminPostDetails from "./Components/AdminPostDetails";
 import PostForm from "./Components/PostForm";
+import Sam from "./pages/Sam";
 
 const ProtectedRoute = ({ children }) => {
   const { aToken } = useContext(AdminContext);
@@ -65,6 +66,7 @@ const App = () => {
                         <Route path="create-post" element={<PostForm />} />
                         <Route path="students" element={<Students />} />
                         <Route path="settings" element={<Setting />} />
+                        <Route path="sam" element={<Sam />} />
                         <Route path="feedbacks" element={<FeedBack />} />
                         <Route path="animation" element={<Animation />} />
                         <Route path="admin/posts/:id" element={<PostDetailsPage />} />

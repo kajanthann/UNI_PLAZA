@@ -44,7 +44,7 @@ const AdminContextProvider = ({ children }) => {
 
         setAtoken("");
         localStorage.removeItem("aToken");
-        navigate("/admin/login");
+        navigate("/login");
       }
       return Promise.reject(error);
     }
@@ -128,10 +128,16 @@ const AdminContextProvider = ({ children }) => {
     try {
       const newStatus = currentStatus === "rejected" ? "approved" : "rejected";
       await axiosInstance.put(`/api/admin/events/${id}/${newStatus}`);
-      toast.success(`Event ${newStatus === "rejected" ? "blocked" : "unblocked"} successfully`);
+      toast.success(
+        `Event ${
+          newStatus === "rejected" ? "blocked" : "unblocked"
+        } successfully`
+      );
       fetchEvents();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to update event status");
+      toast.error(
+        err.response?.data?.message || "Failed to update event status"
+      );
     }
   };
 
@@ -145,9 +151,7 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
-  // ----------------------------
   // STUDENT MANAGEMENT
-  // ----------------------------
 
   const fetchStudents = async () => {
     setLoadingStudents(true);
@@ -162,9 +166,7 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
-  // ----------------------------
   // ADMINS
-  // ----------------------------
 
   const fetchAdmins = async () => {
     try {
@@ -176,9 +178,7 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
-  // ----------------------------
   // FEEDBACK
-  // ----------------------------
 
   const fetchFeedbacks = async () => {
     setLoadingFeedbacks(true);
@@ -193,9 +193,7 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
-  // ----------------------------
-  // EMAIL
-  // ----------------------------
+  // EMAIL SENDING
 
   const sendEmail = async ({ to, subject, text }) => {
     if (!to || !subject?.trim() || !text?.trim())
@@ -220,9 +218,7 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
-  // ----------------------------
   // ADMIN POSTS
-  // ----------------------------
 
   const adminFetchPosts = async () => {
     setLoadingAdminPosts(true);
@@ -258,11 +254,18 @@ const AdminContextProvider = ({ children }) => {
         adminFetchPosts();
       } else toast.error(data.message);
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to toggle publish status.");
+      toast.error(
+        err.response?.data?.message || "Failed to toggle publish status."
+      );
     }
   };
 
-  const handleUpdateAdminPost = async (postId, title, description, imageFile) => {
+  const handleUpdateAdminPost = async (
+    postId,
+    title,
+    description,
+    imageFile
+  ) => {
     try {
       const formData = new FormData();
       formData.append("title", title);
@@ -284,10 +287,6 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
-  // ----------------------------
-  // AUTO FETCH ON LOGIN
-  // ----------------------------
-
   useEffect(() => {
     if (aToken) {
       fetchClubs();
@@ -298,10 +297,6 @@ const AdminContextProvider = ({ children }) => {
       adminFetchPosts();
     }
   }, [aToken]);
-
-  // ----------------------------
-  // CONTEXT VALUE
-  // ----------------------------
 
   const value = {
     aToken,
@@ -336,7 +331,9 @@ const AdminContextProvider = ({ children }) => {
   };
 
   return (
-    <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
+    <AdminContext.Provider value={value}>
+      {children}
+    </AdminContext.Provider>
   );
 };
 

@@ -66,7 +66,7 @@ const PostCard = ({ post }) => {
         )}
 
         {post.isPublished && (
-          <span className="absolute top-3 left-3 bg-green-600 text-white px-2 py-1 text-xs rounded-full">
+          <span className="absolute top-3 left-3 bg-green-200 border border-green-600 text-black px-2 py-1 text-xs rounded-full">
             Published
           </span>
         )}

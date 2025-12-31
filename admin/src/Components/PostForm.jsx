@@ -63,7 +63,7 @@ const PostForm = () => {
           )}
           <label
             htmlFor="new-post-img"
-            className="cursor-pointer flex flex-col items-center bg-slate-50 justify-center w-64 h-64 border-2 border-dashed border-gray-300 rounded-xl hover:border-blue-500 transition overflow-hidden"
+            className="cursor-pointer flex flex-col items-center bg-slate-50 justify-center w-80 h-64 border-2 border-dashed border-gray-300 rounded-xl hover:border-fuchsia-500 transition overflow-hidden"
           >
             <img
               src={newImage ? URL.createObjectURL(newImage) : assets.upload}
@@ -97,14 +97,14 @@ const PostForm = () => {
             placeholder="Enter Title"
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
-            className="border p-4 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none w-full text-gray-700 placeholder-gray-400"
+            className="border p-4 rounded-xl focus:ring-1 focus:ring-fuchsia-500 focus:outline-none w-full text-gray-700 placeholder-gray-400"
           />
           <textarea
             placeholder="Enter Description"
             value={newDescription}
             onChange={(e) => setNewDescription(e.target.value)}
             rows={6}
-            className="border p-4 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none w-full text-gray-700 placeholder-gray-400"
+            className="border p-4 rounded-xl focus:ring-1 focus:ring-fuchsia-500 focus:outline-none resize-none w-full text-gray-700 placeholder-gray-400"
           />
 
           {/* Button aligned to the right on md+ screens */}

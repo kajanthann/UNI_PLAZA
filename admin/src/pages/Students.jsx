@@ -27,7 +27,7 @@ const Students = () => {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 mx-auto">
       <h1 className="text-3xl font-bold mb-6">All Students</h1>
 
       <div className="overflow-x-auto bg-white rounded-lg shadow-md">

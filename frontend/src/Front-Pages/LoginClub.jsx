@@ -7,6 +7,7 @@ import LogoImage from '../assets/logoImage.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from "react-router-dom";
 import {faCircleUser,faEye,faEyeSlash,faEnvelope,faLock} from '@fortawesome/free-solid-svg-icons';
+import api from '../api/axios';
 
 export default function LoginClub(){
     const [submitData,setSubmitData] = useState(null);
@@ -15,7 +16,6 @@ export default function LoginClub(){
     const passwordShow = () =>{
         setPasswordVisibility(!passwordVisibility);
     }
-
 
     const formik = useFormik({
         initialValues: {
@@ -26,16 +26,31 @@ export default function LoginClub(){
         validationSchema: Yup.object().shape({
             username: Yup.string().required('Username is required'),
             password: Yup.string()
-             .min(8,'Password must be at least 8 characters')
-             .required('Password is required')
-             .matches(/[A-Z]/, 'Must contain uppercase')
-             .matches(/[a-z]/, 'Must contain lowercase')
-             .matches(/[0-9]/, 'Must contain number'),
+            .min(8,'Password must be at least 8 characters')
+            .required('Password is required')
+            .matches(/[A-Z]/, 'Must contain uppercase')
+            .matches(/[a-z]/, 'Must contain lowercase')
+            .matches(/[0-9]/, 'Must contain number'),
         }),
-        onSubmit: (values) =>{
-            setSubmitData(values);
+        onSubmit: async (values) => {
+            try {
+                const response = await api.post('/login', {
+                    officialEmail: values.username,
+                    password: values.password
+                });
+
+                if (response.status === 200) {
+                    alert("User logged successfully!");
+                    console.log(response.data);
+                }
+            } catch (error) {
+                console.error(error.response?.data || error.message);
+                alert("Login failed. Please try again.");
+            }
         },
-    })
+    });
+
+
     return(
         <div className="min-h-screen flex flex-col">
             <div className="w-full">
@@ -53,7 +68,7 @@ export default function LoginClub(){
                         </div>
 
                         <div className="w-6/7 mx-auto md:py-15">
-                            <form action="">
+                            <form onSubmit={formik.handleSubmit}>
                                 <div className="">
                                     <div className="h-15 my-8 relative">
                                         <FontAwesomeIcon icon={faEnvelope} size={"lg"} className="text-gray-400 absolute transform translate-y-3 left-1/50"/>

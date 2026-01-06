@@ -17,25 +17,40 @@ export default function LoginStudent(){
         setPasswordVisibility(!passwordVisibility);
     }
 
-    const formik = useFormik({
+       const formik = useFormik({
         initialValues: {
-            student_username:"",
-            student_password:"",
+            username:"",
+            password:"",
         },
         enableReinitialize:true,
         validationSchema: Yup.object().shape({
-            student_username: Yup.string().required('Username is required'),
-            student_password: Yup.string()
-                .min(8,'Password must be at least 8 characters')
-                .required('Password is required')
-                .matches(/[A-Z]/, 'Must contain uppercase')
-                .matches(/[a-z]/, 'Must contain lowercase')
-                .matches(/[0-9]/, 'Must contain number'),
+            username: Yup.string().required('Username is required'),
+            password: Yup.string()
+            .min(8,'Password must be at least 8 characters')
+            .required('Password is required')
+            .matches(/[A-Z]/, 'Must contain uppercase')
+            .matches(/[a-z]/, 'Must contain lowercase')
+            .matches(/[0-9]/, 'Must contain number'),
         }),
-        onSubmit: (values) =>{
-            setSubmitData(values);
+        onSubmit: async (values) => {
+            try {
+                const response = await api.post('/login', {
+                    officialEmail: values.username,
+                    password: values.password
+                });
+
+                if (response.status === 200) {
+                    alert("User logged successfully!");
+                    console.log(response.data);
+                }
+            } catch (error) {
+                console.error(error.response?.data || error.message);
+                alert("Login failed. Please try again.");
+            }
         },
-    })
+    });
+
+
     return(
         <div className="min-h-screen flex flex-col">
                     <div className="w-full">
@@ -53,7 +68,7 @@ export default function LoginStudent(){
                                 </div>
         
                                 <div className="w-6/7 mx-auto md:py-15">
-                                    <form action="">
+                                    <form onSubmit={formik.handleSubmit}>
                                         <div className="">
                                             <div className="h-15 my-8 relative">
                                                 <FontAwesomeIcon icon={faEnvelope} size={"lg"} className="text-gray-400 absolute transform translate-y-3 left-1/50"/>

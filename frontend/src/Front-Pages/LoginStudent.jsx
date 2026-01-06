@@ -8,6 +8,7 @@ import {faCircleUser, faEnvelope, faEye, faEyeSlash, faLock} from "@fortawesome/
 import LogoImage from "../assets/logoImage.jpg";
 import LoginSlider from "../components/LoginSlider";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import api from '../api/axios';
 
 export default function LoginStudent(){
     const [submitData,setSubmitData] = useState(null);

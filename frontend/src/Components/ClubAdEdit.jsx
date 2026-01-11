@@ -234,7 +234,6 @@ export default function ClubAdEdit() {
                                         />
                                     </div>
 
-                                    {/* 🔖 TAGS SECTION */}
                                     <div className="flex flex-col mb-8">
                                         <label>Tags</label>
                                         <input

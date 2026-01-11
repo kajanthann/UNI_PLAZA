@@ -1,38 +1,38 @@
-import { useState,useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export default function VerifyEmail({closeModal}) {
-  const email = "amy*****@gmail.com";
+export default function VerifyEmail({ closeModal, Email }) {
+  const email = Email;
 
-  const [timeLeft,setTimeLeft] = useState(120);
-  const [isActive,setIsActive] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(120);
+  const [isActive, setIsActive] = useState(true);
   const timerRef = useRef(null);
 
   const formatTime = (seconds) => {
-    const m = Math.floor(seconds/60);
+    const m = Math.floor(seconds / 60);
     const s = seconds % 60;
-    const secondsString = s.toString().padStart(2,"0");
-    const minituesString = m.toString().padStart(2,"0");
+    const secondsString = s.toString().padStart(2, "0");
+    const minituesString = m.toString().padStart(2, "0");
     return `${minituesString}:${secondsString}`
   }
 
   const startTimer = () => {
     clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-        setTimeLeft((prev) => {
-            if (prev <= 1){
-                clearInterval(timerRef.current);
-                setIsActive(false);
-                return 0;
-            }
-            return prev-1;
-        });
-    },1000)
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current);
+          setIsActive(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     startTimer();
     return () => clearInterval(timerRef.current);
-  },[])
+  }, [])
 
   const handleResend = () => {
     alert("📨 OTP has been resent to your email!");
@@ -42,8 +42,8 @@ export default function VerifyEmail({closeModal}) {
   };
 
   return (
-        <div className="">
-        <div className="absolute top-1/5 left-1/3 w-2/5 bg-white p-8 rounded-2xl shadow-lg">
+    <div className="">
+      <div className="absolute top-1/5 left-1/3 w-2/5 bg-white p-8 rounded-2xl shadow-lg">
         <h2 className="font-bold text-3xl text-center mb-3">Verify Email</h2>
         <p className="text-gray-600 text-center mb-5">
           Enter the OTP sent to <span className="font-semibold">{email}</span> to verify.
@@ -64,10 +64,9 @@ export default function VerifyEmail({closeModal}) {
           />
 
           <div className="flex justify-between items-center text-sm text-gray-600">
-            <button type="button" onClick={handleResend} disabled={isActive} className={`${
-                isActive
-                  ? "text-gray-400 cursor-not-allowed"
-                  : "text-blue-600 hover:underline"
+            <button type="button" onClick={handleResend} disabled={isActive} className={`${isActive
+              ? "text-gray-400 cursor-not-allowed"
+              : "text-blue-600 hover:underline"
               }`}>
               Resend OTP
             </button>
@@ -76,11 +75,11 @@ export default function VerifyEmail({closeModal}) {
 
           <div className="flex justify-between mt-4">
             <button
-            type="button"
-            onClick={closeModal}
-            className="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+              type="button"
+              onClick={closeModal}
+              className="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
             >
-            No, Cancel
+              No, Cancel
             </button>
             <button
               type="submit"
@@ -91,6 +90,6 @@ export default function VerifyEmail({closeModal}) {
           </div>
         </form>
       </div>
-      </div>
-      );
+    </div>
+  );
 }

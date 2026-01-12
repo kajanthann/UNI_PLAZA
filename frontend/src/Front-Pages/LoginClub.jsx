@@ -41,6 +41,7 @@ export default function LoginClub(){
 
                 if (response.status === 200) {
                     alert("User logged successfully!");
+                    localStorage.setItem("token", response.data.token);
                     console.log(response.data);
                 }
             } catch (error) {

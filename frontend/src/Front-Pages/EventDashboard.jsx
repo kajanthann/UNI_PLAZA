@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import api from '../api/axios';
 
 export default function EventDashboard() {
     const navigate = useNavigate();
@@ -10,11 +11,24 @@ export default function EventDashboard() {
     const [open, setOpen] = useState(false);
     const [openClub, setOpenClub] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(false);
+    const [eventData, setEventData] = useState({});
 
     const handleBookmark = () => {
         setIsBookmarked(!isBookmarked);
     };
 
+    const handleEvent = async () => {
+        try{
+            const events = await api.get("/events");
+            if (events.status === 200) {
+                setEventData(events.data);
+            }
+        }
+        catch (error) {
+            console.error(error.response?.data || error.message);
+            alert("Login failed. Please try again.");
+        }
+    }
 
     const sortOptions = [
         "Sort By: Date (Newest First)",

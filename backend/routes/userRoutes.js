@@ -2,7 +2,7 @@ import express from "express";
 import { register, login, verifyOtp, forgotPassword, verifyResetOtp, resetPassword, logout, updateProfile, getProfile, updateUserProfile, submitFeedback } from "../controllers/userController.js";
 import { userAuth } from "../middleware/authUser.js";
 import upload from "../middleware/multer.js";
-import { addComment, addReply, addView, deleteComment, editComment, getViews, reportEvent, toggleCommentLike, toggleLike } from "../controllers/eventController.js";
+import { addComment, addReply, addView, deleteComment, editComment, getAllEvents, getViews, reportEvent, toggleCommentLike, toggleLike } from "../controllers/eventController.js";
 
 const userRouter = express.Router();
 
@@ -35,6 +35,7 @@ userRouter.post("/:eventId/view", userAuth, addView);
 userRouter.get("/:eventId/views", userAuth, getViews);
 userRouter.post("/:eventId/report", userAuth, reportEvent);
 
-userRouter.post('/feedback', submitFeedback);
+userRouter.get("/events", getAllEvents)
 
+userRouter.post('/feedback', submitFeedback);
 export default userRouter;

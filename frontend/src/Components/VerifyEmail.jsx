@@ -64,7 +64,7 @@ export default function VerifyEmail({ closeModal, email }) {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        const response = await api.post("/verify-otp", {
+        const response = await api.post("/club/verify-otp", {
           email: email,
           otp: values.otp,
         });

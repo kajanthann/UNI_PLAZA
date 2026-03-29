@@ -51,45 +51,40 @@ export default function RegisterClub() {
             try {
                 setUploading(true);
 
-                let logoUrl = "";
+                const formData = new FormData();
 
-                // Upload file if exists
+                // Append text fields
+                formData.append("role", values.role);
+                formData.append("clubName", values.clubName);
+                formData.append("university", values.university);
+                formData.append("description", values.description);
+                formData.append("officialEmail", values.clubEmail);
+                formData.append("fullName", values.fullName);
+                formData.append("email", values.email);
+                formData.append("password", values.password);
+                formData.append("confirmPassword", values.confirmPassword);
+                formData.append("phone", values.phone);
+
+                // Append file
                 if (file) {
-                    const formData = new FormData();
-                    formData.append("file", file);
-
-                    // Assuming you have an endpoint for file upload
-                    const uploadResponse = await api.post("/upload", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    });
-
-                    logoUrl = uploadResponse.data.url;
+                    formData.append("image", file); // backend should expect "image"
                 }
 
-                const response = await api.post("/register", {
-                    role: values.role,
-                    clubName: values.clubName,
-                    university: values.university,
-                    image: logoUrl,
-                    description: values.description,
-                    officialEmail: values.clubEmail,
-                    fullName: values.fullName,
-                    email: values.email,
-                    password: values.password,
-                    confirmPassword: values.confirmPassword,
-                    phone: values.phone,
+                const response = await api.post("/club/register/", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
                 });
 
-                if (response.status === 200) {
+                if (response.status === 200 || response.status === 201) {
                     alert("Your Club Registered successfully!");
                     setRegister(true);
-                    setVerifyEmail(values.email);
+                    setVerifyEmail(values.clubEmail);
                     formik.resetForm();
                     setFile(null);
                     setPreview(null);
                 }
+
             } catch (error) {
                 console.error(error.response?.data || error.message);
                 alert("Club Register failed. Please try again.");

@@ -85,6 +85,7 @@ export const registerClub = async (req, res) => {
   }
 };
 
+
 /** ---------------------------
  * VERIFY OTP
  * --------------------------- */
@@ -233,7 +234,7 @@ export const addEvent = async (req, res) => {
 
     await newEvent.save();
 
-    res.status(201).json({ success: true, message: "Event added successfully. Awaiting admin approval.", event: newEvent });
+    res.status(200).json({ success: true, message: "Event added successfully. Awaiting admin approval.", event: newEvent });
 
   } catch (error) {
     console.error("Error in addEvent:", error);
@@ -257,7 +258,7 @@ export const editEvent = async (req, res) => {
       return res.status(403).json({ success: false, message: "You can only edit your own events" });
     }
 
-    const fields = ["mode","title","description","date","startTime","location","mapLink","contactNumber","relatedLinks","tags","email"];
+    const fields = ["mode", "title", "description", "date", "startTime", "location", "mapLink", "contactNumber", "relatedLinks", "tags", "email"];
     fields.forEach(field => {
       if (req.body[field] !== undefined) event[field] = req.body[field];
     });

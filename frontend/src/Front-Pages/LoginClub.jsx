@@ -34,7 +34,7 @@ export default function LoginClub(){
         }),
         onSubmit: async (values) => {
             try {
-                const response = await api.post('/login', {
+                const response = await api.post('/club/login', {
                     officialEmail: values.username,
                     password: values.password
                 });

@@ -35,8 +35,8 @@ export default function LoginStudent(){
         }),
         onSubmit: async (values) => {
             try {
-                const response = await api.post('/login', {
-                    officialEmail: values.username,
+                const response = await api.post('/user/login', {
+                    email: values.username,
                     password: values.password
                 });
 

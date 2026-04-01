@@ -84,8 +84,6 @@ export const registerClub = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-
 /** ---------------------------
  * VERIFY OTP
  * --------------------------- */
@@ -109,6 +107,47 @@ export const verifyOtp = async (req, res) => {
     res.status(200).json({ success: true, message: "OTP verified. Await admin approval.", clubId: club._id });
 
   } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const resendOtp = async (req, res) => {
+  try {
+    const { clubId } = req.body;
+
+    const club = await clubModel.findById(clubId);
+    if (!club) {
+      return res.status(404).json({ success: false, message: "Club not found" });
+    }
+
+    if (club.isVerified) {
+      return res.status(400).json({ success: false, message: "Already verified" });
+    }
+
+    let otpToSend = club.otp;
+
+    if (Date.now() > club.otpExpire) {
+      
+      otpToSend = Math.floor(100000 + Math.random() * 900000).toString();
+      club.otp = otpToSend;
+      club.otpExpire = Date.now() + 2 * 60 * 1000; // 2 minutes
+
+      await club.save();
+    }
+
+    await sendEmail(
+      club.officialEmail,
+      "Resend OTP - Verify Your Account",
+      `Hello ${club.clubName},\n\nYour OTP is: ${otpToSend}\nIt will expire in 2 minutes.`
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "OTP resent successfully"
+    });
+
+  } catch (error) {
+    console.error("Error in resendOtp:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

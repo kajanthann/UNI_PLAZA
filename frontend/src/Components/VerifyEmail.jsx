@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../api/axios.jsx";
 
-export default function VerifyEmail({ closeModal, email }) {
+export default function VerifyEmail({ closeModal, email, clubId }) {
   const [timeLeft, setTimeLeft] = useState(120);
   const [isActive, setIsActive] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ export default function VerifyEmail({ closeModal, email }) {
 
   const handleResend = async () => {
     try {
-      await api.post("/resend-otp", { email });
+      await api.post("/club/resend-otp", { clubId });
       alert("📨 OTP has been resent to your email!");
       setTimeLeft(120);
       setIsActive(true);

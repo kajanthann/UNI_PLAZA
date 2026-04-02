@@ -1,7 +1,29 @@
 import clubDashboardImage from '../assets/clubDashboard.png'
 import clubLogo from '../assets/clubLogo.png'
+import {useState} from "react";
 
 export default function ClubProfile({image}) {
+    const [profile, setProfile] = useState(null);
+
+    const getProfile = async () => {
+        try{
+            const response = await api.get('/club/profile',token);
+
+            if (response.status === 200 || response.status === 201) {
+                setProfile({
+                    clubName: response.data.clubName,
+                    university: response.data.university,
+                    description: response.data.description,
+                    officialEmail: response.data.email,
+                    name:,
+                    role:,
+                    email:,
+                    phone: response.data.phone,
+                });
+            }
+        }
+    }
+
     return (
         <div className="min-h-screen my-4 pb-10">
             <div className="mt-7 mb-4 w-92/100 mx-auto text-center md:text-left">

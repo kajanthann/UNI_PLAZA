@@ -1,0 +1,308 @@
+{
+  "events": [
+    {
+      "mode": "event",
+      "title": "Annual Tech Symposium 2024",
+      "description": "Join us for the biggest tech event of the year! Featuring keynote speeches from industry leaders, hands-on workshops in AI and Blockchain, networking sessions, and a hackathon with exciting prizes. Perfect for students passionate about cutting-edge technology.",
+      "date": "2024-05-15T00:00:00.000Z",
+      "startTime": "09:00 AM",
+      "location": "Main Auditorium, University of Moratuwa",
+      "mapLink": "https://maps.google.com/?q=University+of+Moratuwa+Main+Auditorium",
+      "university": "University of Moratuwa",
+      "clubName": "Computer Science Society",
+      "officialEmail": "css@mora.ac.lk",
+      "relatedLinks": [
+        { "label": "Register Here", "url": "https://events.css.lk/tech2024" },
+        { "label": "Event Schedule", "url": "https://events.css.lk/schedule" },
+        { "label": "Speaker Lineup", "url": "https://events.css.lk/speakers" }
+      ],
+      "contactNumber": "+94771234567",
+      "image": "https://example.com/images/tech_symposium.jpg",
+      "clubImg": "https://example.com/images/css_logo.jpg",
+      "email": "kamal.p@example.com",
+      "tags": ["Technology", "AI", "Blockchain", "Hackathon", "Networking"],
+      "status": "approved",
+      "createdBy": {
+        "kind": "club",
+        "item": "507f1f77bcf86cd799439011"
+      },
+      "likes": [
+        "507f1f77bcf86cd799439012",
+        "507f1f77bcf86cd799439013",
+        "507f1f77bcf86cd799439014"
+      ],
+      "comments": [
+        {
+          "user": "507f1f77bcf86cd799439015",
+          "text": "This sounds amazing! Can't wait to attend!",
+          "likes": ["507f1f77bcf86cd799439016", "507f1f77bcf86cd799439017"],
+          "replies": [
+            {
+              "user": "507f1f77bcf86cd799439018",
+              "text": "Same here! The AI workshop looks particularly interesting.",
+              "likes": ["507f1f77bcf86cd799439015"],
+              "createdAt": "2024-03-20T10:30:00.000Z"
+            },
+            {
+              "user": "507f1f77bcf86cd799439019",
+              "text": "Will there be certificates provided?",
+              "likes": [],
+              "createdAt": "2024-03-20T11:15:00.000Z"
+            }
+          ],
+          "createdAt": "2024-03-20T09:45:00.000Z"
+        },
+        {
+          "user": "507f1f77bcf86cd799439020",
+          "text": "Is this open to students from other universities?",
+          "likes": ["507f1f77bcf86cd799439021"],
+          "replies": [
+            {
+              "user": "507f1f77bcf86cd799439011",
+              "text": "Yes, it's open to all university students!",
+              "likes": ["507f1f77bcf86cd799439020"],
+              "createdAt": "2024-03-20T12:00:00.000Z"
+            }
+          ],
+          "createdAt": "2024-03-20T10:15:00.000Z"
+        }
+      ],
+      "views": [
+        { "user": "507f1f77bcf86cd799439012", "viewedAt": "2024-03-19T08:00:00.000Z" },
+        { "user": "507f1f77bcf86cd799439013", "viewedAt": "2024-03-19T09:30:00.000Z" },
+        { "user": "507f1f77bcf86cd799439014", "viewedAt": "2024-03-19T10:15:00.000Z" },
+        { "user": "507f1f77bcf86cd799439015", "viewedAt": "2024-03-20T08:45:00.000Z" }
+      ],
+      "reports": [],
+      "createdAt": "2024-03-15T14:30:00.000Z",
+      "updatedAt": "2024-03-20T12:00:00.000Z"
+    },
+    {
+      "mode": "blog",
+      "title": "The Future of AI in Education",
+      "description": "Artificial Intelligence is transforming how we learn and teach. From personalized learning paths to automated grading systems, discover how AI is reshaping education. This blog explores current trends, challenges, and what the future holds for students and educators.",
+      "date": "2024-04-10T00:00:00.000Z",
+      "startTime": "N/A",
+      "location": "Online",
+      "mapLink": null,
+      "university": "University of Colombo",
+      "clubName": "Robotics & AI Club",
+      "officialEmail": "robotics@cmb.ac.lk",
+      "relatedLinks": [
+        { "label": "Research Paper", "url": "https://research.ai.lk/paper1" },
+        { "label": "AI Tools for Students", "url": "https://resources.ai.lk/tools" }
+      ],
+      "contactNumber": "+94772345678",
+      "image": "https://example.com/images/ai_education.jpg",
+      "clubImg": "https://example.com/images/robotics_logo.png",
+      "email": "nimali.w@example.com",
+      "tags": ["AI", "Education", "Technology Trends", "Machine Learning"],
+      "status": "approved",
+      "createdBy": {
+        "kind": "club",
+        "item": "507f1f77bcf86cd799439022"
+      },
+      "likes": [
+        "507f1f77bcf86cd799439023",
+        "507f1f77bcf86cd799439024",
+        "507f1f77bcf86cd799439025",
+        "507f1f77bcf86cd799439026"
+      ],
+      "comments": [
+        {
+          "user": "507f1f77bcf86cd799439027",
+          "text": "Great article! Very insightful perspective on AI's role in education.",
+          "likes": ["507f1f77bcf86cd799439023", "507f1f77bcf86cd799439024"],
+          "replies": [
+            {
+              "user": "507f1f77bcf86cd799439022",
+              "text": "Thank you! Glad you found it valuable.",
+              "likes": ["507f1f77bcf86cd799439027"],
+              "createdAt": "2024-03-25T14:20:00.000Z"
+            }
+          ],
+          "createdAt": "2024-03-24T09:30:00.000Z"
+        },
+        {
+          "user": "507f1f77bcf86cd799439028",
+          "text": "How do you see AI affecting job prospects for graduates?",
+          "likes": [],
+          "replies": [],
+          "createdAt": "2024-03-25T11:45:00.000Z"
+        }
+      ],
+      "views": [
+        { "user": "507f1f77bcf86cd799439023", "viewedAt": "2024-03-23T10:00:00.000Z" },
+        { "user": "507f1f77bcf86cd799439024", "viewedAt": "2024-03-23T12:30:00.000Z" },
+        { "user": "507f1f77bcf86cd799439025", "viewedAt": "2024-03-23T15:45:00.000Z" }
+      ],
+      "reports": [],
+      "createdAt": "2024-03-22T16:00:00.000Z",
+      "updatedAt": "2024-03-25T14:20:00.000Z"
+    },
+    {
+      "mode": "event",
+      "title": "Women in Tech Leadership Summit",
+      "description": "A transformative one-day summit celebrating and empowering women in technology. Featuring panel discussions with female tech leaders, mentorship sessions, resume workshops, and networking opportunities. All genders welcome to attend and support diversity in tech.",
+      "date": "2024-06-20T00:00:00.000Z",
+      "startTime": "10:00 AM",
+      "location": "Conference Hall, University of Peradeniya",
+      "mapLink": "https://maps.google.com/?q=University+of+Peradeniya+Conference+Hall",
+      "university": "University of Peradeniya",
+      "clubName": "Women in Tech Sri Lanka",
+      "officialEmail": "womenintech@pera.ac.lk",
+      "relatedLinks": [
+        { "label": "Registration Form", "url": "https://wit.lk/summit2024" },
+        { "label": "Speaker Profiles", "url": "https://wit.lk/speakers" }
+      ],
+      "contactNumber": "+94773456789",
+      "image": "https://example.com/images/wit_summit.jpg",
+      "clubImg": "https://example.com/images/wit_logo.jpg",
+      "email": "thilini.f@example.com",
+      "tags": ["Women in Tech", "Leadership", "Diversity", "Networking", "Mentorship"],
+      "status": "approved",
+      "createdBy": {
+        "kind": "club",
+        "item": "507f1f77bcf86cd799439029"
+      },
+      "likes": [
+        "507f1f77bcf86cd799439030",
+        "507f1f77bcf86cd799439031"
+      ],
+      "comments": [],
+      "views": [
+        { "user": "507f1f77bcf86cd799439030", "viewedAt": "2024-03-26T09:00:00.000Z" }
+      ],
+      "reports": [],
+      "createdAt": "2024-03-25T13:00:00.000Z",
+      "updatedAt": "2024-03-25T13:00:00.000Z"
+    },
+    {
+      "mode": "blog",
+      "title": "10 Tips for Beginner Coders",
+      "description": "Starting your coding journey? Here are 10 practical tips to help you succeed: choose the right language, build projects, join communities, practice regularly, and more. Perfect for first-year CS students or anyone learning to code.",
+      "date": "2024-04-05T00:00:00.000Z",
+      "startTime": "N/A",
+      "location": "Online",
+      "mapLink": null,
+      "university": "University of Sri Jayewardenepura",
+      "clubName": "Business & Entrepreneurship Club",
+      "officialEmail": "bec@sjp.ac.lk",
+      "relatedLinks": [
+        { "label": "Coding Resources", "url": "https://resources.bec.lk/coding" },
+        { "label": "Practice Platforms", "url": "https://resources.bec.lk/platforms" }
+      ],
+      "contactNumber": "+94774567890",
+      "image": "https://example.com/images/coding_tips.jpg",
+      "clubImg": "https://example.com/images/bec_logo.png",
+      "email": "asanka.s@example.com",
+      "tags": ["Coding", "Beginners", "Programming Tips", "Learning"],
+      "status": "rejected",
+      "createdBy": {
+        "kind": "club",
+        "item": "507f1f77bcf86cd799439032"
+      },
+      "likes": [],
+      "comments": [],
+      "views": [],
+      "reports": [
+        {
+          "user": "507f1f77bcf86cd799439033",
+          "reason": "Contains misleading information about programming languages",
+          "createdAt": "2024-03-26T08:30:00.000Z"
+        }
+      ],
+      "createdAt": "2024-03-24T10:00:00.000Z",
+      "updatedAt": "2024-03-26T08:30:00.000Z"
+    },
+    {
+      "mode": "event",
+      "title": "Green Campus Cleanup Drive",
+      "description": "Join us for a campus-wide cleanup initiative! We'll be collecting recyclable materials, planting trees, and raising awareness about waste management. Volunteer hours will be certified. Let's work together for a greener campus!",
+      "date": "2024-05-05T00:00:00.000Z",
+      "startTime": "08:00 AM",
+      "location": "University of Kelaniya Campus Grounds",
+      "mapLink": "https://maps.google.com/?q=University+of+Kelaniya",
+      "university": "University of Kelaniya",
+      "clubName": "Green Campus Initiative",
+      "officialEmail": "green@kln.ac.lk",
+      "relatedLinks": [
+        { "label": "Volunteer Sign-up", "url": "https://green.kln.lk/cleanup2024" }
+      ],
+      "contactNumber": "+94775678901",
+      "image": "https://example.com/images/cleanup_drive.jpg",
+      "clubImg": "https://example.com/images/green_logo.jpg",
+      "email": "ruwan.j@example.com",
+      "tags": ["Environment", "Sustainability", "Volunteering", "Green Campus"],
+      "status": "approved",
+      "createdBy": {
+        "kind": "club",
+        "item": "507f1f77bcf86cd799439034"
+      },
+      "likes": [
+        "507f1f77bcf86cd799439035",
+        "507f1f77bcf86cd799439036",
+        "507f1f77bcf86cd799439037"
+      ],
+      "comments": [
+        {
+          "user": "507f1f77bcf86cd799439038",
+          "text": "Excited to participate! Do we need to bring our own gloves?",
+          "likes": ["507f1f77bcf86cd799439034"],
+          "replies": [
+            {
+              "user": "507f1f77bcf86cd799439034",
+              "text": "We'll provide gloves and bags. Just bring yourself and enthusiasm!",
+              "likes": ["507f1f77bcf86cd799439038"],
+              "createdAt": "2024-03-27T15:30:00.000Z"
+            }
+          ],
+          "createdAt": "2024-03-26T14:00:00.000Z"
+        }
+      ],
+      "views": [
+        { "user": "507f1f77bcf86cd799439035", "viewedAt": "2024-03-26T09:00:00.000Z" },
+        { "user": "507f1f77bcf86cd799439036", "viewedAt": "2024-03-26T10:30:00.000Z" }
+      ],
+      "reports": [],
+      "createdAt": "2024-03-25T09:00:00.000Z",
+      "updatedAt": "2024-03-27T15:30:00.000Z"
+    },
+    {
+      "mode": "event",
+      "title": "Inter-University Debate Championship",
+      "description": "The biggest debate competition of the year! Teams from 15+ universities will compete in British Parliamentary format. Cash prizes for winners and best speakers. Open for all students to participate or spectate.",
+      "date": "2024-07-10T00:00:00.000Z",
+      "startTime": "09:30 AM",
+      "location": "Faculty of Arts, University of Jaffna",
+      "mapLink": "https://maps.google.com/?q=University+of+Jaffna+Faculty+of+Arts",
+      "university": "University of Jaffna",
+      "clubName": "Debating & Oratory Circle",
+      "officialEmail": "debate@jfn.ac.lk",
+      "relatedLinks": [
+        { "label": "Team Registration", "url": "https://debate.jfn.lk/register" },
+        { "label": "Rules & Format", "url": "https://debate.jfn.lk/rules" }
+      ],
+      "contactNumber": "+94777890123",
+      "image": "https://example.com/images/debate_championship.jpg",
+      "clubImg": "https://example.com/images/debate_logo.png",
+      "email": "senthil.k@example.com",
+      "tags": ["Debate", "Public Speaking", "Competition", "Critical Thinking"],
+      "status": "approved",
+      "createdBy": {
+        "kind": "club",
+        "item": "507f1f77bcf86cd799439039"
+      },
+      "likes": [
+        "507f1f77bcf86cd799439040"
+      ],
+      "comments": [],
+      "views": [
+        { "user": "507f1f77bcf86cd799439040", "viewedAt": "2024-03-28T11:00:00.000Z" }
+      ],
+      "reports": [],
+      "createdAt": "2024-03-28T10:00:00.000Z",
+      "updatedAt": "2024-03-28T10:00:00.000Z"
+    }
+  ]
+}

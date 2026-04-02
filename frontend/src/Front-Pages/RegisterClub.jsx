@@ -10,6 +10,7 @@ export default function RegisterClub() {
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(null);
+    const [clubId,setClubId] = useState(null);
 
     const formik = useFormik({
         initialValues: {
@@ -80,6 +81,7 @@ export default function RegisterClub() {
                     alert("Your Club Registered successfully!");
                     setRegister(true);
                     setVerifyEmail(values.clubEmail);
+                    setClubId(response.data.clubId);
                     formik.resetForm();
                     setFile(null);
                     setPreview(null);
@@ -426,6 +428,7 @@ export default function RegisterClub() {
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
                     <VerifyEmail
                         email={verifyEmail}
+                        clubId = {clubId}
                         closeModal={() => setRegister(false)}
                     />
                 </div>

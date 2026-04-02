@@ -1,5 +1,5 @@
 import express from "express";
-import { addEvent, clubLogin, deleteEvent, editEvent, logout, registerClub, updateClubProfile, verifyOtp } from "../controllers/clubController.js";
+import { addEvent, clubLogin, deleteEvent, editEvent, logout, registerClub, updateClubProfile, verifyOtp, resendOtp } from "../controllers/clubController.js";
 import upload from "../middleware/multer.js";
 import authClub from "../middleware/authClub.js";
 import { getAllEvents } from "../controllers/eventController.js";
@@ -7,6 +7,7 @@ import { getAllEvents } from "../controllers/eventController.js";
 const clubRouter = express.Router();
 clubRouter.post('/register', upload.single("image"), registerClub);
 clubRouter.post('/verify-otp', verifyOtp);
+clubRouter.post('/resend-otp', resendOtp);
 clubRouter.post('/login', clubLogin);
 clubRouter.post('/logout', authClub, logout);
 

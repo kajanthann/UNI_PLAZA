@@ -1,18 +1,18 @@
 import CreateAds from '../assets/createAds.png'
-import {useEffect, useState} from "react";
-import {faFile, faSearch} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { faFile, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoginSlider from '../Components/LoginSlider.jsx'
 import api from "../api/axios.jsx";
 
-export default function ClubAds(){
-    const [file,setFile] = useState(null);
-    const [input,setInput] = useState("");
-    const [tags,setTags] = useState([]);
-    const [active,setActive] = useState(false);
-    const [form,setForm] = useState(true);
-    const [formData,setFormData] = useState({
-        mode:"event",
+export default function ClubAds() {
+    const [file, setFile] = useState(null);
+    const [input, setInput] = useState("");
+    const [tags, setTags] = useState([]);
+    const [active, setActive] = useState(false);
+    const [form, setForm] = useState(true);
+    const [formData, setFormData] = useState({
+        mode: "event",
         title: "",
         date: "",
         startTime: "",
@@ -24,21 +24,21 @@ export default function ClubAds(){
         contactNumber: "",
         eventImage: "",
         email: "",
-        eventTags:[],
+        eventTags: [],
     })
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     }
 
     const handleKeyDown = (e) => {
-        if(e.key === "Tab" || e.key === ","){
+        if (e.key === "Tab" || e.key === ",") {
             e.preventDefault();
             setActive(true);
             const newTags = input.trim().toUpperCase();
-            if(newTags && !tags.includes(newTags)){
-                setTags([...tags,newTags]);
+            if (newTags && !tags.includes(newTags)) {
+                setTags([...tags, newTags]);
             }
             setInput("");
         }
@@ -59,7 +59,7 @@ export default function ClubAds(){
         const selectedFile = e.target.files[0];
         setFile(selectedFile);
 
-        setFormData((prev)=>({
+        setFormData((prev) => ({
             ...prev,
             eventImage: selectedFile
         }));
@@ -67,7 +67,7 @@ export default function ClubAds(){
 
     const handleAddEvents = async (e) => {
         e.preventDefault();
-        try{
+        try {
             const formDataToSend = new FormData();
 
             formDataToSend.append("mode", formData.mode);
@@ -84,18 +84,18 @@ export default function ClubAds(){
 
             tags.forEach(tag => formDataToSend.append("tags[]", tag));
 
-            const response = await api.post('/club/event', formDataToSend, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
+            const response = await api.post('/club/event', formDataToSend,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
                 }
-            });
+            );
 
-            if(response.data.status === "200" || response.data.status === "201"){
+            if (response.data.status === "200" || response.data.status === "201") {
                 alert("Event added successfully. Awaiting admin approval!");
 
                 // ✅ FIXED RESET
                 setFormData({
-                    mode:"event",
+                    mode: "event",
                     title: "",
                     date: "",
                     startTime: "",
@@ -107,13 +107,13 @@ export default function ClubAds(){
                     contactNumber: "",
                     eventImage: "",
                     email: "",
-                    eventTags:[],
+                    eventTags: [],
                 });
                 setTags([]);
                 setFile(null);
             }
         }
-        catch(error){
+        catch (error) {
             console.error(error.response?.data || error.message);
             alert("Event Register failed. Please try again.");
         }
@@ -137,7 +137,7 @@ export default function ClubAds(){
                             all from one powerful platform.</p>
                     </div>
                     <div className="flex justify-center md:justify-end items-center p-5 md:mr-10 md:w-1/3">
-                        <img src={CreateAds} alt="" className="w-2/3 md:w-full"/>
+                        <img src={CreateAds} alt="" className="w-2/3 md:w-full" />
                     </div>
                 </div>
 
@@ -148,21 +148,21 @@ export default function ClubAds(){
                             <div className='grid grid-cols-2 gap-4 items-center'>
                                 <button
                                     className={`${form ? "text-2xl md:text-3xl text-buttonBlue underline" : "text-lg md:text-xl text-gray-400"}`}
-                                    onClick={()=>{setForm(true); setFormData((prev) => ({ ...prev, mode: "event" }));}}>
+                                    onClick={() => { setForm(true); setFormData((prev) => ({ ...prev, mode: "event" })); }}>
                                     Event
                                 </button>
                                 <button
                                     className={`${!form ? "text-2xl md:text-3xl text-buttonBlue underline" : "text-lg md:text-xl text-gray-400"}`}
-                                    onClick={()=>{setForm(false); setFormData((prev) => ({ ...prev, mode: "other" }));}}>
+                                    onClick={() => { setForm(false); setFormData((prev) => ({ ...prev, mode: "other" })); }}>
                                     Other
                                 </button>
                             </div>
                         </div>
 
                         <div className="flex items-center">
-                            <hr className="w-1/2 mx-auto text-blue-300"/>
+                            <hr className="w-1/2 mx-auto text-blue-300" />
                             <p className="text-blue-300 flex item-center justify-center text-sm md:text-base">XXXXXXX</p>
-                            <hr className="w-1/2 mx-auto text-blue-300"/>
+                            <hr className="w-1/2 mx-auto text-blue-300" />
                         </div>
 
                         <div className="my-5">
@@ -174,31 +174,31 @@ export default function ClubAds(){
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-5">
                                             <div className="flex flex-col">
                                                 <label className='flex'>Event Title<span className='text-red-600 text-xl'>*</span></label>
-                                                <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Annual Tech Summit 2024" className="p-2 bg-gray-200 rounded-xl"/>
+                                                <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Annual Tech Summit 2024" className="p-2 bg-gray-200 rounded-xl" />
                                             </div>
                                             <div className="flex flex-col">
                                                 <label className='flex'>Event Date<span className='text-red-600 text-xl'>*</span></label>
-                                                <input type="text" name="date" value={formData.date} onChange={handleChange} placeholder="October 26, 2024" className="p-2 bg-gray-200 rounded-xl"/>
+                                                <input type="text" name="date" value={formData.date} onChange={handleChange} placeholder="October 26, 2024" className="p-2 bg-gray-200 rounded-xl" />
                                             </div>
                                             <div className="flex flex-col">
                                                 <label className='flex'>Start Time<span className='text-red-600 text-xl'>*</span></label>
-                                                <input type="text" name="startTime" value={formData.startTime} onChange={handleChange} placeholder="10.00 AM" className="p-2 bg-gray-200 rounded-xl"/>
+                                                <input type="text" name="startTime" value={formData.startTime} onChange={handleChange} placeholder="10.00 AM" className="p-2 bg-gray-200 rounded-xl" />
                                             </div>
                                             <div className="flex flex-col">
                                                 <label className='flex'>Location / Venue<span className='text-red-600 text-xl'>*</span></label>
-                                                <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Grand Convention Hall" className="p-2 bg-gray-200 rounded-xl mb-3"/>
-                                                <input type="text" name="mapLink" value={formData.mapLink} onChange={handleChange} placeholder="https://maps.app.goo.gl/example" className="p-2 bg-gray-200 rounded-xl"/>
+                                                <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Grand Convention Hall" className="p-2 bg-gray-200 rounded-xl mb-3" />
+                                                <input type="text" name="mapLink" value={formData.mapLink} onChange={handleChange} placeholder="https://maps.app.goo.gl/example" className="p-2 bg-gray-200 rounded-xl" />
                                             </div>
                                         </div>
 
                                         <div className="flex flex-col mb-5">
                                             <label className='flex'>University Name<span className='text-red-600 text-xl'>*</span></label>
-                                            <input type="text" name="university" value={formData.university} onChange={handleChange} placeholder="University of Kelaniya" className="p-2 bg-gray-200 rounded-xl"/>
+                                            <input type="text" name="university" value={formData.university} onChange={handleChange} placeholder="University of Kelaniya" className="p-2 bg-gray-200 rounded-xl" />
                                         </div>
 
                                         <div className="flex flex-col my-5">
                                             <label className='flex'>Description of the event<span className='text-red-600 text-xl'>*</span></label>
-                                            <textarea className="p-2 bg-gray-200 rounded-xl" name="description" value={formData.description} onChange={handleChange} rows="3" placeholder="Join us for the most anticipated technology event of the year! Explore cutting-edge innovations, network with industry leaders, and discover the future of tech."/>
+                                            <textarea className="p-2 bg-gray-200 rounded-xl" name="description" value={formData.description} onChange={handleChange} rows="3" placeholder="Join us for the most anticipated technology event of the year! Explore cutting-edge innovations, network with industry leaders, and discover the future of tech." />
                                         </div>
 
                                         <div>
@@ -206,14 +206,14 @@ export default function ClubAds(){
                                             <div className="flex flex-col md:flex-row mb-5 w-full gap-4">
                                                 <div className="border border-dashed border-gray-400 p-2 rounded-2xl text-center md:w-1/3 w-full">Register Now</div>
                                                 <div className="w-full md:w-2/3">
-                                                    <input type="text" name="eventLink" value={formData.eventLink} onChange={handleChange} placeholder="https://techsummit24.com/register" className="p-2 bg-gray-200 rounded-xl w-full"/>
+                                                    <input type="text" name="eventLink" value={formData.eventLink} onChange={handleChange} placeholder="https://techsummit24.com/register" className="p-2 bg-gray-200 rounded-xl w-full" />
                                                 </div>
                                             </div>
 
                                             <div className="flex flex-col md:flex-row mb-5 w-full gap-4">
                                                 <div className="flex flex-col md:w-1/3 w-full">
                                                     <label className='flex'>Contact number<span className='text-red-600 text-xl'>*</span></label>
-                                                    <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleChange} placeholder="073 923404-98" className="p-2 bg-gray-200 rounded-xl w-full"/>
+                                                    <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleChange} placeholder="073 923404-98" className="p-2 bg-gray-200 rounded-xl w-full" />
                                                 </div>
 
                                                 <div className="flex flex-col md:w-2/3 w-full">
@@ -221,7 +221,7 @@ export default function ClubAds(){
                                                     <label htmlFor="poster" className="block border-2 border-dashed border-gray-300 bg-gray-200 rounded-2xl p-6 text-center text-gray-500 text-sm cursor-pointer hover:bg-gray-100">
                                                         Drag and drop your event poster here, or click to browse (Max 5MB)
                                                     </label>
-                                                    <input id="poster" type="file" accept="image/*" className="hidden" onChange={handleFileChange}/>
+                                                    <input id="poster" type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
                                                     {file && <p className="text-gray-600 mt-2">Selected file: {file.name}</p>}
                                                 </div>
                                             </div>
@@ -229,12 +229,12 @@ export default function ClubAds(){
                                             <div className="my-5">
                                                 <div className="flex flex-col mb-5">
                                                     <label>Email Address</label>
-                                                    <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="club@example.edu" className="p-2 bg-gray-200 rounded-xl"/>
+                                                    <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="club@example.edu" className="p-2 bg-gray-200 rounded-xl" />
                                                 </div>
                                                 <div className="flex flex-col mb-8">
                                                     <label>Tags</label>
-                                                    <input type="text" name="tags" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type and press Tab..." onKeyDown={handleKeyDown} className="p-2 bg-gray-200 rounded-xl"/>
-                                                    <div className={`flex flex-wrap items-center gap-2 mt-3 ${active? 'border border-gray-300 rounded-md px-3 py-2 bg-blue-50 focus-within:ring-1 focus-within:ring-blue-400':'border-0 bg-white'}`}>
+                                                    <input type="text" name="tags" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type and press Tab..." onKeyDown={handleKeyDown} className="p-2 bg-gray-200 rounded-xl" />
+                                                    <div className={`flex flex-wrap items-center gap-2 mt-3 ${active ? 'border border-gray-300 rounded-md px-3 py-2 bg-blue-50 focus-within:ring-1 focus-within:ring-blue-400' : 'border-0 bg-white'}`}>
                                                         {tags.map((tag, index) => (
                                                             <div key={index} className="flex items-center gap-1 bg-white border border-gray-300 rounded-full px-3 py-1 text-sm text-blue-600">
                                                                 <span>{tag}</span>
@@ -256,31 +256,31 @@ export default function ClubAds(){
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-5">
                                             <div className="flex flex-col">
                                                 <label className='flex'>Event Title<span className='text-red-600 text-xl'>*</span></label>
-                                                <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Annual Tech Summit 2024" className="p-2 bg-gray-200 rounded-xl"/>
+                                                <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Annual Tech Summit 2024" className="p-2 bg-gray-200 rounded-xl" />
                                             </div>
                                             <div className="flex flex-col">
                                                 <label className='flex'>Event Date<span className='text-red-600 text-xl'>*</span></label>
-                                                <input type="text" name="date" value={formData.date} onChange={handleChange} placeholder="October 26, 2024" className="p-2 bg-gray-200 rounded-xl"/>
+                                                <input type="text" name="date" value={formData.date} onChange={handleChange} placeholder="October 26, 2024" className="p-2 bg-gray-200 rounded-xl" />
                                             </div>
                                             <div className="flex flex-col">
                                                 <label className='flex'>Start Time<span className='text-red-600 text-xl'>*</span></label>
-                                                <input type="text" name="startTime" value={formData.startTime} onChange={handleChange} placeholder="10.00 AM" className="p-2 bg-gray-200 rounded-xl"/>
+                                                <input type="text" name="startTime" value={formData.startTime} onChange={handleChange} placeholder="10.00 AM" className="p-2 bg-gray-200 rounded-xl" />
                                             </div>
                                             <div className="flex flex-col">
                                                 <label className='flex'>Location / Venue<span className='text-red-600 text-xl'>*</span></label>
-                                                <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Grand Convention Hall" className="p-2 bg-gray-200 rounded-xl mb-3"/>
-                                                <input type="text" name="mapLink" value={formData.mapLink} onChange={handleChange} placeholder="https://maps.app.goo.gl/example" className="p-2 bg-gray-200 rounded-xl"/>
+                                                <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Grand Convention Hall" className="p-2 bg-gray-200 rounded-xl mb-3" />
+                                                <input type="text" name="mapLink" value={formData.mapLink} onChange={handleChange} placeholder="https://maps.app.goo.gl/example" className="p-2 bg-gray-200 rounded-xl" />
                                             </div>
                                         </div>
 
                                         <div className="flex flex-col mb-5">
                                             <label className='flex'>University Name<span className='text-red-600 text-xl'>*</span></label>
-                                            <input type="text" name="university" value={formData.university} onChange={handleChange} placeholder="University of Kelaniya" className="p-2 bg-gray-200 rounded-xl"/>
+                                            <input type="text" name="university" value={formData.university} onChange={handleChange} placeholder="University of Kelaniya" className="p-2 bg-gray-200 rounded-xl" />
                                         </div>
 
                                         <div className="flex flex-col my-5">
                                             <label className='flex'>Description of the event<span className='text-red-600 text-xl'>*</span></label>
-                                            <textarea className="p-2 bg-gray-200 rounded-xl" name="description" value={formData.description} onChange={handleChange} rows="3" placeholder="Join us for the most anticipated technology event of the year! Explore cutting-edge innovations, network with industry leaders, and discover the future of tech."/>
+                                            <textarea className="p-2 bg-gray-200 rounded-xl" name="description" value={formData.description} onChange={handleChange} rows="3" placeholder="Join us for the most anticipated technology event of the year! Explore cutting-edge innovations, network with industry leaders, and discover the future of tech." />
                                         </div>
 
                                         <div>
@@ -288,14 +288,14 @@ export default function ClubAds(){
                                             <div className="flex flex-col md:flex-row mb-5 w-full gap-4">
                                                 <div className="border border-dashed border-gray-400 p-2 rounded-2xl text-center md:w-1/3 w-full">Register Now</div>
                                                 <div className="w-full md:w-2/3">
-                                                    <input type="text" name="eventLink" value={formData.eventLink} onChange={handleChange} placeholder="https://techsummit24.com/register" className="p-2 bg-gray-200 rounded-xl w-full"/>
+                                                    <input type="text" name="eventLink" value={formData.eventLink} onChange={handleChange} placeholder="https://techsummit24.com/register" className="p-2 bg-gray-200 rounded-xl w-full" />
                                                 </div>
                                             </div>
 
                                             <div className="flex flex-col md:flex-row mb-5 w-full gap-4">
                                                 <div className="flex flex-col md:w-1/3 w-full">
                                                     <label className='flex'>Contact number<span className='text-red-600 text-xl'>*</span></label>
-                                                    <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleChange} placeholder="073 923404-98" className="p-2 bg-gray-200 rounded-xl w-full"/>
+                                                    <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleChange} placeholder="073 923404-98" className="p-2 bg-gray-200 rounded-xl w-full" />
                                                 </div>
 
                                                 <div className="flex flex-col md:w-2/3 w-full">
@@ -303,7 +303,7 @@ export default function ClubAds(){
                                                     <label htmlFor="poster" className="block border-2 border-dashed border-gray-300 bg-gray-200 rounded-2xl p-6 text-center text-gray-500 text-sm cursor-pointer hover:bg-gray-100">
                                                         Drag and drop your event poster here, or click to browse (Max 5MB)
                                                     </label>
-                                                    <input id="poster" type="file" accept="image/*" className="hidden" onChange={handleFileChange}/>
+                                                    <input id="poster" type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
                                                     {file && <p className="text-gray-600 mt-2">Selected file: {file.name}</p>}
                                                 </div>
                                             </div>
@@ -311,12 +311,12 @@ export default function ClubAds(){
                                             <div className="my-5">
                                                 <div className="flex flex-col mb-5">
                                                     <label>Email Address</label>
-                                                    <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="club@example.edu" className="p-2 bg-gray-200 rounded-xl"/>
+                                                    <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="club@example.edu" className="p-2 bg-gray-200 rounded-xl" />
                                                 </div>
                                                 <div className="flex flex-col mb-8">
                                                     <label>Tags</label>
-                                                    <input type="text" name="tags" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type and press Tab..." onKeyDown={handleKeyDown} className="p-2 bg-gray-200 rounded-xl"/>
-                                                    <div className={`flex flex-wrap items-center gap-2 mt-3 ${active? 'border border-gray-300 rounded-md px-3 py-2 bg-blue-50 focus-within:ring-1 focus-within:ring-blue-400':'border-0 bg-white'}`}>
+                                                    <input type="text" name="tags" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type and press Tab..." onKeyDown={handleKeyDown} className="p-2 bg-gray-200 rounded-xl" />
+                                                    <div className={`flex flex-wrap items-center gap-2 mt-3 ${active ? 'border border-gray-300 rounded-md px-3 py-2 bg-blue-50 focus-within:ring-1 focus-within:ring-blue-400' : 'border-0 bg-white'}`}>
                                                         {tags.map((tag, index) => (
                                                             <div key={index} className="flex items-center gap-1 bg-white border border-gray-300 rounded-full px-3 py-1 text-sm text-blue-600">
                                                                 <span>{tag}</span>

@@ -17,6 +17,7 @@ export const registerClub = async (req, res) => {
       description,
       officialEmail,
       fullName,
+      repPosition,
       email,
       password,
       confirmPassword,
@@ -25,7 +26,7 @@ export const registerClub = async (req, res) => {
 
     const image = req.file ? req.file.filename : null;
 
-    if (!role || !clubName || !university || !description || !officialEmail || !fullName || !email || !password || !confirmPassword || !phone || !image) {
+    if (!role || !clubName || !university || !description || !officialEmail || !fullName || !repPosition || !email || !password || !confirmPassword || !phone || !image) {
       return res.status(400).json({
         success: false,
         message: "All fields are required, including club image and official email.",
@@ -127,7 +128,7 @@ export const resendOtp = async (req, res) => {
     let otpToSend = club.otp;
 
     if (Date.now() > club.otpExpire) {
-      
+
       otpToSend = Math.floor(100000 + Math.random() * 900000).toString();
       club.otp = otpToSend;
       club.otpExpire = Date.now() + 2 * 60 * 1000; // 2 minutes
@@ -408,3 +409,25 @@ export const updateClubProfile = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// const getProfile = async (req,res,next) => {
+//   try{
+//     const clubProfile = {
+//       clubName,
+//       university,
+//       description,
+//       officialEmail,
+//       fullName,
+//       email,
+//       phone
+//     };
+
+//     res.status(201).json({
+//       success:true,
+//       clubProfile
+//     })
+//   }
+//   catch(error){
+
+//   }
+// }

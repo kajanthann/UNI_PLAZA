@@ -1,43 +1,41 @@
-{
-    "users": [
-        {
-            "name": "Amal Perera",
-            "regNo": "2021/CS/001",
-            "email": "amal.perera@example.com",
-            "password": "Test@123",
-            "phone": "+94771234567",
-            "image": "https://example.com/images/amal_perera.jpg",
-            "university": "University of Moratuwa",
-            "year": "3rd Year",
-            "faculty": "Faculty of Engineering",
-            "department": "Computer Science and Engineering",
-            "isVerified": true
-        },
-        {
-            "name": "Nimali Fernando",
-            "regNo": "2021/CS/042",
-            "email": "nimali.fernando@example.com",
-            "password": "Pass@456",
-            "phone": "+94772345678",
-            "image": "https://example.com/images/nimali_fernando.jpg",
-            "university": "University of Moratuwa",
-            "year": "3rd Year",
-            "faculty": "Faculty of Engineering",
-            "department": "Computer Science and Engineering",
-            "isVerified": true
-        },
-        {
-            "name": "Kasun Wijesinghe",
-            "regNo": "2022/IT/015",
-            "email": "kasun.w@example.com",
-            "password": "Secure@789",
-            "phone": "+94773456789",
-            "image": "https://example.com/images/kasun_wijesinghe.jpg",
-            "university": "University of Colombo",
-            "year": "2nd Year",
-            "faculty": "Faculty of Science",
-            "department": "Information Technology",
-            "isVerified": true
-        }
-    ]
-}
+[
+    {
+        "name": "Mohamed Azeem",
+        "regNo": "2021/CS/001",
+        "email": "mhmazeem451@gmail.com",
+        "password": "Test@123",
+        "phone": "+94771234567",
+        "image": "https://example.com/images/amal_perera.jpg",
+        "university": "University of Sri Jayawerdanapura",
+        "year": "3rd Year",
+        "faculty": "Faculty of Engineering",
+        "department": "Computer Science and Engineering",
+        "isVerified": true
+    },
+    {
+        "name": "Nimali Fernando",
+        "regNo": "2021/CS/042",
+        "email": "nimali.fernando@example.com",
+        "password": "Pass@456",
+        "phone": "+94772345678",
+        "image": "https://example.com/images/nimali_fernando.jpg",
+        "university": "University of Moratuwa",
+        "year": "3rd Year",
+        "faculty": "Faculty of Engineering",
+        "department": "Computer Science and Engineering",
+        "isVerified": true
+    },
+    {
+        "name": "Kasun Wijesinghe",
+        "regNo": "2022/IT/015",
+        "email": "kasun.w@example.com",
+        "password": "Secure@789",
+        "phone": "+94773456789",
+        "image": "https://example.com/images/kasun_wijesinghe.jpg",
+        "university": "University of Colombo",
+        "year": "2nd Year",
+        "faculty": "Faculty of Science",
+        "department": "Information Technology",
+        "isVerified": true
+    }
+]

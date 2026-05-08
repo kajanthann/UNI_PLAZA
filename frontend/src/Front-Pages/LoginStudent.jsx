@@ -9,10 +9,12 @@ import LogoImage from "../assets/logoImage.jpg";
 import LoginSlider from "../components/LoginSlider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import api from '../api/axios';
+import { useNavigate } from "react-router-dom";
 
 export default function LoginStudent() {
     const [submitData, setSubmitData] = useState(null);
     const [passwordVisibility, setPasswordVisibility] = useState(false);
+    const navigate = useNavigate();
 
     const passwordShow = () => {
         setPasswordVisibility(!passwordVisibility);
@@ -42,8 +44,9 @@ export default function LoginStudent() {
 
                 if (response.status === 200) {
                     alert("User logged successfully!");
-                    localStorage.getItem("token", response.data.token);
+                    localStorage.setItem("token", response.data.cToken);
                     console.log(response.data);
+                    navigate('/Student/dashboard/');
                 }
             } catch (error) {
                 console.error(error.response?.data || error.message);

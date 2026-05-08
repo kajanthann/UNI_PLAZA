@@ -1,13 +1,13 @@
 import clubDashboardImage from '../assets/clubDashboard.png'
 import clubLogo from '../assets/clubLogo.png'
-import {useState} from "react";
+import { useState } from "react";
 
-export default function ClubProfile({image}) {
+export default function ClubProfile({ image }) {
     const [profile, setProfile] = useState(null);
 
     const getProfile = async () => {
-        try{
-            const response = await api.get('/club/profile',token);
+        try {
+            const response = await api.get('/club/profile', token);
 
             if (response.status === 200 || response.status === 201) {
                 setProfile({
@@ -15,12 +15,16 @@ export default function ClubProfile({image}) {
                     university: response.data.university,
                     description: response.data.description,
                     officialEmail: response.data.email,
-                    name:,
-                    role:,
-                    email:,
+                    // name:,
+                    // role:,
+                    // email:,
                     phone: response.data.phone,
                 });
             }
+        }
+        catch (error) {
+            console.error(error.response?.data || error.message);
+            alert("Profile load failed. Please try again.");
         }
     }
 
@@ -36,13 +40,13 @@ export default function ClubProfile({image}) {
 
                     <div className="relative md:w-1/2 w-full border border-gray-300 rounded-2xl">
 
-                    <div className="absolute flex md:hidden w-full h-full">
-                        <img
-                            src={clubDashboardImage}
-                            alt="Dashboard Mobile"
-                            className="opacity-20 rounded-2xl w-full"
-                        />
-                    </div>
+                        <div className="absolute flex md:hidden w-full h-full">
+                            <img
+                                src={clubDashboardImage}
+                                alt="Dashboard Mobile"
+                                className="opacity-20 rounded-2xl w-full"
+                            />
+                        </div>
 
                         <div className="w-9/10 mx-auto my-5">
                             <h2 className="text-lg md:text-xl font-bold text-left">Club Information</h2>

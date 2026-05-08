@@ -7,46 +7,46 @@ export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState("upcoming");
 
   const registeredEvents = [
-  {
-    date: "TUE, DEC 12 • 7:00 PM",
-    title: "Winter Music Fest",
-    host: "Music Production Club",
-    image: "https://picsum.photos/id/1011/800/500", // stage / concert vibe
-  },
-  {
-    date: "THU, DEC 14 • 5:30 PM",
-    title: "Hackathon Kick-off",
-    host: "Coding Society",
-    image: "https://picsum.photos/id/180/800/500", // laptop / code vibe
-  },
-];
+    {
+      date: "TUE, DEC 12 • 7:00 PM",
+      title: "Winter Music Fest",
+      host: "Music Production Club",
+      image: "https://picsum.photos/id/1011/800/500", // stage / concert vibe
+    },
+    {
+      date: "THU, DEC 14 • 5:30 PM",
+      title: "Hackathon Kick-off",
+      host: "Coding Society",
+      image: "https://picsum.photos/id/180/800/500", // laptop / code vibe
+    },
+  ];
 
-const recommendedEvents = [
-  {
-    date: "FRI, DEC 15 • 9:00 AM",
-    title: "Morning Yoga Session",
-    host: "Wellness Club",
-    image: "https://picsum.photos/id/433/800/500",
-  },
-  {
-    date: "FRI, DEC 15 • 6:00 PM",
-    title: "Tech Talk: AI in 2024",
-    host: "AI & Robotics Society",
-    image: "https://picsum.photos/id/0/800/500",
-  },
-  {
-    date: "SAT, DEC 16 • 11:00 AM",
-    title: "Startup Ideation Workshop",
-    host: "Entrepreneurs Club",
-    image: "https://picsum.photos/id/339/800/500",
-  },
-  {
-    date: "SUN, DEC 17 • 2:00 PM",
-    title: "End of Year Campus Fair",
-    host: "Student Activities Office",
-    image: "https://picsum.photos/id/1039/800/500",
-  },
-];
+  const recommendedEvents = [
+    {
+      date: "FRI, DEC 15 • 9:00 AM",
+      title: "Morning Yoga Session",
+      host: "Wellness Club",
+      image: "https://picsum.photos/id/433/800/500",
+    },
+    {
+      date: "FRI, DEC 15 • 6:00 PM",
+      title: "Tech Talk: AI in 2024",
+      host: "AI & Robotics Society",
+      image: "https://picsum.photos/id/0/800/500",
+    },
+    {
+      date: "SAT, DEC 16 • 11:00 AM",
+      title: "Startup Ideation Workshop",
+      host: "Entrepreneurs Club",
+      image: "https://picsum.photos/id/339/800/500",
+    },
+    {
+      date: "SUN, DEC 17 • 2:00 PM",
+      title: "End of Year Campus Fair",
+      host: "Student Activities Office",
+      image: "https://picsum.photos/id/1039/800/500",
+    },
+  ];
 
   return (
     <div className="min-h-screen px-10 py-8">
@@ -59,21 +59,19 @@ const recommendedEvents = [
         <h2 className="text-xl font-semibold">My Registered Events</h2>
         <div className="flex rounded-lg overflow-hidden border-1 border-gray-300">
           <button
-            className={`px-4 py-2 text-sm font-medium ${
-              activeTab === "upcoming"
-                ? "bg-blue-600 text-white"
-                : "hover:bg-blue-600 hover:text-gray-200 text-gray-400"
-            }`}
+            className={`px-4 py-2 text-sm font-medium ${activeTab === "upcoming"
+              ? "bg-blue-600 text-white"
+              : "hover:bg-blue-600 hover:text-gray-200 text-gray-400"
+              }`}
             onClick={() => setActiveTab("upcoming")}
           >
             Upcoming
           </button>
           <button
-            className={`px-4 py-2 text-sm font-medium ${
-              activeTab === "past"
-                ? "bg-blue-600 text-white"
-                : "hover:bg-blue-600 hover:text-gray-200 text-gray-400"
-            }`}
+            className={`px-4 py-2 text-sm font-medium ${activeTab === "past"
+              ? "bg-blue-600 text-white"
+              : "hover:bg-blue-600 hover:text-gray-200 text-gray-400"
+              }`}
             onClick={() => setActiveTab("past")}
           >
             Past
@@ -93,16 +91,16 @@ const recommendedEvents = [
               className="w-28 h-20 rounded-lg object-cover mr-4"
             />
             <div>
-                <div className="text-black">
-                    <p className="text-blue-400 text-xs font-semibold">
-                        {event.date}
-                    </p>
-                    <h3 className="font-semibold text-lg">{event.title}</h3>
-                    <p className="text-gray-500 text-sm">
-                        Hosted by {event.host}
-                    </p>
-                </div>
-              
+              <div className="text-black">
+                <p className="text-blue-400 text-xs font-semibold">
+                  {event.date}
+                </p>
+                <h3 className="font-semibold text-lg">{event.title}</h3>
+                <p className="text-gray-500 text-sm">
+                  Hosted by {event.host}
+                </p>
+              </div>
+
             </div>
           </div>
         ))}
@@ -136,9 +134,9 @@ const recommendedEvents = [
           </div>
         ))}
       </div>
-    <div>
-        <Calendar/>
-    </div>
+      <div>
+        <Calendar />
+      </div>
     </div>
   );
 }

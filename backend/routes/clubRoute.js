@@ -2,7 +2,7 @@ import express from "express";
 import { addEvent, clubLogin, deleteEvent, editEvent, logout, registerClub, updateClubProfile, verifyOtp, resendOtp } from "../controllers/clubController.js";
 import upload from "../middleware/multer.js";
 import authClub from "../middleware/authClub.js";
-import { getAllEvents, eventsDetails, upComingClosedEvents, getUpcomingDeadlines, eventDate } from "../controllers/eventController.js";
+import { getAllEvents, eventsDetails, upComingClosedEvents, getUpcomingDeadlines, eventDate, getActiveEvents, getClubEvents } from "../controllers/eventController.js";
 
 const clubRouter = express.Router();
 clubRouter.post('/register', upload.single("image"), registerClub);
@@ -26,5 +26,7 @@ clubRouter.get('/events-details', authClub, eventsDetails);
 clubRouter.get('/upcoming-events', authClub, upComingClosedEvents);
 clubRouter.get('/upcoming-events-deadlines', authClub, getUpcomingDeadlines);
 clubRouter.get('/events-calender', authClub, eventDate);
+clubRouter.get('/active-events', authClub, getActiveEvents);
+clubRouter.get('/all-events', authClub, getClubEvents);
 
 export default clubRouter;

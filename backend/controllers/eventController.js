@@ -463,3 +463,47 @@ export const eventDate = async (req, res) => {
     });
   }
 };
+
+export const getActiveEvents = async (req, res) => {
+  try {
+
+    const events = await eventModel.find({
+      date: { $gte: new Date() },
+      status: "approved",
+      mode: "event"
+    })
+      .sort({ date: -1 });
+
+    res.status(200).json({
+      success: true,
+      events
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};
+
+export const getClubEvents = async (req, res) => {
+  try {
+
+    const events = await eventModel.find()
+      .sort({ date: -1 });
+
+    res.status(200).json({
+      success: true,
+      events
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+}

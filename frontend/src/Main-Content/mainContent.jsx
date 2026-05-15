@@ -6,8 +6,8 @@ import LoginClub from "../Front-Pages/LoginClub.jsx";
 import RegisterClub from "../Front-Pages/RegisterClub.jsx";
 import RegisterStudent from "../Front-Pages/RegisterStudent.jsx";
 import EventDashboard from "../Front-Pages/EventDashboard.jsx";
+import Test from "../Front-Pages/Test.jsx";
 import Slider from '../Components/Slidebar.jsx'
-import Test from '../Components/Test.jsx'
 import EventAdView from '../Components/EventAdView.jsx';
 import {useState} from 'react'
 

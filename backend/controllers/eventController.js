@@ -207,3 +207,303 @@ export const getAllEvents = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+export const newEvents = async (req, res) => {
+  try {
+    const now = new Date();
+
+    // Add 48 hours
+    const next48Hours = new Date(now);
+    next48Hours.setHours(now.getHours() + 48);
+
+    const events = await eventModel.find({
+      date: {
+        $gte: now,           // from now
+        $lte: next48Hours    // up to next 48 hours
+      },
+      mode: "event",
+      status: "approved"
+    })
+      .sort({ date: 1 });
+
+    res.status(200).json({ success: true, events });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const AllNewEvents = async (req, res) => {
+  try {
+    const events = await eventModel.find({
+      status: "approved"
+    })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ success: true, events });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+export const AllOldEvents = async (req, res) => {
+  try {
+    const events = await eventModel.find({
+      status: "approved"
+    })
+      .sort({ createdAt: 1 });
+    res.status(200).json({ success: true, events });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const All_ATZ_Events = async (req, res) => {
+  try {
+    const events = await eventModel.find({
+      status: "approved"
+    })
+      .sort({ title: 1 });
+    res.status(200).json({ success: true, events });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const All_ZTA_Events = async (req, res) => {
+  try {
+    const events = await eventModel.find({
+      status: "approved"
+    })
+      .sort({ title: -1 });
+    res.status(200).json({ success: true, events });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const searchEvents = async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    // If no search term, return all
+    if (!query) {
+      const events = await eventModel.find({ mode: "event", status: "approved" });
+      return res.status(200).json({ success: true, events });
+    }
+
+    const events = await eventModel.find({
+      mode: "event",
+      status: "approved",
+      $or: [
+        { title: { $regex: query, $options: "i" } },        // search title
+        { description: { $regex: query, $options: "i" } },  // search description
+        { clubName: { $regex: query, $options: "i" } },     // search club
+        { tags: { $regex: query, $options: "i" } }          // search tags
+      ]
+    });
+
+    res.status(200).json({ success: true, events });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const eventsDetails = async (req, res) => {
+  try {
+
+    const activeEvents = await eventModel.countDocuments({
+      status: "approved",
+      date: { $gte: new Date() }
+    });
+
+    const pendingApprovals = await eventModel.countDocuments({
+      status: "pending"
+    });
+
+    const lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
+
+    const newRegistrations = await eventModel.countDocuments({
+      createdAt: { $gte: lastWeek }
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        activeEvents,
+        newRegistrations,
+        pendingApprovals
+      }
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const upComingClosedEvents = async (req, res) => {
+  try {
+    const now = new Date();
+
+    const next7days = new Date();
+    next7days.setDate(now.getDate() + 7);
+
+    const events = await eventModel.aggregate([
+      {
+        $match: {
+          date: { $gte: now, $lte: next7days },
+          mode: "event",
+          status: "approved"
+        }
+      },
+      {
+        $project: {
+          title: 1,
+          date: 1,
+          location: 1,
+          registrationsCount: { $size: { $ifNull: ["$registrations", []] } }
+        }
+      },
+      {
+        $sort: { date: 1 }
+      }
+    ]);
+
+    res.status(200).json({
+      success: true,
+      events
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const getUpcomingDeadlines = async (req, res) => {
+  try {
+    const now = new Date();
+
+    const next7days = new Date();
+    next7days.setDate(now.getDate() + 7);
+
+    const events = await eventModel.aggregate([
+      {
+        $match: {
+          date: { $gte: now, $lte: next7days },
+          mode: "event",
+          status: "approved"
+        }
+      },
+      {
+        $project: {
+          title: 1,
+          date: 1,
+          location: 1,
+          registrationsCount: { $size: { $ifNull: ["$registrations", []] } }
+        }
+      },
+      {
+        $sort: { date: 1 }
+      }
+    ]);
+
+    res.status(200).json({
+      success: true,
+      events
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const eventDate = async (req, res) => {
+  try {
+    const events = await eventModel.aggregate([
+      {
+        $match: {
+          status: "approved",
+          mode: "event"
+        }
+      },
+      {
+        $project: {
+          title: 1,
+          date: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: { $toDate: "$date" } // ✅ convert string → date
+            }
+          }
+        }
+      },
+      {
+        $sort: { date: 1 }
+      }
+    ]);
+
+    res.status(200).json({
+      success: true,
+      events
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const getActiveEvents = async (req, res) => {
+  try {
+
+    const events = await eventModel.find({
+      date: { $gte: new Date() },
+      status: "approved",
+      mode: "event"
+    })
+      .sort({ date: -1 });
+
+    res.status(200).json({
+      success: true,
+      events
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};
+
+export const getClubEvents = async (req, res) => {
+  try {
+
+    const events = await eventModel.find()
+      .sort({ date: -1 });
+
+    res.status(200).json({
+      success: true,
+      events
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+}

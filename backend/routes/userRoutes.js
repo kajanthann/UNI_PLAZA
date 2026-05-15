@@ -15,9 +15,9 @@ userRouter.post("/logout", logout);
 userRouter.post("/verify-otp", verifyOtp);
 
 // Forgot/reset password flow
-userRouter.post("/forgot-password", forgotPassword);    
-userRouter.post("/reset-otp", verifyResetOtp);           
-userRouter.post("/reset-password", resetPassword);         
+userRouter.post("/forgot-password", forgotPassword);
+userRouter.post("/reset-otp", verifyResetOtp);
+userRouter.post("/reset-password", resetPassword);
 
 // User profile
 // userRouter.get("/get-profile", userAuth, getProfile);

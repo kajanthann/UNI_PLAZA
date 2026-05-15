@@ -84,11 +84,11 @@ export default function ClubAds() {
 
             tags.forEach(tag => formDataToSend.append("tags[]", tag));
 
-            const response = await api.post('/club/event', formDataToSend,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
+            const response = await api.post("/club/event", formDataToSend, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
 
             if (response.data.status === "200" || response.data.status === "201") {
                 alert("Event added successfully. Awaiting admin approval!");

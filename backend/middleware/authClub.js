@@ -3,7 +3,7 @@ import clubModel from "../models/clubModel.js";
 
 const authClub = async (req, res, next) => {
   try {
-    const token = req.cookies.cToken; // read cookie
+    const token = req.cookies.cToken || (req.headers.authorization && req.headers.authorization.split(" ")[1]);
     if (!token) {
       return res.status(401).json({
         success: false,

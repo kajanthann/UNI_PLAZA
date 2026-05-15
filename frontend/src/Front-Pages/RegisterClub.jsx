@@ -68,7 +68,7 @@ export default function RegisterClub() {
 
                 // Append file
                 if (file) {
-                    formData.append("image", file); // backend should expect "image"
+                    formData.append("image", file);
                 }
 
                 const response = await api.post("/club/register/", formData, {

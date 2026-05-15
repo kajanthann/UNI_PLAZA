@@ -56,6 +56,7 @@ export const registerClub = async (req, res) => {
       description,
       officialEmail,
       fullName,
+      repPosition,
       email,
       password: hashedPassword,
       phone,
@@ -419,7 +420,7 @@ export const updateClubProfile = async (req, res) => {
 //       officialEmail,
 //       fullName,
 //       email,
-//       phone
+//       phone1
 //     };
 
 //     res.status(201).json({

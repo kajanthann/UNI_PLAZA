@@ -1,29 +1,28 @@
 import clubDashboardImage from '../assets/clubDashboard.png'
 import clubLogo from '../assets/clubLogo.png'
-import {useState} from "react";
+import { useEffect, useState } from "react";
+import api from '../api/axios';
 
-export default function ClubProfile({image}) {
-    const [profile, setProfile] = useState(null);
+export default function ClubProfile({ image }) {
+    const [profile, setProfile] = useState({});
 
     const getProfile = async () => {
-        try{
-            const response = await api.get('/club/profile',token);
+        try {
 
-            if (response.status === 200 || response.status === 201) {
-                setProfile({
-                    clubName: response.data.clubName,
-                    university: response.data.university,
-                    description: response.data.description,
-                    officialEmail: response.data.email,
-                    name:,
-                    role:,
-                    email:,
-                    phone: response.data.phone,
-                });
+            const res = await api.get("/club/profile");
+
+            if (res.data.success) {
+                setProfile(res.data.club || {});
             }
-        }
-    }
 
+        } catch (err) {
+            console.error("Profile Error:", err.response?.data || err.message);
+        }
+    };
+
+    useEffect(() => {
+        getProfile();
+    }, []);
     return (
         <div className="min-h-screen my-4 pb-10">
             <div className="mt-7 mb-4 w-92/100 mx-auto text-center md:text-left">
@@ -36,20 +35,20 @@ export default function ClubProfile({image}) {
 
                     <div className="relative md:w-1/2 w-full border border-gray-300 rounded-2xl">
 
-                    <div className="absolute flex md:hidden w-full h-full">
-                        <img
-                            src={clubDashboardImage}
-                            alt="Dashboard Mobile"
-                            className="opacity-20 rounded-2xl w-full"
-                        />
-                    </div>
+                        <div className="absolute flex md:hidden w-full h-full">
+                            <img
+                                src={clubDashboardImage}
+                                alt="Dashboard Mobile"
+                                className="opacity-20 rounded-2xl w-full"
+                            />
+                        </div>
 
                         <div className="w-9/10 mx-auto my-5">
                             <h2 className="text-lg md:text-xl font-bold text-left">Club Information</h2>
 
                             <div className="flex sm:flex-row items-center justify-center sm:justify-start w-full sm:w-2/3 my-3 mx-auto sm:mx-0">
                                 <div className="ml-10 flex-1 flex justify-center sm:justify-start mb-4 sm:mb-0">
-                                    <img src={image} alt="Club Logo" className="object-cover rounded-2xl w-24 h-24 sm:w-32 md:w-auto" />
+                                    <img src={profile.image ? `http://localhost:5000/uploads/${profile.image}` : image} alt="Club Logo" className="object-cover rounded-2xl w-24 h-24 sm:w-32 md:w-auto" />
                                 </div>
                                 <div className="flex-1 flex flex-col items-center justify-center text-center sm:text-left">
                                     <p className="text-lg md:text-xl font-semibold">Club Name</p>
@@ -57,7 +56,7 @@ export default function ClubProfile({image}) {
                                         className="px-4 py-1 text-blue-600 rounded-2xl text-sm md:text-base text-center"
                                         style={{ backgroundColor: '#BBDEFB' }}
                                     >
-                                        Active
+                                        {profile.clubName}
                                     </div>
                                 </div>
                             </div>
@@ -66,19 +65,16 @@ export default function ClubProfile({image}) {
                                 <div className="block my-5">
                                     <p className="text-gray-500 text-base md:text-lg">Description</p>
                                     <p className="font-semibold text-sm md:text-base text-justify">
-                                        The Uni-plaza Student Union is dedicated to fostering a vibrant and inclusive campus community.
-                                        We organize a wide range of events, from academic workshops to social gatherings, aiming
-                                        to enrich student life and provide opportunities for growth and connection. Join us to make
-                                        a difference!
+                                        {profile.description}
                                     </p>
                                 </div>
                                 <div className="block my-5">
                                     <p className="text-gray-500 text-base md:text-lg">University</p>
-                                    <p className="font-semibold text-sm md:text-base">University of Kelaniya</p>
+                                    <p className="font-semibold text-sm md:text-base">{profile.university}</p>
                                 </div>
                                 <div className="block my-5">
                                     <p className="text-gray-500 text-base md:text-lg">Official Email</p>
-                                    <p className="font-semibold text-sm md:text-base">contact@uniplaza-union.com</p>
+                                    <p className="font-semibold text-sm md:text-base">{profile.officialEmail}</p>
                                 </div>
                             </div>
 
@@ -87,19 +83,19 @@ export default function ClubProfile({image}) {
 
                                 <div className="block my-5">
                                     <p className="text-gray-500 text-base md:text-lg">Name</p>
-                                    <p className="font-semibold text-sm md:text-base">John Perera</p>
+                                    <p className="font-semibold text-sm md:text-base">{profile.fullName}</p>
                                 </div>
                                 <div className="block my-5">
                                     <p className="text-gray-500 text-base md:text-lg">Role</p>
-                                    <p className="font-semibold text-sm md:text-base">Event Head</p>
+                                    <p className="font-semibold text-sm md:text-base">{profile.repPosition}</p>
                                 </div>
                                 <div className="block my-5">
                                     <p className="text-gray-500 text-base md:text-lg">Email</p>
-                                    <p className="font-semibold text-sm md:text-base">contact@uniplaza-union.com</p>
+                                    <p className="font-semibold text-sm md:text-base">{profile.email}</p>
                                 </div>
                                 <div className="block my-5">
                                     <p className="text-gray-500 text-base md:text-lg">Phone</p>
-                                    <p className="font-semibold text-sm md:text-base">071 734 2934</p>
+                                    <p className="font-semibold text-sm md:text-base">{profile.phone}</p>
                                 </div>
                             </div>
                         </div>
